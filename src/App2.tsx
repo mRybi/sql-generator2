@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as _ from "lodash";
-import { DefaultNodeModel, DiagramWidget, BaseEntityType, BaseEntity, BaseModelListener, BaseModel } from "storm-react-diagrams";
+import { DefaultNodeModel, DiagramWidget, BaseEntityType, BaseEntity, BaseModelListener, BaseModel, DiagramModel, DefaultLinkModel } from "storm-react-diagrams";
 import { TrayItemWidget } from "./components/dragAndDrop/TrayItemWidget";
 import { TrayWidget } from "./components/dragAndDrop/TrayWidget";
 import { Application } from "./components/dragAndDrop/Application";
@@ -16,6 +16,8 @@ export interface BodyWidgetProps {
 export interface BodyWidgetState {
 	// selectedNode: BaseModel<BaseEntity, BaseModelListener>[]; //DefaultNodeModel
 	selectedNode: DefaultNodeModel;
+	diagramModel: DiagramModel;
+	selectedLink: DefaultLinkModel
 }
 
 /** 
@@ -24,9 +26,10 @@ export interface BodyWidgetState {
 export class App2 extends React.Component<BodyWidgetProps, BodyWidgetState> {
 	constructor(props: BodyWidgetProps) {
 		super(props);
-		this.state = {
-			selectedNode: null
-		};
+	}
+
+	componentWillMount(){
+		this.setState({selectedNode: null})
 	}
 
 	render() {
@@ -54,12 +57,8 @@ export class App2 extends React.Component<BodyWidgetProps, BodyWidgetState> {
 							var node = null;
 							if (data.type === "in") {
 								node = new DefaultNodeModel("Node " + (nodesCount + 1), "rgb(192,255,0)");
-								node.addInPort("In");
 							} else {
 								node = new DefaultNodeModel("Node " + (nodesCount + 1), "rgb(0,192,255)");
-								node.addOutPort("Out");
-								node.addOutPort("XDD")
-								node.addInPort("IN")
 							}
 							var points = this.props.app.getDiagramEngine().getRelativeMousePoint(event);
 							node.x = points.x;
@@ -73,21 +72,29 @@ export class App2 extends React.Component<BodyWidgetProps, BodyWidgetState> {
 						onDragOver={event => {
 							event.preventDefault();
 						}}
+
 						onDoubleClick={event => {
+							event.preventDefault();
+							
 							this.setState({
 								selectedNode: this.props.app
 								.getDiagramEngine()
 								.getDiagramModel()
-								.getSelectedItems()[0] as DefaultNodeModel
+								.getSelectedItems()[0] as DefaultNodeModel,
+								diagramModel: this.props.app.getDiagramEngine().getDiagramModel(),
+								selectedLink: this.props.app
+								.getDiagramEngine()
+								.getDiagramModel()
+								.getSelectedItems()[1] as DefaultLinkModel,
 							});
 													
-							console.log('XD',this.state.selectedNode);
+							console.log('XD',this.state.selectedLink);
 						}}
 					>
 						<DiagramWidget className="srd-demo-canvas" diagramEngine={this.props.app.getDiagramEngine()} />
 						
 					</div>
-					{ this.state.selectedNode != null ? <NodeInfo selectedItem={this.state.selectedNode} /> : null}
+					{ this.state.selectedNode != null ? <NodeInfo selectedLink={this.state.selectedLink} selectedItem={this.state.selectedNode} diagramModel={this.state.diagramModel} /> : null}
 				</div>
 			</div>
 		);
