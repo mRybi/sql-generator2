@@ -1,0 +1,80 @@
+1.label jako nowy model z tekstem zwyklym wtedy bedzie mozna go przesuwac nad polaczeniem latwo +++++++++++ zroibione
+2.zrobic lepsze modele/ model dla labela +++++++++++++++++ zrobione
+3.zczytywanie planszy do jsona +++++++++++++++++++++++ zrobione
+
+4. w porcie dodoac type -> enum int, nvarchar itd
+4.1 Type i logika portow zmieniona + serializacja +++++++++++++++++++++++ zrobione
+5. rozwiazac problem z portami in/out +++++++++++++++++ zrobione
+6. stylizacja nowego widgeta +++++++++++++ kinda
+
+7. w state beda rozne plansze zeby jak kliknie newDiagram to tworzy sie nowy a tamten jest w drugim tabie
+
+8. Zgrywanie planszy do pliku jest metoda serialize i z jsona jakos to zczytac na nowa plansze
+
+
+
+9. Port powienien byc disabled gdy nie jest FK OR PK +++++++++++++++++++ zrobione
+10. Zrobic auto dodawanie gdy przeciagnmiemy na noda +++++++++++++++++++ zrobione
+10.1 Może porty powinny byc zablokowane tez dla foreign key +++++++++++++++++++ zrobione
+
+
+11. rodzaje relacji m2m one2m itd => rozne linki z kolorami (onHover jaka to relacja) +++++++++++++++++++ zrobione
+11.1 m2m dodawanie nowej tabeli rl_T1hasT2
+11.2 ten iterator zeby sie nie powielaly tabele jest zly +++++++++++++++++++ zrobione
+     bo mozena dodac tylko jedno polaczenie +++++++++++++++++++ zrobione
+11.3 dodawanie portu o2o po m2m port sie doda ale bez linka (gdy m2m bedzie dzialac to chyba nie bedzie problemem) +++++++++++++++++++ zrobione
+11.4 NAPRAWIC PO DODANIU PORTU M2M +++++++++++++++++++ zrobione
+11.5 linowanie z portami odpowiednimi a nie z id zeby przy usuwaniu portu link nie zistawaly +++++++++++++++++++ zrobione
+11.6 naprawic linkowanie 020 i 02M +++++++++++++++++++ zrobione
+
+12. onLcik po lewo na pasku wybor relacji +++++++++++++++++++ zrobione
+12. lepsze view z dodawaniem
+12.1 Edycja dodanych wczesniej portow itd (tabelka z klikaniem na miejsca i updatem troche jak w translacji)
+
+13. Naprawic usuwanie properties +++++++++++++++++++ zrobione
+
+14. Nowa funkcja z repaintingiem portow naprawic wszytsko +++++++++++++++++++ zrobione
+
+15. DATABASE NAME, COLLATION, NOT NULL, UNIQUEB, RESZTA TYPOW (DOUBLE ITD.)
+16. dodac pola w view do zmieniania no null itd teraz statyczne
+17. fk not null => moze byc a na razie generuje kod dla zawsze not null gdy jest fk
+
+18. onhover na node dodac active na jego polaczenia jak w workbenchu ????
+    18.1 inne hovery na poszczegolne rel type
+
+19. sql formater +++++++
+20. plik on click pobiera  --------------
+21. mysql wersja
+22. popup z dodawaniem nazwy db +++++
+    22.1 plik do pobrania z 20 ------
+23. Fixnac popup onClick gdy sie chowa 
+
+
+----------------------- FIXES ------------------------------------
+1. podział na diagram enitiy i relacji
+ 1.1 czyli 2 widoki on click przy create db code 
+        ----->>> jakas flaga w global state if true to chowaj jak nie to nie ++++++++++
+2. entity:
+ 2.1 schowac public keys +++++++
+ 2.2 dodac relacje z warunkowym wyborem atrybutów(teraz m2m jest zawsze tworzona a czasami nie trzeba) ++++++
+ 2.3 dodac 1,0 0,n itd po bokach na relacji, label na srodku zmienic na +++++
+        edytowalny jako nazewnictow polaczenia +++++++
+ 2.4 dodac edytor relacji - popup gdzie beda zminiane wlasnie 2.3 ++++++ i moze typy relacji ++++
+3. relacji:
+ 3.1 wyswietlac klucze obce ++++
+ 3.2 strzalki zamiast 2.3  
+
+
+
+
+
+
+ FIXES 20.07
+ 1. DONE dodawanie new property like new prop 1 -> new prop 2 (in db we can't have 2 props with same name in one table)
+ 2. on double click selection (somehow make it more usable for retarded user - get rid of backgroud dbclick to reset)
+ 2.1 on delete connection (some reload?)
+ 3. cleanup not used/legacy code    
+ 4. check whole app - refactor stupid/rushed solutions
+
+
+ 5. NAPRAWIC DODAWANIE LINKOW

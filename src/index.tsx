@@ -1,17 +1,17 @@
+import './styles/index.scss';
+import './styles/App.scss';
+import './styles/dragAndDrop.scss';
+import './icons/micon/css/micon.min.css';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import { App } from './App';
 import * as ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import {App2} from './App2';
 import * as serviceWorker from './serviceWorker';
 import * as React from 'react';
-import { Application } from './components/dragAndDrop/Application';
+
+
 
 ReactDOM.render(
-    <div>
-        {/* <App />,  */}
-        <App2 app={ new Application()}/>
-    </div>,
-
+        <App />,
 document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

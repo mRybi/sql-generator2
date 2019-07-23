@@ -1,0 +1,67 @@
+.left-options {
+  padding-left: 0px;
+}
+.trayBottom{
+  overflow-y: auto;
+  padding-left: 200px;
+  color: #F7F7F7;
+  height: 280px;
+  width: 100%;
+  background: rgb(20,20,20);
+  flex-grow: 1;
+  flex-shrink: 1;
+  position: absolute;
+  bottom: 0;
+  border-top: 10px solid #1e1e1e;
+
+  
+
+  .tray-bottom-item{
+    color: black;
+    font-family: Helvetica, Arial;
+    padding: 5px;
+    margin: 0px 10px;
+    border: solid 1px;
+    border-radius: 5px;
+    margin-bottom: 2px;
+    cursor: pointer;
+  }
+
+  .darkSelect {
+    background-color: #3E3E3E;
+    color: #E9F7F7;
+  }
+
+  .darkInput {
+    background-color: #3E3E3E;
+    color: #E9F7F7;
+    margin-top: 7px;
+    width: 150px;
+        margin-right: 0px;
+        padding-right: 0px;
+  }
+
+  .red {
+    color: red;
+  }
+
+  .fs-24 {
+    font-size: 28px;
+    margin-top: 15px;
+  }
+
+  .mouse-cursor {
+    cursor: cell;
+  }
+
+  .fixed-header  {
+    position: sticky;
+    top: 0;
+    background: rgb(20,20,20);  }
+
+  th {
+    background: rgb(20,20,20);    position: sticky;
+    top: 0;
+    z-index: 9999;
+  }
+}
