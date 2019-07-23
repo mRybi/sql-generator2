@@ -5,9 +5,9 @@ import { DiagramWidget } from "storm-react-diagrams";
 import { TrayItemWidget } from "./components/dragAndDrop/TrayItemWidget";
 import { TrayWidget } from "./components/dragAndDrop/TrayWidget";
 import { Application } from "./components/dragAndDrop/Application";
-import { Node } from "./components/models/Node";
-import { Link } from "./components/models/Link";
-import { PropertyType } from "./components/models/PropertyType";
+import { Node } from "./infrastructure/models/Node";
+import { Link } from "./infrastructure/models/Link";
+import { PropertyType } from "./infrastructure/models/PropertyType";
 import { NodeProperties } from "./components/nodeProperties/NodeProperties";
 import { GenerationHandler } from "./handlers/GenerationHandler";
 import { RelationPopup } from "./components/popups/RealtionPopup/RelationPopup";
@@ -24,7 +24,6 @@ interface State {
 	showDialog: boolean;
 	selectedNode: Node;
 	selectedLink: Link;
-	selectedRelation: RelationType;
 	showRelationDialog: boolean;
 }
 
@@ -52,7 +51,6 @@ export class AppView extends React.Component<Props, State> {
 			showDialog: false,
 			selectedNode: null,
 			selectedLink: null,
-			selectedRelation: RelationType.O2O,
 			showRelationDialog: false
 		}
 	}
@@ -62,7 +60,7 @@ export class AppView extends React.Component<Props, State> {
 	}
 
 	updateRelationPopup() {
-		this.setState({ showRelationDialog: false,  selectedNode: null});
+		this.setState({ showRelationDialog: false, selectedNode: null });
 	}
 
 	render() {
@@ -75,29 +73,11 @@ export class AppView extends React.Component<Props, State> {
 					<TrayWidget>
 						<TrayItemWidget model={{ type: "table" }} name="Node" color="rgb(0,192,255)" />
 						<TrayItemWidget model={{ type: "label" }} name="Label" color="rgb(192,255,0)" />
-
-						<div
-							style={{
-								borderColor: "rgb(0,255,0)", marginTop: '100px'
-							}}
-							className={`tray-item ${this.state.selectedRelation === RelationType.O2O ? 'selected' : ''}`}
-							onClick={() => {
-								// let app = this.props.app.getActiveDiagram().getNodes() as { [s: string]: Node };
-								// Object.keys(app).forEach(x => app[x].updatePorts(RelationType.O2O));
-								this.setState({
-									selectedRelation: RelationType.O2O
-								})
-
-							}}
-						>
-							Relation
-						</div>
 						<div
 							style={{ borderColor: "rgb(255,0,0)", marginTop: '100px' }}
 							className={`tray-item ${this.context.view === AppViewType.ENTITY ? 'selected' : ''}`}
 							onClick={() => {
 								this.context.changeViewType(0);
-								// this.props.app.getDiagramEngine().recalculatePortsVisually();
 							}}
 						>
 							Entity View
@@ -108,7 +88,6 @@ export class AppView extends React.Component<Props, State> {
 							className={`tray-item ${this.context.view === AppViewType.RELATION ? 'selected' : ''}`}
 							onClick={() => {
 								this.context.changeViewType(1);
-								// this.props.app.getDiagramEngine().recalculatePortsVisually();
 							}}
 						>
 							Relation View
@@ -117,12 +96,12 @@ export class AppView extends React.Component<Props, State> {
 						<div
 							style={{ borderColor: "rgb(255,0,0)" }}
 							className="tray-item"
-							onClick={() => this.setState({ showDialog: true })}
+							onClick={() => this.setState({ showDialog: true, selectedNode: null })}
 						>
 							Create DB Code
 						</div>
 
-					
+
 					</TrayWidget>
 
 					<div
@@ -135,18 +114,13 @@ export class AppView extends React.Component<Props, State> {
 									.getDiagramModel()
 									.getNodes()
 							).length;
-							
+
 							var node = null;
 							if (data.type === "table") {
 								node = new Node(this.props.app.getDiagramEngine(), `Node${nodesCount + 1}`, "rgb(0,192,255)");
-								// node = new Node("table", `Node${nodesCount + 1}`, "rgb(0,192,255)");
-								 node.addInPort("Id", true, false, false, false, false, PropertyType.INT);
-
-								// node.addInPort(true, true, true, true, false, "Id", PropertyType.INT);
-								// node.addInPort(false, false, false, false, false, "Name", PropertyType.NVARCHAR);
+								node.addInPort("Id", true, false, false, false, false, PropertyType.INT);
 							} else {
 								node = new Node(this.props.app.getDiagramEngine(), "Label ", "rgb(192,255,0)");
-								// node = new Node("label", "Label ", "rgb(192,255,0)");
 							}
 
 							var points = this.props.app.getDiagramEngine().getRelativeMousePoint(event);
@@ -165,7 +139,6 @@ export class AppView extends React.Component<Props, State> {
 						onClick={event => {
 							event.preventDefault();
 							this.setState({
-								selectedRelation: RelationType.none,
 								showDialog: false
 							})
 						}}
@@ -180,21 +153,21 @@ export class AppView extends React.Component<Props, State> {
 									selectedNode: null
 								})
 							} else {
-							this.setState({
-								showDialog: false,
-								showRelationDialog: false,
-								selectedNode: this.props.app
-									.getDiagramEngine()
-									.getDiagramModel()
-									.getSelectedItems()[0] as Node
+								this.setState({
+									showDialog: false,
+									showRelationDialog: false,
+									selectedNode: this.props.app
+										.getDiagramEngine()
+										.getDiagramModel()
+										.getSelectedItems()[0] as Node
 
-							});
+								});
 							}
 						}}
 					>
 						<DiagramWidget deleteKeys={[46]} className="srd-demo-canvas" diagramEngine={this.props.app.getDiagramEngine()} />
 					</div>
-					{this.state.selectedNode != null ? <NodeProperties selectedRelation={this.state.selectedRelation} selectedLink={this.state.selectedLink} selectedItem={this.state.selectedNode} diagramEngine={this.props.app.getDiagramEngine()} /> : null}
+					{this.state.selectedNode != null ? <NodeProperties selectedLink={this.state.selectedLink} selectedItem={this.state.selectedNode} diagramEngine={this.props.app.getDiagramEngine()} /> : null}
 					<GenerationHandler isOpen={this.state.showDialog} serializeDiagram={this.props.app.getActiveDiagram().serializeDiagram()} />
 					<RelationPopup diagramModel={this.props.app.getActiveDiagram()} update={() => this.updateRelationPopup()} isOpen={this.state.showRelationDialog} link={this.state.selectedLink} />
 				</div>

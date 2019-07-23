@@ -1,10 +1,11 @@
 import './RelationPopup.scss';
 import React, { useState } from 'react'
 import Popup from 'reactjs-popup'
-import { Link } from '../../models/Link';
-import { Label } from '../../models/Label';
-import { Node } from '../../models/Node';
+import { Link } from '../../../infrastructure/models/Link';
+import { Label } from '../../../infrastructure/models/Label';
+import { Node } from '../../../infrastructure/models/Node';
 import { DiagramModel } from 'storm-react-diagrams';
+import { Port } from '../../../infrastructure/models/Port';
 
 class Props {
   isOpen: boolean;
@@ -39,13 +40,35 @@ export const RelationPopup = (props: Props) => {
     props.update()
   }
 
-  const sourcePort = props.link && props.link.sourcePort.parent as Node;
-  const targetPort = props.link && props.link.targetPort.parent as Node;
+  const sourcePort = props.link && props.link.sourcePort && props.link.sourcePort.parent as Node;
+  const targetPort = props.link && props.link.targetPort && props.link.targetPort.parent as Node;
 
   const remove = () => {
+    (props.link.sourcePort as Port).firstTime = true;
     props.diagramModel.removeLink(props.link);
     props.link && targetPort.removePort(props.link.targetPort);
     props.update();
+  }
+
+  const options = <>
+    <option value="1, N">1, N</option>
+    <option value="0, N">0, N</option>
+    <option value="0, 0">0, 0</option>
+    <option value="0, 1">0, 1</option>
+    <option value="1, 1">1, 1</option>
+    <option value="1, 0">1, 0</option>
+    <option value="N, M">N, M</option>
+  </>;
+
+  const renderOptionPincker = (side: string) => {
+    return (
+      <div className="grid-item"><select className="darkSelect"
+        onChange={(event) => side === 'left' ? setLeft(event.target.value) : setRight(event.target.value)}
+        value={side}>
+        {options}
+      </select>
+      </div>
+    );
   }
 
   return (
@@ -56,42 +79,16 @@ export const RelationPopup = (props: Props) => {
       closeOnEscape
     >
       <div className="SQLResultDialog">
-
         <div className="grid-container">
           <div className="grid-item"><p>{sourcePort && sourcePort.name}</p></div>
           <div className="grid-item"><input className="darkInput" type="text" defaultValue={relationName} onChange={(event) => setRelationName(event.target.value)}></input></div>
           <div className="grid-item"><p>{targetPort && targetPort.name}</p></div>
-          <div className="grid-item"><select className="darkSelect"
-            onChange={(event) => setLeft(event.target.value)}
-            value={left}>
-            <option value="1, N">1, N</option>
-            <option value="0, N">0, N</option>
-            <option value="0, 0">0, 0</option>
-            <option value="0, 1">0, 1</option>
-            <option value="1, 1">1, 1</option>
-            <option value="1, 0">1, 0</option>
-            <option value="N, M">N, M</option>
-
-          </select></div>
+          {renderOptionPincker('left')}
           <div className="grid-item"><button onClick={() => update()}>SAVE</button></div>
-
-          <div className="grid-item"><select className="darkSelect"
-            onChange={(event) => setRight(event.target.value)}
-            value={right}>
-            <option value="1, N">1, N</option>
-            <option value="0, N">0, N</option>
-            <option value="0, 0">0, 0</option>
-            <option value="0, 1">0, 1</option>
-            <option value="1, 1">1, 1</option>
-            <option value="1, 0">1, 0</option>
-            <option value="N, M">N, M</option>
-
-          </select></div>
-
-          <div className="grid-item"/>
+          {renderOptionPincker('right')}
+          <div className="grid-item" />
           <div className="grid-item"><button onClick={() => remove()}>Remove</button></div>
-          <div className="grid-item"/>
-          
+          <div className="grid-item" />
         </div>
       </div>
     </Popup>)

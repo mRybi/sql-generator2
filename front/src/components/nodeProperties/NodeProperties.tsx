@@ -1,14 +1,14 @@
 import './NodeProperties.scss';
 import * as React from "react";
 import { DiagramEngine } from 'storm-react-diagrams';
-import { Link } from '../models/Link';
-import { Port } from '../models/Port';
-import { Node } from '../models/Node';
+import { Link } from '../../infrastructure/models/Link';
+import { Port } from '../../infrastructure/models/Port';
+import { Node } from '../../infrastructure/models/Node';
 
 import { RelationType } from '../../AppView';
 import BootstrapTable from 'react-bootstrap-table-next';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import { PropertyType } from '../models/PropertyType';
+import { PropertyType } from '../../infrastructure/models/PropertyType';
 import { Col, Row, Grid } from '../grid';
 import AppContext from '../../context/appContext/AppContext';
 
@@ -16,7 +16,6 @@ class OwnProps {
   selectedItem: Node;
   diagramEngine: DiagramEngine;
   selectedLink: Link;
-  selectedRelation: RelationType;
 }
 
 class State {
@@ -58,7 +57,7 @@ export class NodeProperties extends React.Component<Props, State> {
   handleChangePK(event: React.ChangeEvent<HTMLInputElement>, row: Port) {
     event.persist();
 
-    // (this.state.updatedItem.getPortFromID(row.id) as Port).isPrimaryKey = !row.isPrimaryKey;
+    (this.state.updatedItem.getPortFromID(row.id) as Port).isPrimaryKey = !row.isPrimaryKey;
 
     this.forceUpdate();
   }
@@ -138,7 +137,7 @@ export class NodeProperties extends React.Component<Props, State> {
                 <option value="BIT">BIT</option>
                 <option value="TINYINT">TINYINT</option>
                 <option value="SMALLINT">SMALLINT</option>
-                <option value={3}>INT</option>
+                <option value="INT">INT</option>
                 <option value="BIGINT">BIGINT</option>
                 <option value="DECIMAL">DECIMAL</option>
                 <option value="NUMERIC">NUMERIC</option>
@@ -304,7 +303,6 @@ export class NodeProperties extends React.Component<Props, State> {
           </div>
         )
       }
-      
       , 
       {
         dataField: 'isNotNull',

@@ -1,5 +1,4 @@
 import { ResultPopup } from '../components/popups/ResultPopup/ResultPopup';
-
 import React from 'react'
 import axios from 'axios';
 
