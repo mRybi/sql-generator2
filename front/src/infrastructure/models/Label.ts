@@ -6,7 +6,7 @@ export class Label extends LabelModel {
 	label: string;
 
 	constructor(label: string) {
-		super("custom");
+		super("label");
 		this.label = label;
 		this.offsetY = -23;
 	}

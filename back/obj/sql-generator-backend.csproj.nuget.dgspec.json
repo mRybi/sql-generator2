@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/dell/Dokumenty/sql-generator-backend/sql-generator-backend.csproj": {}
+    "/home/dell/Pulpit/sql-generator2/back/sql-generator-backend.csproj": {}
   },
   "projects": {
-    "/home/dell/Dokumenty/sql-generator-backend/sql-generator-backend.csproj": {
+    "/home/dell/Pulpit/sql-generator2/back/sql-generator-backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/dell/Dokumenty/sql-generator-backend/sql-generator-backend.csproj",
+        "projectUniqueName": "/home/dell/Pulpit/sql-generator2/back/sql-generator-backend.csproj",
         "projectName": "sql-generator-backend",
-        "projectPath": "/home/dell/Dokumenty/sql-generator-backend/sql-generator-backend.csproj",
+        "projectPath": "/home/dell/Pulpit/sql-generator2/back/sql-generator-backend.csproj",
         "packagesPath": "/home/dell/.nuget/packages/",
-        "outputPath": "/home/dell/Dokumenty/sql-generator-backend/obj/",
+        "outputPath": "/home/dell/Pulpit/sql-generator2/back/obj/",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/usr/share/dotnet/sdk/NuGetFallbackFolder"

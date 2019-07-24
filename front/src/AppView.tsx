@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as _ from "lodash";
 
-import { DiagramWidget } from "storm-react-diagrams";
+import { DiagramWidget, PointModel } from "storm-react-diagrams";
 import { TrayItemWidget } from "./components/dragAndDrop/TrayItemWidget";
 import { TrayWidget } from "./components/dragAndDrop/TrayWidget";
 import { Application } from "./components/dragAndDrop/Application";
@@ -32,14 +32,6 @@ export enum AppViewType {
 	RELATION = 1
 }
 
-export enum RelationType {
-	O2O = 0,
-	O2M = 1,
-	M2M = 2,
-	none = 3,
-	M2MNoTable = 4
-}
-
 export class AppView extends React.Component<Props, State> {
 
 	static contextType = AppContext;
@@ -64,6 +56,7 @@ export class AppView extends React.Component<Props, State> {
 	}
 
 	render() {
+		console.log('QQQQ', this.state);
 		return (
 			<div className="body">
 				<div className="header">
@@ -117,10 +110,10 @@ export class AppView extends React.Component<Props, State> {
 
 							var node = null;
 							if (data.type === "table") {
-								node = new Node(this.props.app.getDiagramEngine(), `Node${nodesCount + 1}`, "rgb(0,192,255)");
+								node = new Node(false, this.props.app.getDiagramEngine(), `Node${nodesCount + 1}`, "rgb(0,192,255)");
 								node.addInPort("Id", true, false, false, false, false, PropertyType.INT);
 							} else {
-								node = new Node(this.props.app.getDiagramEngine(), "Label ", "rgb(192,255,0)");
+								node = new Node(true, this.props.app.getDiagramEngine(), "Label ", "rgb(192,255,0)");
 							}
 
 							var points = this.props.app.getDiagramEngine().getRelativeMousePoint(event);
@@ -139,12 +132,21 @@ export class AppView extends React.Component<Props, State> {
 						onClick={event => {
 							event.preventDefault();
 							this.setState({
-								showDialog: false
+								showDialog: false,
+								showRelationDialog: false,
+								selectedNode: null,
+								selectedLink: null
 							})
 						}}
 						onDoubleClick={event => {
+							console.log('WWWWif',this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems());
+
+							console.log('WWWWif',this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof Node);
+
 							event.preventDefault();
-							if (this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems().length === 1) {
+							if (this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof PointModel) {
+							console.log('WWWWif',this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems() );
+
 								this.setState({
 									selectedLink: this.props.app
 										.getDiagramEngine()
@@ -152,7 +154,9 @@ export class AppView extends React.Component<Props, State> {
 									showRelationDialog: true,
 									selectedNode: null
 								})
-							} else {
+							} else if (this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof Node) {
+							console.log('WWWWel',this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems() );
+								
 								this.setState({
 									showDialog: false,
 									showRelationDialog: false,
@@ -162,7 +166,7 @@ export class AppView extends React.Component<Props, State> {
 										.getSelectedItems()[0] as Node
 
 								});
-							}
+							} 
 						}}
 					>
 						<DiagramWidget deleteKeys={[46]} className="srd-demo-canvas" diagramEngine={this.props.app.getDiagramEngine()} />

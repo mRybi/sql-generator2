@@ -8,13 +8,15 @@ export class Node extends NodeModel {
 	color: string;
 	ports: { [s: string]: Port };
 	engine: DiagramEngine
+	isLabel: boolean;
 
-	constructor(engine: DiagramEngine, name: string = "Untitled", color: string = "rgb(0,192,255)") {
+	constructor(isLabel: boolean, engine: DiagramEngine, name: string = "Untitled", color: string = "rgb(0,192,255)") {
 		super("custom");
 		this.name = name;
 		this.color = color;
 		this.ports = {};
 		this.engine = engine;
+		this.isLabel = isLabel;
 	}
 
 	addInPort(label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: PropertyType): Port {

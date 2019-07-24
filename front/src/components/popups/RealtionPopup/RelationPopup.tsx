@@ -46,7 +46,7 @@ export const RelationPopup = (props: Props) => {
   const remove = () => {
     (props.link.sourcePort as Port).firstTime = true;
     props.diagramModel.removeLink(props.link);
-    props.link && targetPort.removePort(props.link.targetPort);
+    props.link && targetPort && targetPort.removePort(props.link.targetPort);
     props.update();
   }
 
@@ -64,7 +64,7 @@ export const RelationPopup = (props: Props) => {
     return (
       <div className="grid-item"><select className="darkSelect"
         onChange={(event) => side === 'left' ? setLeft(event.target.value) : setRight(event.target.value)}
-        value={side}>
+        value={side === 'left' ? left : right}>
         {options}
       </select>
       </div>

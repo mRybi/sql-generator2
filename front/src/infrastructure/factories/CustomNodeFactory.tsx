@@ -16,6 +16,6 @@ export class CustomNodeFactory extends AbstractNodeFactory<Node> {
 	}
 
 	getNewInstance(initialConfig?: any): Node {
-		return new Node(null, "custom");
+		return new Node(false, null, "custom");
 	}
 }

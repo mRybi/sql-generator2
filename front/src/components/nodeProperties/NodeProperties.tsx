@@ -5,7 +5,6 @@ import { Link } from '../../infrastructure/models/Link';
 import { Port } from '../../infrastructure/models/Port';
 import { Node } from '../../infrastructure/models/Node';
 
-import { RelationType } from '../../AppView';
 import BootstrapTable from 'react-bootstrap-table-next';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import { PropertyType } from '../../infrastructure/models/PropertyType';
@@ -364,8 +363,8 @@ export class NodeProperties extends React.Component<Props, State> {
           <Col>
             {!this.state.showInput ? <h1 onDoubleClick={() => this.setState({showInput: true})}>{this.state.name}</h1> : <input className="darkInput fs-24" defaultValue={this.state.name} onChange={(event) => this.handleNameChange(event)}/>}
           </Col>
-
-          <Col className="tableFixHead">
+{!this.state.updatedItem.isLabel ? 
+           <Col className="tableFixHead">
             <BootstrapTable
               keyField="id"
               data={portsTable}
@@ -373,7 +372,7 @@ export class NodeProperties extends React.Component<Props, State> {
               bordered={false}
             />
             <p className="mouse-cursor" onClick={() => this.addNewPort(portsTable.length)}>Add new prop</p>
-          </Col>
+          </Col> : null }
         </Row>
       </Grid>
         
