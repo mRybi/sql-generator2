@@ -110,7 +110,7 @@ export class AppView extends React.Component<Props, State> {
 
 							var node = null;
 							if (data.type === "table") {
-								node = new Node(false, this.props.app.getDiagramEngine(), `Node${nodesCount + 1}`, "rgb(0,192,255)");
+								node = new Node(false, this.props.app.getDiagramEngine(), `Table${nodesCount + 1}`, "rgb(0,192,255)");
 								node.addInPort("Id", true, false, false, false, false, PropertyType.INT);
 							} else {
 								node = new Node(true, this.props.app.getDiagramEngine(), "Label ", "rgb(192,255,0)");

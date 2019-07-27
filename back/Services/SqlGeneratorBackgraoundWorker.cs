@@ -9,9 +9,6 @@ namespace Services {
 	public class SqlGeneratorBackgraoundWorker : ISqlGeneratorBackgraoundWorker {
 		public void GenerateBGW (Diagram diagram) {
 			BackgroundJob.Enqueue (() => GenerateMSSQL (diagram));
-
-			// JobData jd = JobStorage.Current.GetConnection().GetJobData(xd);
-			// Console.WriteLine("SADASDASDDA", xd);
 		}
 		public async Task<string> Generate (Diagram diagram) {
 			var response = await GenerateMSSQL (diagram);
@@ -40,7 +37,7 @@ namespace Services {
 			return names;
 		}
 
-		private string GenerationTask(Diagram diagram) {
+		private string GenerationTask (Diagram diagram) {
 			if (diagram == null) {
 				Console.WriteLine ("Diagram is null");
 			}
@@ -138,13 +135,13 @@ namespace Services {
 			}
 
 			return MSSQLCode;
-		
+
 		}
 
 		public async Task<string> GenerateMSSQL (Diagram diagram) {
-			var x = await Task.Run(() => GenerationTask(diagram));
-			return x;
+			var result = await Task.Run (() => GenerationTask (diagram));
+			return result;
 		}
-			
+
 	}
 }
