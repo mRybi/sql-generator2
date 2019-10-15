@@ -12,6 +12,7 @@ import { NodeProperties } from "./components/nodeProperties/NodeProperties";
 import { GenerationHandler } from "./handlers/GenerationHandler";
 import { RelationPopup } from "./components/popups/RealtionPopup/RelationPopup";
 import AppContext from "./context/appContext/AppContext";
+import { Singleton, ConnectionType } from "./context/Singleton";
 
 require("storm-react-diagrams/dist/style.min.css");
 require('react-bootstrap-table-next/dist/react-bootstrap-table2.min.css');
@@ -37,6 +38,7 @@ export class AppView extends React.Component<Props, State> {
 
 	static contextType = AppContext;
 	private myRef: React.RefObject<any>;
+	private s2 = Singleton.getInstance();
 
 	constructor(props: Props) {
 		super(props);
@@ -71,6 +73,7 @@ export class AppView extends React.Component<Props, State> {
 							className={`tray-item ${this.context.view === AppViewType.ENTITY ? 'selected' : ''}`}
 							onClick={() => {
 								this.context.changeViewType(0);
+								Singleton.setConnectionType(1);
 							}}
 						>
 							Entity View
@@ -81,13 +84,41 @@ export class AppView extends React.Component<Props, State> {
 							className={`tray-item ${this.context.view === AppViewType.RELATION ? 'selected' : ''}`}
 							onClick={() => {
 								this.context.changeViewType(1);
+								Singleton.setConnectionType(0);
 							}}
 						>
 							Relation View
 						</div>
+						<div
+							style={{ borderColor: "rgb(255,0,255)", marginTop: '100px' }}
+							className={`tray-item `}//${this.context.view === AppViewType.RELATION ? 'selected' : ''}`}
+							onClick={() => {
+								Singleton.setConnectionType(0);
+							}}
+						>
+							020
+						</div>
+						<div
+							style={{ borderColor: "rgb(255,0,255)" }}
+							className={`tray-item `}//${this.context.view === AppViewType.RELATION ? 'selected' : ''}`}
+							onClick={() => {
+								Singleton.setConnectionType(1);
+							}}
+						>
+							02M
+						</div>
+						<div
+							style={{ borderColor: "rgb(255,0,255)" }}
+							className={`tray-item `}//${this.context.view === AppViewType.RELATION ? 'selected' : ''}`}
+							onClick={() => {
+								Singleton.setConnectionType(2);
+							}}
+						>
+							M2M
+						</div>
 
 						<div
-							style={{ borderColor: "rgb(255,0,0)" }}
+							style={{ borderColor: "rgb(255,0,0)", marginTop: '100px' }}
 							className="tray-item"
 							onClick={() => this.setState({ showDialog: true, selectedNode: null })}
 						>
@@ -156,7 +187,8 @@ export class AppView extends React.Component<Props, State> {
 							console.log('WWWWif',this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof Node);
 
 							event.preventDefault();
-							if (this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof PointModel) {
+							if (this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof PointModel ||
+							this.props.app2.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof PointModel) {
 							console.log('WWWWif',this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems() );
 
 								this.setState({
@@ -166,13 +198,18 @@ export class AppView extends React.Component<Props, State> {
 									showRelationDialog: true,
 									selectedNode: null
 								})
-							} else if (this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof Node) {
+							} else if (this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof Node ||
+							this.props.app2.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof Node) {
 							console.log('WWWWel',this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems() );
 								
 								this.setState({
 									showDialog: false,
 									showRelationDialog: false,
-									selectedNode: this.props.app
+									selectedNode: this.context.view === AppViewType.ENTITY ? this.props.app
+										.getDiagramEngine()
+										.getDiagramModel()
+										.getSelectedItems()[0] as Node
+										: this.props.app2
 										.getDiagramEngine()
 										.getDiagramModel()
 										.getSelectedItems()[0] as Node

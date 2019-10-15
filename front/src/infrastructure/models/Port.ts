@@ -3,6 +3,7 @@ import { Link } from "./Link";
 import { Node } from "./Node";
 import { PortModel, DiagramEngine, PointModel, NodeModel } from "storm-react-diagrams";
 import { PropertyType } from "./PropertyType";
+import { Singleton } from "../../context/Singleton";
 
 export class Port extends PortModel {
 	in: boolean;
@@ -38,6 +39,8 @@ export class Port extends PortModel {
 
 		this.diagramEngine = diagramEngine;
 		this.diagramEngine2 = diagramEngine2;
+
+		Singleton.getConnectionType();
 
 	}
 
@@ -92,23 +95,33 @@ export class Port extends PortModel {
 			let secPort = m2m.addInPort("2Id", false, true, true, true, false, PropertyType.INT);
 			secPort.disabled = true;
 
-			let flink = this.createLinkModel();
-			let seclink = this.createLinkModel();
-			flink.setSourcePort(this);//this.diagramEngine2.diagramModel.getNode('3a04f449-2b36-4980-8b10-f245a92a7fdb').getPort('97e09c04-acd5-45a8-94cf-08ac6ed58c4d'));
-			flink.setTargetPort(secPort);
-			seclink.setSourcePort(port);//this.diagramEngine2.diagramModel.getNode('17aeb932-2712-4a3c-84b1-eff4388357e5').getPort('3f058cf9-a7f2-493b-bcef-81dbfba0836b'));
-			seclink.setTargetPort(fport);
+			
 		let node = this.diagramEngine2.diagramModel.getNode(port.getParent() as Node);
-
+let oldPorts = node.ports as {[s: string]: Port};
 
 			m2m.x = node.x - 100;
 			m2m.y = node.y - 60;
 			this.diagramEngine2.diagramModel.addNode(m2m);
 
+			console.log('qqqqqqqqqqqqwwqwq', this.diagramEngine.diagramModel.getNodes(), this.diagramEngine2.diagramModel.getNodes());
+			this.diagramEngine2.diagramModel.removeNode(node);
+			
+			let node2 = new Node(false, this.diagramEngine, this.diagramEngine2, (node as Node).name, "rgb(0,192,255)");
+			node2.x = node.x;
+			node2.y = node.y;
+			// node2.ports = oldPorts ; // jak zachowac porty z node2 i przekopiowac je do nowego // mamy old ports znamy ten nowy node1Id ktory trezba wywyalic
+			let idPort = node2.addInPort("Id", true, false, true, true, false, PropertyType.INT);
+
+			this.diagramEngine2.diagramModel.addNode(node2);
+			let flink = this.createLinkModel();
+			let seclink = this.createLinkModel();
+			flink.setSourcePort(this);//this.diagramEngine2.diagramModel.getNode('3a04f449-2b36-4980-8b10-f245a92a7fdb').getPort('97e09c04-acd5-45a8-94cf-08ac6ed58c4d'));
+			flink.setTargetPort(secPort);
+			seclink.setSourcePort(idPort);//this.diagramEngine2.diagramModel.getNode('17aeb932-2712-4a3c-84b1-eff4388357e5').getPort('3f058cf9-a7f2-493b-bcef-81dbfba0836b'));
+			seclink.setTargetPort(fport);
 			this.diagramEngine2.diagramModel.addLink(flink);
 			this.diagramEngine2.diagramModel.addLink(seclink);
-			console.log('qqqqqqqqqqqqwwqwq', this.diagramEngine.diagramModel.getNodes(), this.diagramEngine2.diagramModel.getNodes());
-			// this.diagramEngine2.diagramModel.getNode(node).removePort(targetPort);
+
 // nic sie nie rozpierdala jak usune z m2m entityId
 			this.diagramEngine2.recalculatePortsVisually();
 			return false;
@@ -116,7 +129,7 @@ export class Port extends PortModel {
 	}
 
 	canLinkToPort(port: Port): boolean {
-		console.log('QQQQQ', port);
+		console.log('QQQQQ', Singleton.getConnectionType()); //if type costam respown m2m itd.... 
 		if (this.firstTime) {
 		// 	let node = this.diagramEngine.diagramModel.getNode(port.getParent() as Node);
 		// // let node = port.getParent() as Node;

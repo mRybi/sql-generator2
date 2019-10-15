@@ -53,7 +53,6 @@ export const RelationPopup = (props: Props) => {
   const options = <>
     <option value="1, N">1, N</option>
     <option value="0, N">0, N</option>
-    <option value="0, 0">0, 0</option>
     <option value="0, 1">0, 1</option>
     <option value="1, 1">1, 1</option>
     <option value="1, 0">1, 0</option>
