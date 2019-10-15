@@ -120,7 +120,7 @@ export class NodeProperties extends React.Component<Props, State> {
       columns = [{
         dataField: 'label',
         text: 'Property Name',
-        formatter: (cellContent: any, row: any) => (
+        formatter: (cellContent: any, row: Port) => (
           <div className="input">
             <input className="darkInput" type="text" defaultValue={row.label} onChange={(event) => this.handleChangePortLabel(event, row)}></input>
           </div>
@@ -186,10 +186,10 @@ export class NodeProperties extends React.Component<Props, State> {
        {
         dataField: 'isForeignkey',
         text: 'Is Foreign Key',
-        formatter: (cellContent: any, row: any) => (
+        formatter: (cellContent: any, row: Port) => (
           <div className="checkbox">
             <label>
-              <input type="checkbox" checked={row.isForeignkey} onChange={(event) => this.handleChangeFK(event, row)} />
+              <input type="checkbox" checked={row.isForeignKey} onChange={(event) => this.handleChangeFK(event, row)} />
             </label>
           </div>
         )
@@ -198,7 +198,7 @@ export class NodeProperties extends React.Component<Props, State> {
       {
         dataField: 'isNotNull',
         text: 'Is Nullable',
-        formatter: (cellContent: any, row: any) => (
+        formatter: (cellContent: any, row: Port) => (
           <div className="checkbox">
             <label>
               <input type="checkbox" checked={row.isNotNull} onChange={(event) => this.handleChangeNull(event, row)} />
@@ -208,7 +208,7 @@ export class NodeProperties extends React.Component<Props, State> {
       }, {
         dataField: 'isAutoincremented',
         text: 'Is Auto Incremented',
-        formatter: (cellContent: any, row: any) => (
+        formatter: (cellContent: any, row: Port) => (
           <div className="checkbox">
             <label>
               <input type="checkbox" checked={row.isAutoincremented} onChange={(event) => this.handleChangeAutoInc(event, row)} />
@@ -218,7 +218,7 @@ export class NodeProperties extends React.Component<Props, State> {
       }, {
         dataField: 'isUnique',
         text: 'Is Unique',
-        formatter: (cellContent: any, row: any) => (
+        formatter: (cellContent: any, row: Port) => (
           <div className="checkbox">
             <label>
               <input type="checkbox" checked={row.isUnique} onChange={(event) => this.handleChangeUnique(event, row)} />
@@ -228,7 +228,7 @@ export class NodeProperties extends React.Component<Props, State> {
       }, {
         dataField: 'remove',
         text: 'Remove',
-        formatter: (cellContent: any, row: any) => (
+        formatter: (cellContent: any, row: Port) => (
           <div className="checkbox">
             <label>
               <span onClick={() => this.removePort(row)} className="mi mi-Delete red" />          
@@ -240,7 +240,7 @@ export class NodeProperties extends React.Component<Props, State> {
       columns = [{
         dataField: 'label',
         text: 'Property Name',
-        formatter: (cellContent: any, row: any) => (
+        formatter: (cellContent: any, row: Port) => (
           <div className="input">
             <input className="darkInput" type="text" defaultValue={row.label} onChange={(event) => this.handleChangePortLabel(event, row)}></input>
           </div>
@@ -306,7 +306,7 @@ export class NodeProperties extends React.Component<Props, State> {
       {
         dataField: 'isNotNull',
         text: 'Is Nullable',
-        formatter: (cellContent: any, row: any) => (
+        formatter: (cellContent: any, row: Port) => (
           <div className="checkbox">
             <label>
               <input type="checkbox" checked={row.isNotNull} onChange={(event) => this.handleChangeNull(event, row)} />
@@ -316,7 +316,7 @@ export class NodeProperties extends React.Component<Props, State> {
       }, {
         dataField: 'isAutoincremented',
         text: 'Is Auto Incremented',
-        formatter: (cellContent: any, row: any) => (
+        formatter: (cellContent: any, row: Port) => (
           <div className="checkbox">
             <label>
               <input type="checkbox" checked={row.isAutoincremented} onChange={(event) => this.handleChangeAutoInc(event, row)} />
@@ -326,7 +326,7 @@ export class NodeProperties extends React.Component<Props, State> {
       }, {
         dataField: 'isUnique',
         text: 'Is Unique',
-        formatter: (cellContent: any, row: any) => (
+        formatter: (cellContent: any, row: Port) => (
           <div className="checkbox">
             <label>
               <input type="checkbox" checked={row.isUnique} onChange={(event) => this.handleChangeUnique(event, row)} />
@@ -336,7 +336,7 @@ export class NodeProperties extends React.Component<Props, State> {
       }, {
         dataField: 'remove',
         text: 'Remove',
-        formatter: (cellContent: any, row: any) => (
+        formatter: (cellContent: any, row: Port) => (
           <div className="checkbox">
             <label>
               <span onClick={() => this.removePort(row)} className="mi mi-Delete red" />          

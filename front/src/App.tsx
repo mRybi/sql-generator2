@@ -9,9 +9,12 @@ require("storm-react-diagrams/dist/style.min.css");
 
 export class App extends React.Component {
 
-state = {view: 0, application: new Application()};
+state = {view: 0, application: new Application(), application2: new Application()};
 
 changeViewType = (viewType: number) => {
+    this.state.application.getDiagramEngine().recalculatePortsVisually();
+    this.state.application2.getDiagramEngine().recalculatePortsVisually();
+
     this.setState({view: viewType})
 }
 
@@ -21,10 +24,11 @@ render() {
             value={{
                 view: this.state.view,
                 app: this.state.application,
+                app2: this.state.application2,
                 changeViewType: this.changeViewType
             }}
         >
-            <AppView app={this.state.application}/>
+            <AppView app2={this.state.application2} app={this.state.application}/>
         </AppContext.Provider>
     );
 }

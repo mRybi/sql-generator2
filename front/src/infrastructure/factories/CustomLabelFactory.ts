@@ -16,6 +16,6 @@ export class CustomLabelFactory extends AbstractNodeFactory<Node> {
 	}
 
 	getNewInstance(initialConfig?: any): Node {
-		return new Node(false, null, "label");
+		return new Node(false, null, null, "label");
 	}
 }

@@ -18,6 +18,7 @@ require('react-bootstrap-table-next/dist/react-bootstrap-table2.min.css');
 
 interface Props {
 	app: Application;
+	app2: Application;
 }
 
 interface State {
@@ -56,7 +57,6 @@ export class AppView extends React.Component<Props, State> {
 	}
 
 	render() {
-		console.log('QQQQ', this.state);
 		return (
 			<div className="body">
 				<div className="header">
@@ -64,7 +64,7 @@ export class AppView extends React.Component<Props, State> {
 				</div>
 				<div className="content" ref={this.myRef}>
 					<TrayWidget>
-						<TrayItemWidget model={{ type: "table" }} name="Node" color="rgb(0,192,255)" />
+						<TrayItemWidget model={{ type: "table" }} name="Entity" color="rgb(0,192,255)" />
 						<TrayItemWidget model={{ type: "label" }} name="Label" color="rgb(192,255,0)" />
 						<div
 							style={{ borderColor: "rgb(255,0,0)", marginTop: '100px' }}
@@ -109,17 +109,29 @@ export class AppView extends React.Component<Props, State> {
 							).length;
 
 							var node = null;
+							var node2 = null;
+
 							if (data.type === "table") {
-								node = new Node(false, this.props.app.getDiagramEngine(), `Table${nodesCount + 1}`, "rgb(0,192,255)");
-								node.addInPort("Id", true, false, false, false, false, PropertyType.INT);
+								node = new Node(false, this.props.app.getDiagramEngine(), this.props.app2.getDiagramEngine(), `Entity${nodesCount + 1}`, "rgb(0,192,255)");
+								node2 = new Node(false, this.props.app.getDiagramEngine(), this.props.app2.getDiagramEngine(), `Entity${nodesCount + 1}`, "rgb(0,192,0)");
+
+								node.addInPort("Id", true, false, true, true, false, PropertyType.INT);
+								node2.addInPort("Id", true, false, true, true, false, PropertyType.INT);
+
 							} else {
-								node = new Node(true, this.props.app.getDiagramEngine(), "Label ", "rgb(192,255,0)");
+								node = new Node(true, this.props.app.getDiagramEngine(), this.props.app2.getDiagramEngine(), "Label ", "rgb(192,255,0)");
 							}
 
 							var points = this.props.app.getDiagramEngine().getRelativeMousePoint(event);
 							node.x = points.x;
 							node.y = points.y;
+							node2.x = points.x;
+							node2.y = points.y;
 							this.props.app
+								.getDiagramEngine()
+								.getDiagramModel()
+								.addNode(node);
+							this.props.app2
 								.getDiagramEngine()
 								.getDiagramModel()
 								.addNode(node);
@@ -169,11 +181,11 @@ export class AppView extends React.Component<Props, State> {
 							} 
 						}}
 					>
-						<DiagramWidget deleteKeys={[46]} className="srd-demo-canvas" diagramEngine={this.props.app.getDiagramEngine()} />
+						<DiagramWidget deleteKeys={[46]} className="srd-demo-canvas" diagramEngine={this.context.view === AppViewType.ENTITY ? this.props.app.getDiagramEngine() : this.props.app2.getDiagramEngine()} />
 					</div>
-					{this.state.selectedNode != null ? <NodeProperties selectedLink={this.state.selectedLink} selectedItem={this.state.selectedNode} diagramEngine={this.props.app.getDiagramEngine()} /> : null}
-					<GenerationHandler isOpen={this.state.showDialog} serializeDiagram={this.props.app.getActiveDiagram().serializeDiagram()} />
-					<RelationPopup diagramModel={this.props.app.getActiveDiagram()} update={() => this.updateRelationPopup()} isOpen={this.state.showRelationDialog} link={this.state.selectedLink} />
+					{this.state.selectedNode != null ? <NodeProperties selectedLink={this.state.selectedLink} selectedItem={this.state.selectedNode} diagramEngine={this.context.view === AppViewType.ENTITY ? this.props.app.getDiagramEngine() : this.props.app2.getDiagramEngine()} /> : null}
+					{/* <GenerationHandler isOpen={this.state.showDialog} serializeDiagram={this.context.view === AppViewType.ENTITY ? this.props.app.getActiveDiagram().serializeDiagram() : this.props.app2.getActiveDiagram().serializeDiagram()} /> */}
+					<RelationPopup diagramModel={this.context.view === AppViewType.ENTITY ? this.props.app.getActiveDiagram() : this.props.app2.getActiveDiagram()} update={() => this.updateRelationPopup()} isOpen={this.state.showRelationDialog} link={this.state.selectedLink} />
 				</div>
 			</div >
 		);

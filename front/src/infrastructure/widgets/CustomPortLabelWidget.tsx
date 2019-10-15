@@ -36,18 +36,18 @@ export class CustomPortLabelWidget extends BaseWidget<DefaultPortLabelProps, Def
 		  </div>
 		</div>;
 		const isPrimaryKey = this.props.model.isPrimaryKey ? <span className="mi mi-Permissions green" /> : null
-		const isForeignKey = this.props.model.isForeignKey ? <span className="mi mi-Permissions red" /> : null
+		 const isForeignKey = this.props.model.isForeignKey ? <span className="mi mi-Permissions red" /> : null
 	
-		if (this.context.view === AppViewType.ENTITY && isForeignKey) return <div>{port}</div>;
+		if (this.context.view === AppViewType.ENTITY  && isForeignKey ) return <div>{port}</div>;
 		else
 		  return (
 			<div {...this.getProps()}>
 			  <div>
 				{isPrimaryKey}
 			  </div>
-			  <div>
+			  {/* <div>
 				{isForeignKey}
-			  </div>
+			  </div> */}
 			  <div>
 				{label}
 			  </div>

@@ -7,6 +7,6 @@ export class CustomPortFactory extends AbstractPortFactory<Port> {
 	}
 
 	getNewInstance(initialConfig?: any): Port {
-		return new Port(null, true, "custom");
+		return new Port(null,null, true, "custom");
 	}
 }
