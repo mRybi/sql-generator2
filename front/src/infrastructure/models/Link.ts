@@ -19,9 +19,9 @@ export class Link extends LinkModel<DefaultLinkModelListener> {
 		this.color = "rgba(255,255,255,0.5)";
 		this.width = 3;
 		this.curvyness = 50;
-		this.addLabel('1,N');
+		this.addLabel('0,N');
 		this.addLabel('relation name');
-		this.addLabel('1,N');
+		this.addLabel('0,N');
 	}
 
 	serialize() {

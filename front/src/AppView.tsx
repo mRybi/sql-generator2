@@ -64,9 +64,9 @@ export class AppView extends React.Component<Props, State> {
 				</div>
 				<div className="content" ref={this.myRef}>
 					<TrayWidget>
-						<TrayItemWidget model={{ type: "table" }} name="Node" color="rgb(0,192,255)" />
+						<TrayItemWidget model={{ type: "table" }} name="Entity" color="rgb(0,192,255)" />
 						<TrayItemWidget model={{ type: "label" }} name="Label" color="rgb(192,255,0)" />
-						<div
+						{/* <div
 							style={{ borderColor: "rgb(255,0,0)", marginTop: '100px' }}
 							className={`tray-item ${this.context.view === AppViewType.ENTITY ? 'selected' : ''}`}
 							onClick={() => {
@@ -84,10 +84,29 @@ export class AppView extends React.Component<Props, State> {
 							}}
 						>
 							Relation View
+						</div> */}
+						<div
+							style={{ borderColor: "rgb(255,123,0)", marginTop: '100px' }}
+							className="tray-item"
+							onClick={() => {
+								console.log('SAVE ACTION');
+							}}
+						>
+							Save
 						</div>
 
 						<div
-							style={{ borderColor: "rgb(255,0,0)" }}
+							style={{ borderColor: "rgb(255,123,0)" }}
+							className="tray-item"
+							onClick={() => {
+								console.log('Load from file ACTION');
+							}}
+						>
+							Load Diagram
+						</div>
+
+						<div
+							style={{ borderColor: "rgb(255,0,0)", marginTop: '100px' }}
 							className="tray-item"
 							onClick={() => this.setState({ showDialog: true, selectedNode: null })}
 						>
@@ -110,7 +129,7 @@ export class AppView extends React.Component<Props, State> {
 
 							var node = null;
 							if (data.type === "table") {
-								node = new Node(false, this.props.app.getDiagramEngine(), `Table${nodesCount + 1}`, "rgb(0,192,255)");
+								node = new Node(false, this.props.app.getDiagramEngine(), `Entity${nodesCount + 1}`, "rgb(0,192,255)");
 								node.addInPort("Id", true, false, false, false, false, PropertyType.INT);
 							} else {
 								node = new Node(true, this.props.app.getDiagramEngine(), "Label ", "rgb(192,255,0)");

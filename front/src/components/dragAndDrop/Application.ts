@@ -5,7 +5,6 @@ import { CustomNodeFactory } from "../../infrastructure/factories/CustomNodeFact
 import { CustomLinkLabelFactory } from "../../infrastructure/factories/CustomLinkLabelFactory";
 import { CustomLinkFactory } from "../../infrastructure/factories/CustomLinkFactory";
 
-
 export class Application {
 	protected activeModel: SRD.DiagramModel;
 	protected diagramEngine: SRD.DiagramEngine;
@@ -18,8 +17,7 @@ export class Application {
 		this.diagramEngine.registerNodeFactory(new CustomNodeFactory());
 		this.diagramEngine.registerPortFactory(new CustomPortFactory());
 
-		this.diagramEngine.installDefaultFactories(); 
-
+		this.diagramEngine.installDefaultFactories();
 		this.newModel();
 	}
 

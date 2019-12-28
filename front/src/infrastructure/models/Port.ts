@@ -69,12 +69,12 @@ export class Port extends PortModel {
 
 	canLinkToPort(port: Port): boolean {
 		console.log('QQQQQQQ', this.links);
-		// if (this.firstTime) {
-		// 	this.firstTime = false;
+		if (this.firstTime) {
+			this.firstTime = false;
 			return this.link(port);
-		// } else {
-			// return true;
-		// }
+		} else {
+			return true;
+		}
 	}
 
 	createLinkModel(): Link {
