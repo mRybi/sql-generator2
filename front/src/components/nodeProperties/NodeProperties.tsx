@@ -30,10 +30,10 @@ export const NodeProperties = (props: Props) => {
 
   const forceUpdate = useForceUpdate();
 
-  React.useEffect(() => {
+  React.useMemo(() => {
     setUpdatedItem(props.selectedItem);
     setName(props.selectedItem.name);
-  }, [props.selectedItem])
+  }, [props.selectedItem]);
 
   const handleChangePK = (event: React.ChangeEvent<HTMLInputElement>, row: Port) => {
     event.persist();

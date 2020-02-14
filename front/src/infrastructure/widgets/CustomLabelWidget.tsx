@@ -1,7 +1,6 @@
 import { BaseWidgetProps, DiagramEngine, BaseWidget, DefaultPortLabel } from "storm-react-diagrams";
 import { Node } from '../models/Node';
 import * as React from "react";
-import * as _ from "lodash";
 
 export interface NodeProps extends BaseWidgetProps {
 	node: Node;

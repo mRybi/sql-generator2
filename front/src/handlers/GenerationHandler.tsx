@@ -1,5 +1,5 @@
 import { ResultPopup } from '../components/popups/ResultPopup/ResultPopup';
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import axios from 'axios';
 
 class Props {
@@ -19,8 +19,8 @@ export const GenerationHandler = (props: Props) => {
       })
       .catch(function (error) {
         console.log(error);
-      });
-  }
+      })
+  };
 
   return (
     <ResultPopup update={props.update} mssqlString={sqlString} generateScript={(name) => generateScript(name)} isOpen={props.isOpen} />

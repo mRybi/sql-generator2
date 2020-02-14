@@ -1,6 +1,5 @@
 
 import * as React from "react";
-import * as _ from "lodash";
 import { Application } from "./components/dragAndDrop/Application";
 import { AppView } from "./AppView";
 import AppContext from "./context/appContext/AppContext";

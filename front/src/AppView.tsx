@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as _ from "lodash";
 
 import { DiagramWidget, PointModel } from "storm-react-diagrams";
 import { TrayItemWidget } from "./components/dragAndDrop/TrayItemWidget";
@@ -16,6 +15,7 @@ import { LoadFileHandler } from "./handlers/LoadFileHandler";
 import { SaveToFilePopup } from "./components/popups/SaveToFilePopup/SaveToFilePopup";
 import { CSSProperties } from "react";
 import { SaveToJpegPopup } from "./components/popups/SaveToJpegPopup/SaveToJpegPopup";
+import _ from "lodash";
 
 require("storm-react-diagrams/dist/style.min.css");
 require('react-bootstrap-table-next/dist/react-bootstrap-table2.min.css');
@@ -25,7 +25,7 @@ interface Props {
 }
 
 export const AppView = (props: Props) => {
-  const contextType = AppContext;
+  const contextType = AppContext; // co zrobic z kontekstem
   const jpegFileTarget: React.RefObject<any> = null;
 
   const [showDialog, setShowDialog] = React.useState(false);
