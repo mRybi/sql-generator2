@@ -17,7 +17,7 @@ export const SaveToFilePopup = (props: Props) => {
 
   const download = () => {
     const diagramJson = JSON.stringify(props.diagramModel.serializeDiagram());
-    var blob = new Blob([diagramJson], {type: "text/plain;charset=utf-8"});
+    let blob = new Blob([diagramJson], {type: "text/plain;charset=utf-8"});
     FileSaver.saveAs(blob, `${fileName}.dbjson`);
     props.update();
   }
@@ -32,7 +32,7 @@ export const SaveToFilePopup = (props: Props) => {
     >
       <div className="sql-result-dialog">
         <input type="text" onChange={event => setFileName(event.target.value)} value={fileName}/>
-        <button onClick={ () => download()}>save</button>
+        <button onClick={download}>save</button>
       </div>
     </Popup>)
 }

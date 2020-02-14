@@ -1,7 +1,6 @@
 import { Port } from "../models/Port";
 import { BaseWidgetProps, BaseWidget, PortWidget } from "storm-react-diagrams";
 import React, { CSSProperties } from "react";
-import AppContext from "../../context/appContext/AppContext"
 import { PropertyType } from "../models/PropertyType";
 
 export interface DefaultPortLabelProps extends BaseWidgetProps {
@@ -11,7 +10,6 @@ export interface DefaultPortLabelProps extends BaseWidgetProps {
 export interface DefaultPortLabelState {}
 
 export class CustomPortLabelWidget extends BaseWidget<DefaultPortLabelProps, DefaultPortLabelState> {
-	static contextType = AppContext;
 	constructor(props: DefaultPortLabelProps) {
 		super("custom", props);
 	}
@@ -57,9 +55,6 @@ export class CustomPortLabelWidget extends BaseWidget<DefaultPortLabelProps, Def
 			  <div style={itemStyles}>
 				{isPrimaryKey}
 			  </div>
-			  {/* <div>
-				{isForeignKey}
-			  </div> */}
 			  <div style={itemStyles}>
 				{label}
 			  </div>

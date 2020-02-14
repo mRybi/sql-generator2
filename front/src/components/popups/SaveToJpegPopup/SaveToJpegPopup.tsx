@@ -36,7 +36,7 @@ export const SaveToJpegPopup = (props: Props) => {
     >
       <div className="sql-result-dialog">
         <input type="text" onChange={event => setFileName(event.target.value)} value={fileName}/>
-        <button onClick={ () => download()}>save</button>
+        <button onClick={download}>save</button>
       </div>
     </Popup>)
 }

@@ -43,14 +43,7 @@ export const RelationPopup = (props: Props) => {
   const targetPort = props.link && props.link.targetPort && props.link.targetPort.parent as Node;
 
   const remove = () => {
-    console.log('QQQQQ1', props.link);
-    // (props.link.sourcePort as Port).firstTime = true;
-    // (props.link.targetPort as Port).firstTime = true;
-
     props.diagramModel.removeLink(props.link);
-    // props.link && targetPort && targetPort.removePort(props.link.targetPort);
-    console.log('QQQQQ2', props.link)
-    
     props.update();
   }
 
@@ -59,11 +52,10 @@ export const RelationPopup = (props: Props) => {
     <option value="0, N">0, N</option>
     <option value="0, 1">0, 1</option>
     <option value="1, 1">1, 1</option>
-    <option value="1, 0">1, 0</option>
     <option value="N, N">N, N</option>
   </>;
 
-  const renderOptionPincker = (side: string) => {
+  const renderOptionPicker = (side: string) => {
     return (
       <div className="grid-item"><select className="darkSelect"
         onChange={(event) => side === 'left' ? setLeft(event.target.value) : setRight(event.target.value)}
@@ -86,11 +78,11 @@ export const RelationPopup = (props: Props) => {
           <div className="grid-item"><p>{sourcePort && sourcePort.name}</p></div>
           <div className="grid-item"><input className="darkInput" type="text" defaultValue={relationName} onChange={(event) => setRelationName(event.target.value)}></input></div>
           <div className="grid-item"><p>{targetPort && targetPort.name}</p></div>
-          {renderOptionPincker('left')}
-          <div className="grid-item"><button onClick={() => update()}>SAVE</button></div>
-          {renderOptionPincker('right')}
+          {renderOptionPicker('left')}
+          <div className="grid-item"><button onClick={update}>SAVE</button></div>
+          {renderOptionPicker('right')}
           <div className="grid-item" />
-          <div className="grid-item"><button onClick={() => remove()}>Remove</button></div>
+          <div className="grid-item"><button onClick={remove}>Remove</button></div>
           <div className="grid-item" />
         </div>
       </div>
