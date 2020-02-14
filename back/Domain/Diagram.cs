@@ -1,6 +1,6 @@
 namespace Domain {
     public class Diagram {
-    public string SerializedDiagram { get; set; }
-    public string DatabaseName { get; set; }
-}
+        public string SerializedModel { get; set; }
+        public string DatabaseName { get; set; }
+    }
 }

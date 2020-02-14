@@ -1,9 +1,8 @@
 import { Port } from "../models/Port";
 import { BaseWidgetProps, BaseWidget, PortWidget } from "storm-react-diagrams";
-import React from "react";
+import React, { CSSProperties } from "react";
 import AppContext from "../../context/appContext/AppContext"
 import { PropertyType } from "../models/PropertyType";
-import { AppViewType } from "../../AppView";
 
 export interface DefaultPortLabelProps extends BaseWidgetProps {
 	model: Port;
@@ -14,7 +13,7 @@ export interface DefaultPortLabelState {}
 export class CustomPortLabelWidget extends BaseWidget<DefaultPortLabelProps, DefaultPortLabelState> {
 	static contextType = AppContext;
 	constructor(props: DefaultPortLabelProps) {
-		super("srd-default-port", props);
+		super("custom", props);
 	}
 
 	getClassName() {
@@ -22,7 +21,19 @@ export class CustomPortLabelWidget extends BaseWidget<DefaultPortLabelProps, Def
 	}
 
 	render() {
+		console.log('QQQQQrenderport')
 		let port: JSX.Element;
+		const style: CSSProperties = {
+			paddingLeft: 5, paddingRight: 5, color:'black', fontWeight: 800
+		}
+		const containerStyles: CSSProperties = {
+			display: 'flex',
+			justifyContent: 'flex-end'
+			
+		}
+		const itemStyles : CSSProperties = {
+			display: 'inline-block'
+		}
 		if (!this.props.model.isPrimaryKey) {
 		  this.props.model.setLocked();
 		  port = <PortWidget node={this.props.model.getParent()} name={this.props.model.name} />;
@@ -35,23 +46,24 @@ export class CustomPortLabelWidget extends BaseWidget<DefaultPortLabelProps, Def
 			{this.props.model.label} {this.props.model.propertyType !== undefined ? PropertyType[this.props.model.propertyType] : null}
 		  </div>
 		</div>;
-		const isPrimaryKey = this.props.model.isPrimaryKey ? <span className="mi mi-Permissions green" /> : null
+		const isPrimaryKey = this.props.model.isPrimaryKey ? <span className="mi mi-Permissions" style={style}></span> : null;//<span className="mi mi-Permissions green" /> : null
 		const isForeignKey = this.props.model.isForeignKey ? <span className="mi mi-Permissions red" /> : null
+		console.log('QQQQQrenderportisPrimaryKey',this.props, this.props.model.isPrimaryKey)
 	
-		if (this.context.view === AppViewType.ENTITY && isForeignKey) return <div>{port}</div>;
+		if (isForeignKey) return <div>{port}</div>;
 		else
 		  return (
-			<div {...this.getProps()}>
-			  <div>
+			<div style={containerStyles} {...this.getProps()}>
+			  <div style={itemStyles}>
 				{isPrimaryKey}
 			  </div>
-			  <div>
+			  {/* <div>
 				{isForeignKey}
-			  </div>
-			  <div>
+			  </div> */}
+			  <div style={itemStyles}>
 				{label}
 			  </div>
-			  <div>
+			  <div style={itemStyles}>
 				{port}
 			  </div>
 			</div>

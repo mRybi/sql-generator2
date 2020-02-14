@@ -1,0 +1,29 @@
+FRONTEND:   
+DONE 1. Nie wyswietlac wgle fk -> teraz jest wyswietlany pusty row
+    - port tylko do id i przyczepiac do id
+DONE 2. Determinowac gdzie dodac fk na podstawie relacji tego guwna 1/n itd ale to na 
+        backendzie -> bedziemy wysylac w jsonie dane i odpowiednio robic fk w SQLu
+DONE 3. Poprawic wyglad klucza / moze dodac ikonke dla property
+DONE 4. Dodac feature z zapisywaniem diagramow:
+    DONE -do pliku (SAVE)
+    DONE -do obrazka
+DONE 5. Dodac feature do wczytywania diagramu z pliku raczej rozszerzenie .json 
+    // input type file zalatwia sprawe - codepeen
+    // zrobic hanldlera ktory bedzie sprawdzac i pytal czy chesz zapisac 
+    // aktualny stan diagramu przed odtworzeniem z pliku
+    // czyli if this.state.changed return <popup> czy chesz zapisac stan aplikacji </popup> 
+    // else input type file bla bla bla
+DONE 6. Dodac selecje MSSQL czy mySQL przy generowaniu skryptu
+    ZAWSZE BEDZIE ROBIL DLA 2 DODANE POBIERANIE DO PLIKU
+7. Dodac smart routing/right angles routing -- optional
+DONE 8. Dodac specjalny typ pliku dla aplikacji np: .dbjson
+    WCZYTWYWANE DZIALA TYLKO DODAC PRZY ZAPISIE ZEBY TAKI ROBIL .dbjson
+    MOZE DODAC JAKIES HASHOWANIE DLA tego jsona NWM PRZY ZAPISIE OFC
+
+BACKEND:
+1. Ogarnac nowa logike zwiazana z determinacja fk w jsonie
+2. Dodac mySQL buildera
+
+
+
+//http://projectstorm.cloud/react-diagrams/?path=/story/simple-usage--simple-example

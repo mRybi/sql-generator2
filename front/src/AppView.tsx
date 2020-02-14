@@ -12,6 +12,10 @@ import { NodeProperties } from "./components/nodeProperties/NodeProperties";
 import { GenerationHandler } from "./handlers/GenerationHandler";
 import { RelationPopup } from "./components/popups/RealtionPopup/RelationPopup";
 import AppContext from "./context/appContext/AppContext";
+import { LoadFileHandler } from "./handlers/LoadFileHandler";
+import { SaveToFilePopup } from "./components/popups/SaveToFilePopup/SaveToFilePopup";
+import { CSSProperties } from "react";
+import { SaveToJpegPopup } from "./components/popups/SaveToJpegPopup/SaveToJpegPopup";
 
 require("storm-react-diagrams/dist/style.min.css");
 require('react-bootstrap-table-next/dist/react-bootstrap-table2.min.css');
@@ -25,12 +29,16 @@ interface State {
 	selectedNode: Node;
 	selectedLink: Link;
 	showRelationDialog: boolean;
+	showLoadFileDialog: boolean;
+	showSaveFileDialog: boolean;
+	showSaveJPEGDialog: boolean;
+	showSaveOptions: boolean;
 }
 
-export enum AppViewType {
-	ENTITY = 0,
-	RELATION = 1
-}
+// export enum AppViewType {
+// 	ENTITY = 0,
+// 	RELATION = 1
+// }
 
 export class AppView extends React.Component<Props, State> {
 
@@ -43,7 +51,11 @@ export class AppView extends React.Component<Props, State> {
 			showDialog: false,
 			selectedNode: null,
 			selectedLink: null,
-			showRelationDialog: false
+			showRelationDialog: false,
+			showLoadFileDialog: false,
+			showSaveFileDialog: false,
+			showSaveJPEGDialog: false,
+			showSaveOptions: false
 		}
 	}
 
@@ -51,11 +63,29 @@ export class AppView extends React.Component<Props, State> {
 		this.setState({ selectedNode: null })
 	}
 
-	updateRelationPopup() {
-		this.setState({ showRelationDialog: false, selectedNode: null });
+	refreshPopups() {
+		this.setState({
+			showDialog: false,
+			selectedNode: null,
+			selectedLink: null,
+			showRelationDialog: false,
+			showLoadFileDialog: false,
+			showSaveJPEGDialog: false,
+			showSaveFileDialog: false 
+		});
 	}
 
 	render() {
+		const containerStyles: CSSProperties = {
+			display: 'flex',
+			justifyContent: 'space-between',
+			borderColor: "rgb(255,123,0)"
+		}
+		const itemStyles : CSSProperties = {
+			display: 'inline-block',
+			paddingTop: 3,
+			paddingRight: 5
+		}
 		console.log('QQQQ', this.state);
 		return (
 			<div className="body">
@@ -66,45 +96,36 @@ export class AppView extends React.Component<Props, State> {
 					<TrayWidget>
 						<TrayItemWidget model={{ type: "table" }} name="Entity" color="rgb(0,192,255)" />
 						<TrayItemWidget model={{ type: "label" }} name="Label" color="rgb(192,255,0)" />
-						{/* <div
-							style={{ borderColor: "rgb(255,0,0)", marginTop: '100px' }}
-							className={`tray-item ${this.context.view === AppViewType.ENTITY ? 'selected' : ''}`}
-							onClick={() => {
-								this.context.changeViewType(0);
-							}}
-						>
-							Entity View
-						</div>
 
-						<div
-							style={{ borderColor: "rgb(255,0,0)" }}
-							className={`tray-item ${this.context.view === AppViewType.RELATION ? 'selected' : ''}`}
-							onClick={() => {
-								this.context.changeViewType(1);
-							}}
-						>
-							Relation View
-						</div> */}
 						<div
 							style={{ borderColor: "rgb(255,123,0)", marginTop: '100px' }}
 							className="tray-item"
-							onClick={() => {
-								console.log('SAVE ACTION');
-							}}
-						>
-							Save
-						</div>
-
-						<div
-							style={{ borderColor: "rgb(255,123,0)" }}
-							className="tray-item"
-							onClick={() => {
-								console.log('Load from file ACTION');
-							}}
+							onClick={() => this.setState({ showLoadFileDialog: true, selectedNode: null })}
 						>
 							Load Diagram
 						</div>
-
+						<div
+							style={containerStyles}
+							className="tray-item"
+							onClick={() => this.setState({ showSaveOptions: !this.state.showSaveOptions, selectedNode: null })}
+						>
+							Save
+							<span  style={itemStyles} className={`mi ${!this.state.showSaveOptions ? 'mi-ArrowDown8' : 'mi-ArrowUp8'}`}/>
+						</div>
+						{this.state.showSaveOptions && <div
+							style={{ borderColor: "rgb(255,123,0)" }}
+							className="tray-item"
+							onClick={() => this.setState({ showSaveFileDialog: true, selectedNode: null })}
+						>
+							File
+						</div>}
+						{this.state.showSaveOptions && <div
+							style={{ borderColor: "rgb(255,123,0)" }}
+							className="tray-item"
+							onClick={() => this.setState({ showSaveJPEGDialog: true, selectedNode: null })}
+						>
+							JPEG
+						</div>}
 						<div
 							style={{ borderColor: "rgb(255,0,0)", marginTop: '100px' }}
 							className="tray-item"
@@ -117,6 +138,7 @@ export class AppView extends React.Component<Props, State> {
 					</TrayWidget>
 
 					<div
+						id='diagram-layer'
 						className="diagram-layer"
 						onDrop={event => {
 							var data = JSON.parse(event.dataTransfer.getData("storm-diagram-node"));
@@ -153,18 +175,20 @@ export class AppView extends React.Component<Props, State> {
 							this.setState({
 								showDialog: false,
 								showRelationDialog: false,
+								showLoadFileDialog: false,
+								showSaveFileDialog: false,
 								selectedNode: null,
 								selectedLink: null
 							})
 						}}
 						onDoubleClick={event => {
-							console.log('WWWWif',this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems());
+							console.log('WWWWif', this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems());
 
-							console.log('WWWWif',this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof Node);
+							console.log('WWWWif', this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof Node);
 
 							event.preventDefault();
 							if (this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof PointModel) {
-							console.log('WWWWif',this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems() );
+								console.log('WWWWif', this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems());
 
 								this.setState({
 									selectedLink: this.props.app
@@ -174,25 +198,33 @@ export class AppView extends React.Component<Props, State> {
 									selectedNode: null
 								})
 							} else if (this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof Node) {
-							console.log('WWWWel',this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems() );
-								
+								console.log('WWWWel', this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems());
+
 								this.setState({
 									showDialog: false,
 									showRelationDialog: false,
+									showLoadFileDialog: false,
+									showSaveFileDialog: false,
+									showSaveJPEGDialog: false,
 									selectedNode: this.props.app
 										.getDiagramEngine()
 										.getDiagramModel()
 										.getSelectedItems()[0] as Node
 
 								});
-							} 
+							}
 						}}
 					>
 						<DiagramWidget deleteKeys={[46]} className="srd-demo-canvas" diagramEngine={this.props.app.getDiagramEngine()} />
 					</div>
 					{this.state.selectedNode != null ? <NodeProperties selectedLink={this.state.selectedLink} selectedItem={this.state.selectedNode} diagramEngine={this.props.app.getDiagramEngine()} /> : null}
-					<GenerationHandler isOpen={this.state.showDialog} serializeDiagram={this.props.app.getActiveDiagram().serializeDiagram()} />
-					<RelationPopup diagramModel={this.props.app.getActiveDiagram()} update={() => this.updateRelationPopup()} isOpen={this.state.showRelationDialog} link={this.state.selectedLink} />
+					<GenerationHandler update={() => this.refreshPopups()} isOpen={this.state.showDialog} serializeDiagram={this.props.app.getActiveDiagram().serializeDiagram()} />
+					<LoadFileHandler update={() => this.refreshPopups()} isOpen={this.state.showLoadFileDialog} app={this.props.app} />
+					<SaveToFilePopup update={() => this.refreshPopups()} diagramModel={this.props.app.getActiveDiagram()} isOpen={this.state.showSaveFileDialog} />
+					<SaveToJpegPopup update={() => this.refreshPopups()} diagramModel={this.props.app.getActiveDiagram()} isOpen={this.state.showSaveJPEGDialog} />
+					
+					
+					<RelationPopup diagramModel={this.props.app.getActiveDiagram()} update={() => this.refreshPopups()} isOpen={this.state.showRelationDialog} link={this.state.selectedLink} />
 				</div>
 			</div >
 		);
