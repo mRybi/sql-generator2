@@ -5,3 +5,5 @@ Frontend react app allows to create diagram of database(entity view and relation
 Then created diagram is a parameter to backend action that generates for it script that can be inserted into
 MSSQL Server. 
 Script will create this database.
+
+Github page for frontend view https://mrybi.github.io/sql-generator2/ SQL code generation not connected
