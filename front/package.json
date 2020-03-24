@@ -1,5 +1,6 @@
 {
   "name": "sql-gen2",
+  "homepage": "https://mrybi.github.io/sql-generator2/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -50,6 +51,7 @@
     "reactjs-popup": "^1.5.0",
     "resolve": "1.8.1",
     "sass-loader": "7.3.1",
+    "gh-pages": "^2.2.0",
     "sql-formatter": "^2.3.2",
     "storm-react-diagrams": "5.2.1",
     "style-loader": "0.23.0",
@@ -63,6 +65,8 @@
     "workbox-webpack-plugin": "3.6.3"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
