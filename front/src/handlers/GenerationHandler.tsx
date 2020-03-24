@@ -1,37 +1,28 @@
 import { ResultPopup } from '../components/popups/ResultPopup/ResultPopup';
-import React from 'react'
+import React, { useState, useMemo } from 'react'
 import axios from 'axios';
 
 class Props {
   isOpen: boolean;
   serializeDiagram: any;
+  update: () => void;
 }
 
-class State {
-  sqlString: string;
-}
+export const GenerationHandler = (props: Props) => {
+  const [sqlString, setSqlString] = useState('');
 
-export class GenerationHandler extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { sqlString: '' }
-  }
-  
-  generateScript = (name: string) => {
-    let diagram = JSON.stringify(this.props.serializeDiagram, null, 2);
-    axios.post('http://localhost:5000/api/setjob', { SerializedDiagram: diagram, DatabaseName: name })
+  const generateScript = (name: string) => {
+    let diagram = JSON.stringify(props.serializeDiagram, null, 2);
+    axios.post('http://localhost:5000/api/setjob', { SerializedModel: diagram, DatabaseName: name })
       .then((response) => {
-        this.setState({ sqlString: response.data });
-        this.forceUpdate();
+        setSqlString(response.data);
       })
       .catch(function (error) {
         console.log(error);
-      });
-  }
+      })
+  };
 
-  render() {
-    return (
-      <ResultPopup sqlString={this.state.sqlString} generateScript={(name) => this.generateScript(name)} isOpen={this.props.isOpen} />
-    )
-  }
+  return (
+    <ResultPopup update={props.update} mssqlString={sqlString} generateScript={(name) => generateScript(name)} isOpen={props.isOpen} />
+  )
 }

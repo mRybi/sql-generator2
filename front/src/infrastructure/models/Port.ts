@@ -40,6 +40,14 @@ export class Port extends PortModel {
 		super.deSerialize(object, engine);
 		this.in = object.in;
 		this.label = object.label;
+		// this.links= object.links; //dziwne jak jest odkomm to nie mozna ruszac diagramem 
+		//przetestowac czy serialized json jest ok
+		this.isPrimaryKey= object.isPrimaryKey;
+		this.isForeignKey= object.isForeignKey;
+		this.isNotNull= object.isNotNull;
+		this.isUnique= object.isUnique;
+		this.isAutoincremented= object.isAutoincremented;
+		this.propertyType= object.propertyType;
 	}
 
 	serialize() {
@@ -58,23 +66,25 @@ export class Port extends PortModel {
 
 	link(port: Port): boolean {
 		let node = port.getParent() as Node;
-		let targetPort = node && node.addInPort((this.getParent() as Node).name + 'Id', false, true, false, false, false, PropertyType.INT);
+		// let targetPort = node && node.addInPort((this.getParent() as Node).name + 'Id', false, true, false, false, false, PropertyType.INT);
 		let link = this.createLinkModel();
 		link.setSourcePort(this);
-		link.setTargetPort(targetPort);
+		// link.setTargetPort(targetPort);
+		link.setTargetPort(port);
+
 		this.diagramEngine.diagramModel.addLink(link);
-		this.diagramEngine.recalculatePortsVisually();
+		// this.diagramEngine.recalculatePortsVisually();
 		return false;
 	}
 
 	canLinkToPort(port: Port): boolean {
-		console.log('QQQQQQQ', this.links);
-		if (this.firstTime) {
-			this.firstTime = false;
-			return this.link(port);
-		} else {
-			return true;
-		}
+		// if (this.firstTime) {
+			// this.firstTime = false;
+			return true ;
+			// this.link(port);
+		// } else {
+		// 	return true;
+		// }
 	}
 
 	createLinkModel(): Link {
