@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +13,13 @@ namespace Controllers {
         }
         // GET api/setjob
         [HttpPost]
-        public async Task<string> Post ([FromBody] Diagram diagram) {
-            var result = await _sqlGenerator.Generate (diagram);
-            return result;
+        public async Task<IActionResult> Post ([FromBody] Diagram diagram) {
+            try {
+                var result = await _sqlGenerator.Generate (diagram);
+                return Ok (result);
+            } catch (Exception e) {
+                throw e;
+            }
         }
     }
 }

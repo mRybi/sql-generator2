@@ -12,7 +12,6 @@ export interface DefaultNodeProps extends BaseWidgetProps {
 
 export interface DefaultNodeState {}
 
-''
 export class CustomNodeWidget extends BaseWidget<DefaultNodeProps, DefaultNodeState> {
 	constructor(props: DefaultNodeProps) {
 		super("srd-default-node", props);
