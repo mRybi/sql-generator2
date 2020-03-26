@@ -45,6 +45,8 @@ namespace Services {
                 string right = link.Labels[2].LabelLabel;
 
                 if (right.Contains ('N') && left.Contains ('N')) {
+                    
+                    Console.WriteLine("NN");
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
                     // relation node
@@ -52,12 +54,24 @@ namespace Services {
                     var nodes = serializedDiagram.Nodes.Append (relationNode);
                     serializedDiagram.Nodes = nodes.ToArray ();
                     // id
-                    Port newPortPK = new Port ("Id", "INT", source.Id, true, false, true, true, true);
+                    Port newPortPK = new Port (false, "Id", "INT", source.Id, true, false, true, true, true);
                     // target
-                    Port newFKTarget1 = new Port (target.Name + "Id", "INT", source.Id, false, true, false, true);
-                    // source 
-                    Port newFKSource1 = new Port (source.Name + "Id", "INT", source.Id, false, true, false, true);
+                    Port newFKTarget1, newFKSource1;
 
+                    if(target.Name == source.Name) {
+                    // target
+                    newFKTarget1 = new Port (false,target.Name + "Id1", "INT", source.Id, false, true, false, true);
+                    // source 
+                    newFKSource1 = new Port (false,source.Name + "Id2", "INT", source.Id, false, true, false, true);
+
+                    } else {
+                    // target
+                    newFKTarget1 = new Port (false,target.Name + "Id", "INT", source.Id, false, true, false, true);
+                    // source 
+                    newFKSource1 = new Port (false,source.Name + "Id", "INT", source.Id, false, true, false, true);
+
+                    }
+                 
                     Link linkSource = new Link (relationNode.Id, newFKSource1.Id, source.Id, source.Ports[0].Id);
                     newFKSource1.Links = new Guid[] { linkSource.Id };
                     var links = serializedDiagram.Links.Append (linkSource);
@@ -73,20 +87,26 @@ namespace Services {
                 } else if (left.Contains ('N')) {
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
+                    AddForeignPort(target,source, link);
+
                 } else if (right.Contains ('N')) {
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
+                    AddForeignPort(target,source, link);
+
                 } else {
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
+                    AddForeignPort(target,source, link);
                 }
-
-                //new FK port
-                Port newFKPort = new Port (target.Name + "Id", "INT", source.Id, false, true, false, true, false, new Guid[] { link.Id });
-
-                var newPorts = source.Ports.Append (newFKPort);
-                source.Ports = newPorts.ToArray ();
+                
             }
+        }
+
+        private void AddForeignPort (Node target, Node source, Link link) {
+            Port newFKPort = new Port (false,target.Name + "Id", "INT", source.Id, false, true, false, true, false, new Guid[] { link.Id });
+            var newPorts = source.Ports.Append (newFKPort);
+            source.Ports = newPorts.ToArray ();
         }
 
         private string GenerationTask (Diagram diagram) {
@@ -111,8 +131,10 @@ namespace Services {
                     int pkCounter = CountPk (node);
                     string names = PkNames (node);
                     bool clusteredPK = true;
-                    foreach (var port in node.Ports) {
+                    var ports = node.Ports.Where(x => x.IsNamePort == false);
 
+                    foreach (var port in ports) {
+Console.WriteLine("asd" + node.Name + port.IsNamePort);
                         if (port.IsPrimaryKey) {
                             nodePorts += $@"[{port.Label}] {port.PropertyType} NOT NULL IDENTITY (1,1),";
                             if (pkCounter > 1 && clusteredPK) {

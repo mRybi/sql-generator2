@@ -93,6 +93,9 @@ namespace Domain {
         [JsonProperty ("isNotNull")]
         public bool IsNotNull { get; set; }
 
+         [JsonProperty ("isNamePort")]
+        public bool IsNamePort { get; set; }
+
         [JsonProperty ("isUnique")]
         public bool IsUnique { get; set; }
 
@@ -102,7 +105,8 @@ namespace Domain {
         [JsonProperty ("propertyType")]
         public string PropertyType { get; set; }
 
-        public Port (string name, string propertyType, Guid parentNode, Boolean isPrimaryKey, Boolean isForeignKey, Boolean isAutoincremented, Boolean isNotNull, Boolean isUnique = false, Guid[] links = null) {
+        public Port (bool isNamePort, string name, string propertyType, Guid parentNode, Boolean isPrimaryKey, Boolean isForeignKey, Boolean isAutoincremented, Boolean isNotNull, Boolean isUnique = false, Guid[] links = null) {
+            this.IsNamePort = isNamePort;
             this.Name = name;
             this.Label = name;
             this.PropertyType = propertyType;

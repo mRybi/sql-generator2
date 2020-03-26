@@ -1,6 +1,6 @@
 {
   "name": "sql-gen2",
-  "homepage": "https://mrybi.github.io/sql-generator2/",
+  "homepage": "https://mrybi.github.io/sql-generator2",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -33,6 +33,7 @@
     "file-saver": "^2.0.2",
     "fork-ts-checker-webpack-plugin-alt": "0.4.14",
     "fs-extra": "7.0.0",
+    "gh-pages": "^2.2.0",
     "html-webpack-plugin": "4.0.0-alpha.2",
     "jest": "23.6.0",
     "mini-css-extract-plugin": "0.4.3",
@@ -51,9 +52,8 @@
     "reactjs-popup": "^1.5.0",
     "resolve": "1.8.1",
     "sass-loader": "7.3.1",
-    "gh-pages": "^2.2.0",
     "sql-formatter": "^2.3.2",
-    "storm-react-diagrams": "5.2.1",
+    "storm-react-diagrams": "^5.2.1",
     "style-loader": "0.23.0",
     "terser-webpack-plugin": "1.1.0",
     "tslint-react-hooks": "^2.2.1",

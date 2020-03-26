@@ -1,0 +1,17 @@
+Witam,
+Piszę do Pana w z zapytaniem o obronę pracy inżynierskiej którą miałem mieć w czerwcu.
+Ma Pan może jakieś wieści czy obrony się odbędą? Ze względu na wirusa nie mamy jak się spotkać abym mógł Panu pokazać poprawki jakie zrobiłem, dlatego wstawiłem mój program na stronę https://mrybi.github.io/sql-generator2/  (Tworzenie skryptu SQL  nie jest podłączone). Lista zmian:
+- zrezygnowałem z widoku relacji (za dużo problemów związanych z tworzeniem 2 diagramów na raz) 
+- dodałem zapis stworzonego diagramu do pliku
+- zapis do pliku.jpg
+- wczytywanie zapisanego diagramu z dysku
+- łączenie encji po nazwie zamiast po polu Id
+- dodałem możliwość relacji encji z samą sobą
+- dodałem zabezpieczenie przed dodaniem 2 encji o tej samej nazwie
+
+
+Proszę o możliwe sprawdzenie. Zależy mi na skończeniu studiów w czerwcu. Mam teraz dużo wolnego czasu dlatego mogę wprowadzać poprawki na bieżąco.
+
+
+Pozdrawiam
+Mikołaj Rybiński

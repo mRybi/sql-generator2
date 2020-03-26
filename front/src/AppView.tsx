@@ -138,6 +138,8 @@ export const AppView = (props: Props) => {
           id='diagram-layer'
           className="diagram-layer"
           onDrop={event => {
+            console.log('on drop')
+event.preventDefault();
             var data = JSON.parse(event.dataTransfer.getData("storm-diagram-node"));
             var nodesCount = _.keys(
               props.app
@@ -148,8 +150,17 @@ export const AppView = (props: Props) => {
 
             var node = null;
             if (data.type === "table") {
+              
               node = new Node(false, props.app.getDiagramEngine(), `Entity${nodesCount + 1}`, "rgb(0,192,255)");
-              node.addInPort("Id", true, false, false, false, false, PropertyType.INT);
+              node.addInPort(false, "Id", true, false, false, false, false, PropertyType.INT);
+             node.addInPort(true, "", false, false, false, false, false, PropertyType.INT);
+             node.addInPort(true, "1", false, false, false, false, false, PropertyType.INT);
+
+
+              node.addListener({
+                selectionChanged: () => { console.log("selectionChanged") }
+             });
+
             } else {
               node = new Node(true, props.app.getDiagramEngine(), "Label ", "rgb(192,255,0)");
             }
@@ -161,6 +172,7 @@ export const AppView = (props: Props) => {
               .getDiagramEngine()
               .getDiagramModel()
               .addNode(node);
+
             forceUpdate();
           }}
           onDragOver={event => {
@@ -168,10 +180,13 @@ export const AppView = (props: Props) => {
           }}
 
           onClick={event => {
+            console.log('on cxlikc')
             event.preventDefault();
             refreshPopups();
           }}
           onDoubleClick={event => {
+            console.log('on dbl cxlikc')
+
             console.log('WWWWif', props.app.getDiagramEngine().getDiagramModel().getSelectedItems());
 
             console.log('WWWWif', props.app.getDiagramEngine().getDiagramModel().getSelectedItems()[0] instanceof Node);
@@ -194,7 +209,7 @@ export const AppView = (props: Props) => {
             }
           }}
         >
-          <DiagramWidget deleteKeys={[46]} className="srd-demo-canvas" diagramEngine={props.app.getDiagramEngine()} />
+          <DiagramWidget allowLooseLinks={true} deleteKeys={[46]} className="srd-demo-canvas" diagramEngine={props.app.getDiagramEngine()} />
         </div>
         {selectedNode != null ? <NodeProperties selectedLink={selectedLink} selectedItem={selectedNode} diagramEngine={props.app.getDiagramEngine()} /> : null}
         <GenerationHandler update={refreshPopups} isOpen={showDialog} serializeDiagram={props.app.getActiveDiagram().serializeDiagram()} />

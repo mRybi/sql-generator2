@@ -16,7 +16,6 @@ export class Application {
 		this.diagramEngine.registerLabelFactory(new CustomLinkLabelFactory());
 		this.diagramEngine.registerNodeFactory(new CustomNodeFactory());
 		this.diagramEngine.registerPortFactory(new CustomPortFactory());
-
 		this.diagramEngine.installDefaultFactories();
 		this.newModel();
 	}

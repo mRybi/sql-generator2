@@ -1,7 +1,7 @@
-import { AbstractNodeFactory, DiagramEngine } from "storm-react-diagrams";
 import { Node } from "../models/Node";
 import * as React from "react";
 import { CustomLabelWidget } from "../widgets/CustomLabelWidget";
+import { AbstractNodeFactory, DiagramEngine } from "storm-react-diagrams";
 
 export class CustomLabelFactory extends AbstractNodeFactory<Node> {
 	constructor() {

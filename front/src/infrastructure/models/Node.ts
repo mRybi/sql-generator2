@@ -19,12 +19,12 @@ export class Node extends NodeModel {
 		this.isLabel = isLabel;
 	}
 
-	addInPort(label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: PropertyType): Port {
-		return this.addPort(new Port(this.engine, true, label, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
+	addInPort(isNamedPort: boolean, label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: PropertyType): Port {
+		return this.addPort(new Port(this.engine, true, label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
 	}
 
-	addOutPort(label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: PropertyType): Port {
-		return this.addPort(new Port(this.engine, true, label, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
+	addOutPort(isNamedPort: boolean,label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: PropertyType): Port {
+		return this.addPort(new Port(this.engine, true, label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
 	}
 
 	deSerialize(object: any, engine: DiagramEngine) {

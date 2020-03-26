@@ -72,13 +72,16 @@ export const NodeProperties = (props: Props) => {
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
-    updatedItem.name = event.target.value;
-    forceUpdate()
+    let allNodes = props.diagramEngine.diagramModel.getNodes() as {[id: string]: Node}
+    let names = Object.values(allNodes).map(node => allNodes[node.id].name);
+    
+    updatedItem.name = names.includes(event.target.value) ? event.target.value +' ALREADY TAKEN!!' : event.target.value;
+    forceUpdate();
   }
 
 
   const addNewPort = (newPortNumber: number) => {
-    updatedItem.addInPort(`new port ${newPortNumber}`, false, false, false, false, false, PropertyType.INT)
+    updatedItem.addInPort(false,`new port ${newPortNumber}`, false, false, false, false, false, PropertyType.INT)
     forceUpdate()
   }
 
@@ -205,7 +208,7 @@ export const NodeProperties = (props: Props) => {
   let ports = updatedItem && updatedItem.ports && updatedItem.ports as { [s: string]: Port };
   let portsTable: Port[] = ports && Object.keys(ports).map(x => {
     return ports[x];
-  });
+  }).filter(p => !p.isNamePort);
 
   if (!updatedItem) return null;
   else

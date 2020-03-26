@@ -7,7 +7,7 @@ export interface DefaultPortLabelProps extends BaseWidgetProps {
 	model: Port;
 }
 
-export interface DefaultPortLabelState {}
+export interface DefaultPortLabelState { }
 
 export class CustomPortLabelWidget extends BaseWidget<DefaultPortLabelProps, DefaultPortLabelState> {
 	constructor(props: DefaultPortLabelProps) {
@@ -19,49 +19,67 @@ export class CustomPortLabelWidget extends BaseWidget<DefaultPortLabelProps, Def
 	}
 
 	render() {
-		console.log('QQQQQrenderport')
 		let port: JSX.Element;
 		const style: CSSProperties = {
-			paddingLeft: 5, paddingRight: 5, color:'black', fontWeight: 800
+			paddingLeft: 5, paddingRight: 5, color: 'black', fontWeight: 800
 		}
 		const containerStyles: CSSProperties = {
 			display: 'flex',
 			justifyContent: 'flex-end'
-			
+
 		}
-		const itemStyles : CSSProperties = {
-			display: 'inline-block'
+		const itemStyles: CSSProperties = {
+			display: 'inline-block',
+			marginRight: '5px'
 		}
-		if (!this.props.model.isPrimaryKey) {
-		  this.props.model.setLocked();
-		  port = <PortWidget node={this.props.model.getParent()} name={this.props.model.name} />;
+
+		const portStyles: CSSProperties = {
+			display: 'none'
+		}
+
+		const namedPortStyles: CSSProperties = {
+			marginRight: '5px'
+
+		}
+
+
+		if (!this.props.model.isNamePort) { // || !this.props.model.isNamePort
+			this.props.model.setLocked();
+			port = <PortWidget node={this.props.model.getParent()} name={this.props.model.name} />;
 		} else {
-		  port = <PortWidget node={this.props.model.getParent()} name={this.props.model.name} />;
+
+			port = <PortWidget node={this.props.model.getParent()} name={this.props.model.name} />;
 		}
-	
+
 		const label: JSX.Element = <div className="name">
-		  <div>
-			{this.props.model.label} {this.props.model.propertyType !== undefined ? PropertyType[this.props.model.propertyType] : null}
-		  </div>
+			<div>
+				{this.props.model.label} {this.props.model.propertyType !== undefined ? PropertyType[this.props.model.propertyType] : null}
+			</div>
 		</div>;
 		const isPrimaryKey = this.props.model.isPrimaryKey ? <span className="mi mi-Permissions" style={style}></span> : null;//<span className="mi mi-Permissions green" /> : null
-		const isForeignKey = this.props.model.isForeignKey ? <span className="mi mi-Permissions red" /> : null
-		console.log('QQQQQrenderportisPrimaryKey',this.props, this.props.model.isPrimaryKey)
-	
-		if (isForeignKey) return <div>{port}</div>;
-		else
-		  return (
-			<div style={containerStyles} {...this.getProps()}>
-			  <div style={itemStyles}>
-				{isPrimaryKey}
-			  </div>
-			  <div style={itemStyles}>
-				{label}
-			  </div>
-			  <div style={itemStyles}>
-				{port}
-			  </div>
-			</div>
-		  );
-	  }
+
+		if (this.props.model.isNamePort) {
+			return (
+				<div style={namedPortStyles}>
+					{port}
+				</div>
+			)
+		} else {
+			return (
+				<div style={containerStyles} {...this.getProps()}>
+					<div style={itemStyles}>
+						{isPrimaryKey}
+					</div>
+					<div style={itemStyles}>
+						{label}
+					</div>
+					<div style={portStyles}>
+						{port}
+					</div>
+				</div>
+			);
+		}
+
+
+	}
 }

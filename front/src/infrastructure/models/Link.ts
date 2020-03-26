@@ -18,7 +18,7 @@ export class Link extends LinkModel<DefaultLinkModelListener> {
 		super(type);
 		this.color = "rgba(255,255,255,0.5)";
 		this.width = 3;
-		this.curvyness = 50;
+		this.curvyness = 300;
 		this.addLabel('0,N');
 		this.addLabel('relation name');
 		this.addLabel('0,N');

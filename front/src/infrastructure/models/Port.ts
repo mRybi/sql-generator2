@@ -1,10 +1,12 @@
 import * as _ from "lodash";
 import { Link } from "./Link";
 import { Node } from "./Node";
-import { PortModel, DiagramEngine } from "storm-react-diagrams";
+import { PortModel, DiagramEngine, PointModel } from "storm-react-diagrams";
 import { PropertyType } from "./PropertyType";
 
 export class Port extends PortModel {
+	isNamePort: boolean;
+
 	in: boolean;
 	label: string;
 	links: { [id: string]: Link };
@@ -18,10 +20,11 @@ export class Port extends PortModel {
 
 	diagramEngine: DiagramEngine;
 
-	constructor(diagramEngine: DiagramEngine, isInput: boolean, name: string, isPrimaryKey?: boolean, isForeignKey?: boolean, isNotNull?: boolean, isAutoincremented?: boolean, isUnique?: boolean, propertyType?: PropertyType, id?: string) {
+	constructor(diagramEngine: DiagramEngine, isInput: boolean, name: string, isNamePort: boolean, isPrimaryKey?: boolean, isForeignKey?: boolean, isNotNull?: boolean, isAutoincremented?: boolean, isUnique?: boolean, propertyType?: PropertyType, id?: string) {
 		super(name, "custom", id);
 		this.in = isInput;
 		this.label = name;
+		this.isNamePort = isNamePort;
 		this.links = {};
 
 		this.isPrimaryKey = isPrimaryKey;
@@ -40,8 +43,8 @@ export class Port extends PortModel {
 		super.deSerialize(object, engine);
 		this.in = object.in;
 		this.label = object.label;
-		// this.links= object.links; //dziwne jak jest odkomm to nie mozna ruszac diagramem 
-		//przetestowac czy serialized json jest ok
+		this.isNamePort = object.isNamePort;
+
 		this.isPrimaryKey= object.isPrimaryKey;
 		this.isForeignKey= object.isForeignKey;
 		this.isNotNull= object.isNotNull;
@@ -55,6 +58,7 @@ export class Port extends PortModel {
 			in: this.in,
 			label: this.label,
 			links: this.links,
+			isNamePort: this.isNamePort,
 			isPrimaryKey: this.isPrimaryKey,
 			isForeignKey: this.isForeignKey,
 			isNotNull: this.isNotNull,
@@ -64,27 +68,44 @@ export class Port extends PortModel {
 		});
 	}
 
-	link(port: Port): boolean {
-		let node = port.getParent() as Node;
-		// let targetPort = node && node.addInPort((this.getParent() as Node).name + 'Id', false, true, false, false, false, PropertyType.INT);
-		let link = this.createLinkModel();
-		link.setSourcePort(this);
-		// link.setTargetPort(targetPort);
-		link.setTargetPort(port);
 
-		this.diagramEngine.diagramModel.addLink(link);
-		// this.diagramEngine.recalculatePortsVisually();
-		return false;
+
+	link(port: Port): boolean {
+		// if(!this.firstTime) {
+		// 	return true;
+		// } else {
+			
+			let node = port.getParent() as Node;
+			let nodeCords = {x: node.x-50, y: node.y  -50};
+			let nodeCords2 = {x: node.x+ 50, y: node.y  -50};
+	
+			let link = this.createLinkModel();
+	
+			link.setSourcePort(port);
+			link.setTargetPort(port);
+			link.addPoint(new PointModel(link, nodeCords));
+			link.addPoint(new PointModel(link, nodeCords2));
+			
+			link.setLocked(false);
+			link.addListener({
+				selectionChanged: () => {console.log('asdasdas')}
+			});
+			
+			this.diagramEngine.diagramModel.addLink(link);
+			this.diagramEngine.repaintCanvas();
+			this.firstTime = false;
+
+			return false;
+		// }
 	}
 
 	canLinkToPort(port: Port): boolean {
-		// if (this.firstTime) {
-			// this.firstTime = false;
-			return true ;
-			// this.link(port);
-		// } else {
-		// 	return true;
-		// }
+			console.log('tosamo', port=== this, this.firstTime);
+		if(port === this) {
+			return this.link(port);
+		}
+		// this.diagramEngine.recalculatePortsVisually();
+		return true;
 	}
 
 	createLinkModel(): Link {
