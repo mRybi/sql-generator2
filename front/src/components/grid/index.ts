@@ -1,7 +1,7 @@
-import Grid from './Grid';
-import Row from './Row';
-import Col from './Col';
-import { CSSProperties } from 'react';
+import Grid from "./Grid";
+import Row from "./Row";
+import Col from "./Col";
+import { CSSProperties } from "react";
 
 export class GridProps {
   className?: string;
@@ -13,7 +13,19 @@ export class GridRowProps extends GridProps {
   flex?: boolean;
 }
 
-export type GridColWidth = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
+export type GridColWidth =
+  | "1"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9"
+  | "10"
+  | "11"
+  | "12";
 
 export class GirdColConfig {
   size: GridColWidth | number;
@@ -32,7 +44,20 @@ export class GridColProps extends GridProps {
   xl?: GridColConfigProp;
   xxl?: GridColConfigProp;
   xxxl?: GridColConfigProp;
-  hidden?: 'Sm' | 'Md' | 'MdDown' | 'MdUp' | 'Lg' | 'LgDown' | 'LgUp' | 'Xl' | 'XlDown' | 'XlUp' | 'Xxl' | 'XxlDown' | 'XxlUp';
+  hidden?:
+    | "Sm"
+    | "Md"
+    | "MdDown"
+    | "MdUp"
+    | "Lg"
+    | "LgDown"
+    | "LgUp"
+    | "Xl"
+    | "XlDown"
+    | "XlUp"
+    | "Xxl"
+    | "XxlDown"
+    | "XxlUp";
   order?: number;
 }
 

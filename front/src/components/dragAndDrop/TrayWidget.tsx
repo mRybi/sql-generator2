@@ -4,15 +4,18 @@ export interface TrayWidgetProps {}
 
 export interface TrayWidgetState {}
 
-export class TrayWidget extends React.Component<TrayWidgetProps, TrayWidgetState> {
-	public static defaultProps: TrayWidgetProps = {};
+export class TrayWidget extends React.Component<
+  TrayWidgetProps,
+  TrayWidgetState
+> {
+  public static defaultProps: TrayWidgetProps = {};
 
-	constructor(props: TrayWidgetProps) {
-		super(props);
-		this.state = {};
-	}
+  constructor(props: TrayWidgetProps) {
+    super(props);
+    this.state = {};
+  }
 
-	render() {
-		return <div className="tray">{this.props.children}</div>;
-	}
+  render() {
+    return <div className="tray">{this.props.children}</div>;
+  }
 }

@@ -7,24 +7,22 @@ export class Node extends NodeModel {
 	name: string;
 	color: string;
 	ports: { [s: string]: Port };
-	engine: DiagramEngine
 	isLabel: boolean;
 
-	constructor(isLabel: boolean, engine: DiagramEngine, name: string = "Untitled", color: string = "rgb(0,192,255)") {
+	constructor(isLabel: boolean, name: string = "Untitled", color: string = "rgb(0,192,255)") {
 		super("custom");
 		this.name = name;
 		this.color = color;
 		this.ports = {};
-		this.engine = engine;
 		this.isLabel = isLabel;
 	}
 
 	addInPort(isNamedPort: boolean, label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: PropertyType): Port {
-		return this.addPort(new Port(this.engine, true, label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
+		return this.addPort(new Port(label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
 	}
 
 	addOutPort(isNamedPort: boolean,label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: PropertyType): Port {
-		return this.addPort(new Port(this.engine, true, label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
+		return this.addPort(new Port(label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
 	}
 
 	deSerialize(object: any, engine: DiagramEngine) {

@@ -4,18 +4,18 @@ import { CustomLabelWidget } from "../widgets/CustomLabelWidget";
 import { AbstractNodeFactory, DiagramEngine } from "storm-react-diagrams";
 
 export class CustomLabelFactory extends AbstractNodeFactory<Node> {
-	constructor() {
-		super("label");
-	}
+  constructor() {
+    super("label");
+  }
 
-	generateReactWidget(diagramEngine: DiagramEngine, node: Node): JSX.Element {
-		return React.createElement(CustomLabelWidget, {
-			node: node,
-			diagramEngine: diagramEngine
-		});
-	}
+  generateReactWidget(diagramEngine: DiagramEngine, node: Node): JSX.Element {
+    return React.createElement(CustomLabelWidget, {
+      node: node,
+      diagramEngine: diagramEngine
+    });
+  }
 
-	getNewInstance(initialConfig?: any): Node {
-		return new Node(false, null, "label");
-	}
+  getNewInstance(initialConfig?: any): Node {
+    return new Node(false, null, "label");
+  }
 }

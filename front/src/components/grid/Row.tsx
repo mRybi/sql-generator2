@@ -1,17 +1,19 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { GridRowProps } from './';
+import { GridRowProps } from "./";
 
 export default class Row extends React.Component<GridRowProps> {
   render() {
-    return <div className={this.buildClassNameString()}>{this.props.children}</div>;
+    return (
+      <div className={this.buildClassNameString()}>{this.props.children}</div>
+    );
   }
 
   buildClassNameString() {
-    let className = 'ms-Grid-row';
+    let className = "ms-Grid-row";
 
     if (this.props.flex) {
-      className += ' grid-row-flex';
+      className += " grid-row-flex";
     }
 
     if (this.props.className != null) {

@@ -1,6 +1,6 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { GridProps } from './';
+import { GridProps } from "./";
 
 export default class Grid extends React.Component<GridProps> {
   render() {
@@ -12,7 +12,7 @@ export default class Grid extends React.Component<GridProps> {
   }
 
   buildClassNameString() {
-    let className = 'ms-Grid';
+    let className = "ms-Grid";
 
     if (this.props.className != null) {
       className += ` ${this.props.className}`;

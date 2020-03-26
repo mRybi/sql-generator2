@@ -1,5 +1,0 @@
-relacja m2m spawn nowego has_ w widoku relacji
-1,N do tabelki/ foreign wyswietlanie/ jak pk to nn zablokowane itd
-wylaczyc mozliwosc onClick na linku w relation view
-groty strzalek na relacyjny
-dynamiczne dodawanie fk do encji oparte o 1,1 itd
