@@ -1,7 +1,7 @@
 # sql-generator2
 Application thats generates database script from diagram
 
-Frontend react app allows to create diagram of database(entity view and relation view)
-Then created diagram is a parameter to backend action that generates for it script that can be inserted into
-MSSQL Server. 
-Script will create this database.
+Frontend react app allows to create entity relationship diagram of a database.
+Backend service creates MSSQL create script of provided ER diagram.
+
+Github page for frontend view https://mrybi.github.io/sql-generator2/ SQL code generation not connected
