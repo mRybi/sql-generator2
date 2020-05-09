@@ -12,6 +12,7 @@ export const GenerationHandler = (props: Props) => {
   const [sqlString, setSqlString] = useState("");
 
   const generateScript = async (name: string) => {
+    console.log(props.serializeDiagram)
     let diagram = JSON.stringify(props.serializeDiagram, null, 2);
     let response = await axios.post("http://localhost:5000/api/setjob", {
       SerializedModel: diagram,
