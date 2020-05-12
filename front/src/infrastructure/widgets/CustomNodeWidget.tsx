@@ -41,7 +41,7 @@ export class CustomNodeWidget extends BaseWidget<
 
     return (
       <div {...this.getProps()} style={{ background: this.props.node.color }}>
-        <div className={this.bem("__title")}>
+        <div className={this.bem(this.props.node.isLabel ? "" : "__title")} style={{wordBreak: "break-word", maxWidth: '200px'}}>
           {namedPort.length !== 0 && (
             <div style={namedPortStyles}>
               {this.generatePort(namedPort[1].props.model)}

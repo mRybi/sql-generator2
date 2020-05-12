@@ -29,12 +29,14 @@ export class Node extends NodeModel {
 		super.deSerialize(object, engine);
 		this.name = object.name;
 		this.color = object.color;
+		this.isLabel = object.isLabel;
 	}
 
 	serialize() {
 		return _.merge(super.serialize(), {
 			name: this.name,
-			color: this.color
+			color: this.color,
+			isLabel: this.isLabel
 		});
 	}
 

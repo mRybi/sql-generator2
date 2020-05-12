@@ -24,6 +24,7 @@ export const LoadFileHandler = (props: Props) => {
     });
     engine.setDiagramModel(model2);
     engine.repaintCanvas();
+    console.log(engine.diagramModel.serializeDiagram());
     props.update();
   };
 

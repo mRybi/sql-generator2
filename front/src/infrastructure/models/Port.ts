@@ -13,7 +13,7 @@ export class Port extends PortModel {
   isAutoincremented: boolean;
   isNotNull: boolean;
   isUnique: boolean;
-  propertyType: PropertyType;
+  propertyType: string;// PropertyType;
 
   constructor(
     name: string,
@@ -23,7 +23,7 @@ export class Port extends PortModel {
     isNotNull?: boolean,
     isAutoincremented?: boolean,
     isUnique?: boolean,
-    propertyType?: PropertyType,
+    propertyType?:  string, //PropertyType,
     id?: string
   ) {
     super(name, "custom", id);

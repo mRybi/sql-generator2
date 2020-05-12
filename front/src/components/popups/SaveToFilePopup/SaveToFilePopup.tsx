@@ -15,6 +15,7 @@ export const SaveToFilePopup = (props: Props) => {
 
   const download = () => {
     const diagramJson = JSON.stringify(props.diagramModel.serializeDiagram());
+    console.log('diargam-save', diagramJson);
     let blob = new Blob([diagramJson], { type: "text/plain;charset=utf-8" });
     FileSaver.saveAs(blob, `${fileName}.dbjson`);
     props.update();

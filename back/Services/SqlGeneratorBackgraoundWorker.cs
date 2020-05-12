@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain;
@@ -37,7 +38,6 @@ namespace Services {
         }
 
         private void PrepareForeignKeys (SerializedModel serializedDiagram) {
-
             foreach (var link in serializedDiagram.Links) {
                 Node source = null, target = null;
 
@@ -45,8 +45,8 @@ namespace Services {
                 string right = link.Labels[2].LabelLabel;
 
                 if (right.Contains ('N') && left.Contains ('N')) {
-                    
-                    Console.WriteLine("NN");
+
+                    Console.WriteLine ("NN");
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
                     // relation node
@@ -55,56 +55,77 @@ namespace Services {
                     serializedDiagram.Nodes = nodes.ToArray ();
                     // id
                     Port newPortPK = new Port (false, "Id", "INT", source.Id, true, false, true, true, true);
+
+                    Port[] relAtributes = new Port[link.Properties.Length];
+                    var counter = 0;
+                    foreach (var property in link.Properties) {
+                        Port a = new Port (false, property.Label, property.propertyType, source.Id, property.IsPrimaryKey, false, property.IsAutoincremented, property.IsNotNull, property.IsUnique);
+                        relAtributes[counter] = a;
+                        counter++;
+                    };
+
                     // target
                     Port newFKTarget1, newFKSource1;
 
-                    if(target.Name == source.Name) {
-                    // target
-                    newFKTarget1 = new Port (false,target.Name + "Id1", "INT", source.Id, false, true, false, true);
-                    // source 
-                    newFKSource1 = new Port (false,source.Name + "Id2", "INT", source.Id, false, true, false, true);
+                    if (target.Name == source.Name) {
+                        // target
+                        newFKTarget1 = new Port (false, target.Name + "Id1", "INT", source.Id, false, true, false, true);
+                        // source 
+                        newFKSource1 = new Port (false, source.Name + "Id2", "INT", source.Id, false, true, false, true);
 
                     } else {
-                    // target
-                    newFKTarget1 = new Port (false,target.Name + "Id", "INT", source.Id, false, true, false, true);
-                    // source 
-                    newFKSource1 = new Port (false,source.Name + "Id", "INT", source.Id, false, true, false, true);
+                        // target
+                        newFKTarget1 = new Port (false, target.Name + "Id", "INT", source.Id, false, true, false, true);
+                        // source 
+                        newFKSource1 = new Port (false, source.Name + "Id", "INT", source.Id, false, true, false, true);
 
                     }
-                 
-                    Link linkSource = new Link (relationNode.Id, newFKSource1.Id, source.Id, source.Ports[0].Id);
+
+                    Link linkSource = new Link (relationNode.Id, newFKSource1.Id, source.Id, source.Ports[0].Id, null);
                     newFKSource1.Links = new Guid[] { linkSource.Id };
                     var links = serializedDiagram.Links.Append (linkSource);
 
-                    Link linkTarget = new Link (relationNode.Id, newFKTarget1.Id, target.Id, target.Ports[0].Id);
+                    Link linkTarget = new Link (relationNode.Id, newFKTarget1.Id, target.Id, target.Ports[0].Id, null);
                     links = serializedDiagram.Links.Append (linkTarget);
 
                     newFKTarget1.Links = new Guid[] { linkTarget.Id };
                     serializedDiagram.Links = links.ToArray ();
 
-                    relationNode.Ports = new Port[] { newPortPK, newFKSource1, newFKTarget1 };
+                    List<Port> newPorts = new List<Port> ();
+                    newPorts.Add (newPortPK);
+                    newPorts.Add (newFKSource1);
+                    newPorts.Add (newFKTarget1);
+                    newPorts.AddRange (relAtributes);
+
+                    relationNode.Ports = newPorts.ToArray ();
 
                 } else if (left.Contains ('N')) {
+                    Console.WriteLine ("N0");
+
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
-                    AddForeignPort(target,source, link);
+                    AddForeignPort (target, source, link);
 
                 } else if (right.Contains ('N')) {
+                    Console.WriteLine ("0N");
+
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
-                    AddForeignPort(target,source, link);
+                    AddForeignPort (target, source, link);
 
                 } else {
+                    Console.WriteLine ("else");
+
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
-                    AddForeignPort(target,source, link);
+                    AddForeignPort (target, source, link);
                 }
-                
+
             }
         }
 
         private void AddForeignPort (Node target, Node source, Link link) {
-            Port newFKPort = new Port (false,target.Name + "Id", "INT", source.Id, false, true, false, true, false, new Guid[] { link.Id });
+            Port newFKPort = new Port (false, target.Name + "Id", "INT", source.Id, false, true, false, true, false, new Guid[] { link.Id });
             var newPorts = source.Ports.Append (newFKPort);
             source.Ports = newPorts.ToArray ();
         }
@@ -124,18 +145,29 @@ namespace Services {
               USE {diagram.DatabaseName}
               GO 
               ";
+              
+              var nodes = serializedDiagram.Nodes.Where(node => !node.IsLabel).ToArray();
 
-                foreach (var node in serializedDiagram.Nodes) {
+                foreach (var node in nodes) {
+                    Console.WriteLine ("node" + node.Name + " " + node.Ports.Length + " " + node.Ports[0].Label);
+
                     string nodePorts = $@"";
                     string nodeConstaraints = $@"";
                     int pkCounter = CountPk (node);
+                    Console.WriteLine ("node pkCounter" + node.Name + " " + pkCounter);
+
                     string names = PkNames (node);
+                    Console.WriteLine ("node names" + names);
+
                     bool clusteredPK = true;
-                    var ports = node.Ports.Where(x => x.IsNamePort == false);
+                    var ports = node.Ports.Where (x => x.IsNamePort == false);
+                    Console.WriteLine ("ports " + ports.ToArray ().Length + " " + pkCounter + " " + names);
 
                     foreach (var port in ports) {
-Console.WriteLine("asd" + node.Name + port.IsNamePort);
+                        Console.WriteLine ("asd" + node.Name + " " + port.Label);
                         if (port.IsPrimaryKey) {
+                            Console.WriteLine ("IsPrimaryKey" + node.Name + " " + port.Label);
+
                             nodePorts += $@"[{port.Label}] {port.PropertyType} NOT NULL IDENTITY (1,1),";
                             if (pkCounter > 1 && clusteredPK) {
                                 nodeConstaraints += $@"CONSTRAINT [PK_{node.Name}] PRIMARY KEY CLUSTERED
@@ -159,6 +191,8 @@ Console.WriteLine("asd" + node.Name + port.IsNamePort);
                         } else if (port.IsUnique) {
                             nodePorts += $@"[{port.Label}] {port.PropertyType} UNIQUE,";
                         } else {
+                            Console.WriteLine ("node" + node.Name + " " + port.Label);
+
                             nodePorts += $@"[{port.Label}] {port.PropertyType},";
                         }
                     }
@@ -170,7 +204,7 @@ Console.WriteLine("asd" + node.Name + port.IsNamePort);
                 }
 
                 // INDEXES
-                foreach (var node in serializedDiagram.Nodes) {
+                foreach (var node in nodes) {
                     var pkPort = node.Ports.FirstOrDefault (port => port.IsPrimaryKey);
                     var fkPorts = node.Ports.Where (port => port.IsForeignKey);
 

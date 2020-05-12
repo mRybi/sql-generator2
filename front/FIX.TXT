@@ -1,0 +1,72 @@
+Wszedłem na stronę z programem i wykonałem parę testów. Oto moje (pierwsze) uwagi:
+
+
+2. Nieintuicyjne jest to, że po edycji np. własności encji, akceptuję wprowadzone zmiany klikając w obszar 
+    roboczy. Aż kusi, żeby w tym momencie zadziałał np Enter. Nie mówiąc już o tym, że nie mam jak wycofać 
+    się z wprowadzanych zmian. Escape nie działa, nie ma żadnego przycisku typu Anuluj, a kliknięcie w obszar 
+    powoduje akceptację zmian. 
+    
+    - MOZNA W WOLNYM CZASIE
+
+
+
+
+
+
+
+
+PRACA PISEMNA
+9. Układ pracy wydaje się poprawny. Treść będzie musiała oczywiście podlegać w niektórych miejscach poważnej 
+    modyfikacji. na pewno wszystkie równoważniki zdań trzeba będzie przerobić na zdania a wyliczenia poprzedzić 
+    jakimś wyjaśniającym/wprowadzającym akapitem. Na pewno trzeba będzie przerobić te fragmenty, gdzie Pan 
+    wspomina o normalizacji. Pana program nie robi normalizacji.
+
+
+DONE
+X. Moze ulepszyc labele
+1. Nie wiem, do czego służy Label. W pracy napisał Pan, że do etykietowania, ale nie wiem czego. 
+    W każdym bądź razie, gdy przeciągałem Label na obszar roboczy, otrzymywałem obraz taki jak 
+    na MR_2 bez możliwości powrotu.
+    
+    - REBUILD NAPRAWIL - ZMIENIC WYSWIETLANIE LABELA
+
+3. Lista dostępnych typów jest obszerna, ale są przecież typy, i to często używane, dla których trzeba 
+    podać dodatkowe informacje. Takim typem jest np. VARCHAR, dla którego należy podać maksymalną dopuszczalną 
+    długość, czy DECIMAL/NUMBER dla których trzeba podać precyzję i skalę. To trzeba poprawić.
+
+    DONE
+
+4. Napisał Pan w pracy, że przy opisywaniu własności związków (krotności i uczestnictwa) stosuje Pan 
+    zmodyfikowaną notację Chena. Niestety, nie mogłem sprawdzić, czy rzeczywiście tak jest, dlatego przesyłam 
+    diagram Diagram2 z prośbą, żeby wygenerował Pan dla niego skrypt i przesłał mi go. 
+    
+    SPRAWDZIC CZY WSZYSTKO OK
+
+5. Jak Pan zapewne wie, związki również mogą posiadać atrybuty i jest to bardzo ważna ich cecha. U Pana nie 
+    ma możliwości ustalenia listy atrybutów związku. To koniecznie trzeba zaimplementować.
+
+    DOWIEDZIEC SIE CZY ATRYBUTY SA DLA ZWIAZKOW TYLKO M2M (RACZEJ TAK) 
+    ROZWIAZANIE:
+    - W WIDOKU RELACJI GDY JEST M2M TO WYSWIETLAC TABELKE TAKA JAK W DETALACH ENTITY -DONE
+    - I ZAPISYWAC DO RELACJI JAKO LINKA informacje -DONE
+    - NA BACK ODEBRAC I WSTAWIC DO TWORZONEJ TABELKI RELACJI - DONE
+    - NAPRAWIC WCZYTYWANIE DIAGRAMOW W LINK FUNC SERIALIZE - DONE
+    - NAPRAWIC WYSWIETLANIE TABELKI DLA RELACJI - DONE
+
+
+6. Niestety, nadal mogę doprowadzić do sytuacji, gdy będą dwie encje o tej samej nazwie (Diagram.dbjson).
+
+    DONE. MOZNA DODAC JAKAS INFORMACJE ZE TAKA NIE MOZE BYC I WROCILO DO POPRZEDNIEJ
+
+7. Gdy edytuje związek, dla którego jeszcze nie zmieniałem wcześniej nazwy, a wcześniej zmieniałem nazwę 
+    innego związku, to wyświetla mi się dla tej nienazwanej relacji właśnie ta wprowadzona wcześniej nazwa 
+    (na rysunku MR_1 jest przedstawiona sytuacja, gdy kliknąłem dwukrotnie na związek między encjami o tych 
+    samych nazwach. powinno być Relation name, a jest Pobiera - jest to nazwa związku, który wcześniej utworzyłem 
+    a później usunąłem encję, która wchodziła w skład związku).
+
+    DONE - LEPIEJ JESZCE SPRAWDZIC
+
+8. Wbrew temu, co napisał Pan w pracy, Remove nie usuwa związku. W ogóle nie umiem usunąć związku, chyba że 
+    usunę encję ze związku.
+
+    DONE - RACZEJ SPRAWDZIC NA JEGO PRZYKLADZIE

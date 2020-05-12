@@ -238,6 +238,7 @@ export const AppView = (props: Props) => {
                 .getDiagramModel()
                 .getSelectedItems()[0] instanceof PointModel
             ) {
+              console.log('zmiana linku')
               setSelectedLink(
                 props.app
                   .getDiagramEngine()
@@ -271,7 +272,6 @@ export const AppView = (props: Props) => {
         </div>
         {selectedNode != null ? (
           <NodeProperties
-            selectedLink={selectedLink}
             selectedItem={selectedNode}
             diagramEngine={props.app.getDiagramEngine()}
           />
@@ -279,7 +279,8 @@ export const AppView = (props: Props) => {
         <GenerationHandler
           update={refreshPopups}
           isOpen={showDialog}
-          serializeDiagram={props.app.getActiveDiagram().serializeDiagram()}
+          serializeDiagram={props.app.getDiagramEngine().diagramModel.serializeDiagram()}
+
         />
         <LoadFileHandler
           update={refreshPopups}
@@ -288,7 +289,7 @@ export const AppView = (props: Props) => {
         />
         <SaveToFilePopup
           update={refreshPopups}
-          diagramModel={props.app.getActiveDiagram()}
+          diagramModel={props.app.getDiagramEngine().diagramModel}
           isOpen={showSaveFileDialog}
         />
         <SaveToJpegPopup
@@ -299,6 +300,8 @@ export const AppView = (props: Props) => {
 
         <RelationPopup
           diagramModel={props.app.getActiveDiagram()}
+          diagramEngine={props.app.getDiagramEngine()}
+
           update={refreshPopups}
           isOpen={showRelationDialog}
           link={selectedLink}
