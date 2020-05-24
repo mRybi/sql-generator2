@@ -36,6 +36,9 @@ export const PropertyTable = (props: Props) => {
 		(updatedItem.getPortFromID(
 			row.id
 		) as Port).isPrimaryKey = !row.isPrimaryKey;
+		(updatedItem.getPortFromID(
+			row.id
+		) as Port).isNotNull = row.isPrimaryKey ? true : false;
 		forceUpdate();
 	};
 

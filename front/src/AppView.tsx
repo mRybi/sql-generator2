@@ -176,9 +176,9 @@ export const AppView = (props: Props) => {
                 "Id",
                 true,
                 false,
-                false,
-                false,
-                false,
+                true,
+                true,
+                true,
                 PropertyType.INT
               );
               node.addInPort(

@@ -7,9 +7,20 @@
 2. dlaczego nagrywanie nie ma swoich typowych funkcji, tzn. dlaczego nie jestem pytany, gdzie chcę 
     zapisać diagram. Nie mogę też np. nadpisać pliku, jeżeli nie potrzebuję starej wersji.
 
+    If you are here because you want the user to have the ability to change file's name or target 
+    directory before saving, he has to change his browser settings in order to do it.
+    For Google Chrome:
+    - Click 3 dots ('Customise and control Google Chrome) in the right top corner of the browser window
+    - Click ‘Settings’
+    - Click ‘Advanced’ (bottom of the screen)
+    - Scroll to ‘Downloads’.
+    - Check ‘Ask where to save each file before downloading’ option.
+
 3. encja Klucz_z_NULL - ciekaw jestem, jak wygląda definicja tej tabeli - tabeli, w której 
     klucz główny może przyjmować wartości puste. W niektórych przypadkach nie które z cech atrybutów 
     powinny być z automatu ustalone i wygaszone
+
+    DODANO TWORZENIE KLUCZA PK Z NOT NULL UNIQUE I AUTO INCREMENTED NA STARCIE
 
 4. szkoda, że nie działa generator i nie mam jak zobaczyć, co generuje program dla różnego rodzaju 
     związków, np. jaki jest kod SQL w przypadku, gdy mamy związek 1:1 obligatoryjny po obydwóch stronach 
