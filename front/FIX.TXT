@@ -26,27 +26,29 @@
     związków, np. jaki jest kod SQL w przypadku, gdy mamy związek 1:1 obligatoryjny po obydwóch stronach 
     a jaki, gdy ten związek jest z jednej lub obu stron opcjonalny
 
-5. prosiłbym więc o stworzenie diagramu ze wszystkimi możliwymi przypadkami i przesłanie mi go wraz 
+    prosiłbym więc o stworzenie diagramu ze wszystkimi możliwymi przypadkami i przesłanie mi go wraz 
     z kodem, który program wygeneruje
 
-6. chciałbym, żeby przynajmniej jeszcze jedna notacja była możliwa (oprócz zmodyfikowanej notacji Chena).
+5. chciałbym, żeby przynajmniej jeszcze jedna notacja była możliwa (oprócz zmodyfikowanej notacji Chena).
     A dokładniej, żebym mógł (i to może nawet domyślnie, a Chen byłby do wyboru) użyć notacji UML. To znaczy 
     takiej, że jeżeli student musi mieć dokładnie jeden pokój, to przy pokoju pojawia się 1,1 a jeżeli pokój 
     może mieć wielu studentów, to przy studencie jest napis 0,N
 
-7. interesujące są też przypadki, gdy w jednej z encji nie ma określonego klucza głównego, czyli gdy 
+6. interesujące są też przypadki, gdy w jednej z encji nie ma określonego klucza głównego, czyli gdy 
     jest ona encją słabą. Jaki kod powstaje wtedy (np. dla związków rn67 i rn89 z dołączonego diagramu
 
-8. A tak w ogóle, to gdy encja jest słaba, to powinniśmy mieć możliwość wskazania w niej tzw. klucza 
+    A tak w ogóle, to gdy encja jest słaba, to powinniśmy mieć możliwość wskazania w niej tzw. klucza 
     częściowego, który dopiero wraz z kluczem głównym encji stojącej po drugiej stronie związku 
     staje się kluczem głównym (ale tabeli) - dlatego prosiłbym o dodanie do cech atrybutów jeszcze cechy 
     klucza częściowego.
 
-9. punkty na związkach mogę tworzyć w nadmiarze, ale jak je prosto usunąć - aż chciałoby się, żeby 
+7. punkty na związkach mogę tworzyć w nadmiarze, ale jak je prosto usunąć - aż chciałoby się, żeby 
     to działało tak: klikam w linię - w tym miejscu powstaje punkt. Klikam w ten punkt - punkt znika. 
     Ale tak to nie działa.
 
-10. Problemem programu MySQL Workbench jest brak możliwość wyboru silnika
+    DONE - USUWANIE PRZEZ KLIKNIECIE CTRL + LEWY MYSZY NA PUNK
+
+8. Problemem programu MySQL Workbench jest brak możliwość wyboru silnika
     bazodanowego, dla którego chcemy wygenerować skrypt (jesteśmy skazani na użycie silnika
     MySQL) ". Tyle, że u Pana jest podobnie, kod jest generowany tylko dla SQL Servera. To może niech 
     będzie również generowany do MySQLa.

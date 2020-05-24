@@ -110,7 +110,7 @@ export const AppView = (props: Props) => {
               style={itemStyles}
               className={`mi ${
                 !showSaveOptions ? "mi-ArrowDown8" : "mi-ArrowUp8"
-              }`}
+                }`}
             />
           </div>
           {showSaveOptions && (
@@ -228,6 +228,20 @@ export const AppView = (props: Props) => {
           }}
           onClick={event => {
             event.preventDefault();
+            if (event.ctrlKey && props.app
+              .getDiagramEngine()
+              .getDiagramModel()
+              .getSelectedItems()[0] instanceof PointModel) {
+              const pointToRemove = props.app
+                .getDiagramEngine()
+                .getDiagramModel()
+                .getSelectedItems()[0] as PointModel;
+              const pointLink = props.app
+                .getDiagramEngine()
+                .getDiagramModel()
+                .getSelectedItems()[0].parent as Link;
+              props.app.getActiveDiagram().links[pointLink.id].removePoint(pointToRemove);
+            }
             refreshPopups();
           }}
           onDoubleClick={event => {
