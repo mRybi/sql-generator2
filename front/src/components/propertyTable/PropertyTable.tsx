@@ -179,7 +179,7 @@ export const PropertyTable = (props: Props) => {
 		},
 		{
 			dataField: "isNotNull",
-			text: "Is Nullable",
+			text: "Not Null",
 			formatter: (cellContent: any, row: Port) => (
 				<div className="checkbox">
 					<label>

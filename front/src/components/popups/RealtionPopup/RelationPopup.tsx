@@ -18,9 +18,9 @@ class Props {
   diagramEngine: DiagramEngine;
 }
 export const RelationPopup = (props: Props) => {
-  const [left, setLeft] = useState("0, N");
+  const [left, setLeft] = useState("1, N");
 
-  const [right, setRight] = useState("0, N");
+  const [right, setRight] = useState("1, N");
 
   const [relationName, setRelationName] = useState("relation name");
 
@@ -30,9 +30,9 @@ export const RelationPopup = (props: Props) => {
     let relLabel = props.link && props.link.labels.length > 0 && (props.link.labels[1] as Label).label;
     let rightLabel = props.link && props.link.labels.length > 0 && (props.link.labels[2] as Label).label;
 
-    setLeft(leftLabel ? leftLabel : "O, N");
+    setLeft(leftLabel ? leftLabel : "1, N");
     setRelationName(relLabel ? relLabel : "relation name");
-    setRelationName(rightLabel ? rightLabel : "O, N");
+    setRight(rightLabel ? rightLabel : "1, N");
 
   }, [props.link]);
 
@@ -70,8 +70,8 @@ export const RelationPopup = (props: Props) => {
 
   const options = (
     <>
-      <option value="1, N">1, N</option>
       <option value="0, N">0, N</option>
+      <option value="1, N">1, N</option>
       <option value="0, 1">0, 1</option>
       <option value="1, 1">1, 1</option>
       <option value="N, N">N, N</option>

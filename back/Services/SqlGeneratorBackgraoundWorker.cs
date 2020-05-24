@@ -101,31 +101,33 @@ namespace Services {
 
                 } else if (left.Contains ('N')) {
                     Console.WriteLine ("N0");
-
+                    var isNotNull = right[0] == '0';
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
-                    AddForeignPort (target, source, link);
+                    AddForeignPort (target, source, link, isNotNull);
 
                 } else if (right.Contains ('N')) {
                     Console.WriteLine ("0N");
+                    var isNotNull = left[0] == '0';
 
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
-                    AddForeignPort (target, source, link);
+                    AddForeignPort (target, source, link, isNotNull);
 
                 } else {
                     Console.WriteLine ("else");
+                    var isNotNull = right[0] == '0';
 
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
-                    AddForeignPort (target, source, link);
+                    AddForeignPort (target, source, link, isNotNull);
                 }
 
             }
         }
 
-        private void AddForeignPort (Node target, Node source, Link link) {
-            Port newFKPort = new Port (false, target.Name + "Id", "INT", source.Id, false, true, false, true, false, new Guid[] { link.Id });
+        private void AddForeignPort (Node target, Node source, Link link, bool notnull) {
+            Port newFKPort = new Port (false, target.Name + "Id", "INT", source.Id, false, true, false, notnull, false, new Guid[] { link.Id });
             var newPorts = source.Ports.Append (newFKPort);
             source.Ports = newPorts.ToArray ();
         }
@@ -145,8 +147,8 @@ namespace Services {
               USE {diagram.DatabaseName}
               GO 
               ";
-              
-              var nodes = serializedDiagram.Nodes.Where(node => !node.IsLabel).ToArray();
+
+                var nodes = serializedDiagram.Nodes.Where (node => !node.IsLabel).ToArray ();
 
                 foreach (var node in nodes) {
                     Console.WriteLine ("node" + node.Name + " " + node.Ports.Length + " " + node.Ports[0].Label);
@@ -186,15 +188,29 @@ namespace Services {
                         ";
                                 clusteredPK = false;
                             }
-                        } else if (port.IsForeignKey || port.IsNotNull) {
-                            nodePorts += $@"[{port.Label}] {port.PropertyType} NOT NULL,";
-                        } else if (port.IsUnique) {
-                            nodePorts += $@"[{port.Label}] {port.PropertyType} UNIQUE,";
-                        } else {
-                            Console.WriteLine ("node" + node.Name + " " + port.Label);
-
-                            nodePorts += $@"[{port.Label}] {port.PropertyType},";
+                        } 
+                        else {
+                             nodePorts += $@"[{port.Label}] {port.PropertyType}";
+                             if(port.IsNotNull) {
+                                 nodePorts += $@" NOT NULL";
+                             }
+                              if(port.IsUnique) {
+                                 nodePorts += $@" UNIQUE";
+                             }
+                             nodePorts += $@", ";
                         }
+                        
+                        
+                        
+                        // else if (port.IsForeignKey || port.IsNotNull) {
+                        //     nodePorts += $@"[{port.Label}] {port.PropertyType} NOT NULL,";
+                        // } else if (port.IsUnique) {
+                        //     nodePorts += $@"[{port.Label}] {port.PropertyType} UNIQUE,";
+                        // } else {
+                        //     Console.WriteLine ("node" + node.Name + " " + port.Label);
+
+                        //     nodePorts += $@"[{port.Label}] {port.PropertyType},";
+                        // }
                     }
                     MSSQLCode += $@"CREATE TABLE [dbo].[{node.Name}] (
                 {nodePorts}
