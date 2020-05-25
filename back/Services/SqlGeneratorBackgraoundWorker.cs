@@ -37,6 +37,19 @@ namespace Services {
             return names;
         }
 
+        private SerializedModel ConvertToUml(SerializedModel diagram) {
+            foreach (var link in diagram.Links)
+            {
+                var temp = link.Labels[0].LabelLabel.Substring(0,1);
+                var temp2 = link.Labels[2].LabelLabel.Substring(0,1);
+
+                link.Labels[0].LabelLabel = temp2 + link.Labels[0].LabelLabel.Substring(1);
+                link.Labels[2].LabelLabel = temp + link.Labels[2].LabelLabel.Substring(1);
+            }
+
+            return diagram;
+        }
+
         private void PrepareForeignKeys (SerializedModel serializedDiagram) {
             foreach (var link in serializedDiagram.Links) {
                 Node source = null, target = null;
@@ -101,14 +114,17 @@ namespace Services {
 
                 } else if (left.Contains ('N')) {
                     Console.WriteLine ("N0");
-                    var isNotNull = right[0] == '0';
+                    var isNotNull = right[0] == '1';
+
+                    Console.WriteLine ($"is not null: {isNotNull}:{right[0]}");
+
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
                     AddForeignPort (target, source, link, isNotNull);
 
                 } else if (right.Contains ('N')) {
                     Console.WriteLine ("0N");
-                    var isNotNull = left[0] == '0';
+                    var isNotNull = left[0] == '1';
 
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
@@ -116,7 +132,7 @@ namespace Services {
 
                 } else {
                     Console.WriteLine ("else");
-                    var isNotNull = right[0] == '0';
+                    var isNotNull = right[0] == '1';
 
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
@@ -134,6 +150,11 @@ namespace Services {
 
         private string GenerationTask (Diagram diagram) {
             SerializedModel serializedDiagram = SerializedModel.FromJson (diagram.SerializedModel);
+
+            if(diagram.RelationType == "CHEN") {
+                serializedDiagram = ConvertToUml(SerializedModel.FromJson (diagram.SerializedModel));
+            }
+
             if (serializedDiagram.Nodes.Length == 0) {
                 throw new Exception ("Diagram is empty");
             } else {

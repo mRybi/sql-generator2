@@ -1,8 +1,63 @@
+
+4. szkoda, że nie działa generator i nie mam jak zobaczyć, co generuje program dla różnego rodzaju 
+    związków, np. jaki jest kod SQL w przypadku, gdy mamy związek 1:1 obligatoryjny po obydwóch stronach 
+    a jaki, gdy ten związek jest z jednej lub obu stron opcjonalny
+
+    prosiłbym więc o stworzenie diagramu ze wszystkimi możliwymi przypadkami i przesłanie mi go wraz 
+    z kodem, który program wygeneruje
+
+5. chciałbym, żeby przynajmniej jeszcze jedna notacja była możliwa (oprócz zmodyfikowanej notacji Chena).
+    A dokładniej, żebym mógł (i to może nawet domyślnie, a Chen byłby do wyboru) użyć notacji UML. To znaczy 
+    takiej, że jeżeli student musi mieć dokładnie jeden pokój, to przy pokoju pojawia się 1,1 a jeżeli pokój 
+    może mieć wielu studentów, to przy studencie jest napis 0,N
+
+    JAKA JEST ROZNICA MEIDZY NOTACJA CHENA A UML
+    PODANY PRZYKLAD DZIAŁA I GENERUJE DOBRY SKRYPT
+    OK MAM UML ZAIMPLEMENTOWANEGO JEDNAK XD
+    CO ZROBIC:
+    - front sprawdzic czy mam wsyztskie mozliwosci relacji 1,n  0,1 itd
+    - front dodac do requesta generacji typ notacji / albo tylko wsywietlac jako Chen lub UML a napisac 
+        taki konwerter na UML co backend juz to umie.
+
+    PRZEPIS NA KONWERTER:
+    ZAMIEN PIERWSZE ZNAKI W LINKU LEWY Z PRAWYM:
+    - CHEN - 1,N -> 0,1
+    - UML - 0,N -> 1,1
+
+    zamiana działa tzreba sprawdzic czy wszytsko jest ok i czy to ma sens
+
+    wyglada na to samo
+
+    chyba działa
+
+6. interesujące są też przypadki, gdy w jednej z encji nie ma określonego klucza głównego, czyli gdy 
+    jest ona encją słabą. Jaki kod powstaje wtedy (np. dla związków rn67 i rn89 z dołączonego diagramu
+
+    A tak w ogóle, to gdy encja jest słaba, to powinniśmy mieć możliwość wskazania w niej tzw. klucza 
+    częściowego, który dopiero wraz z kluczem głównym encji stojącej po drugiej stronie związku 
+    staje się kluczem głównym (ale tabeli) - dlatego prosiłbym o dodanie do cech atrybutów jeszcze cechy 
+    klucza częściowego.
+
+    rozwiaznie:
+    - gdy w node proerties nie ma PK to wyswietlana jest kolumna z partial key - mozliwe jest chyba wybranie
+    tylko jednego klucza do tego partial czyli check który sie nadpisuje
+    - backend naprawic teraz gdy encja nie ma klucza glownego to kod sie nie generuje error musi byc tam
+    jakies szukanie portów gdzie PK == true
+    - jesli brak PK w entity to dodac jakos partial klucz z kluczem z drugiej relacji
+
+8. Problemem programu MySQL Workbench jest brak możliwość wyboru silnika
+    bazodanowego, dla którego chcemy wygenerować skrypt (jesteśmy skazani na użycie silnika
+    MySQL) ". Tyle, że u Pana jest podobnie, kod jest generowany tylko dla SQL Servera. To może niech 
+    będzie również generowany do MySQLa.
+
+
+--DONE--
+
 1. z tymi takimi samymi nazwami, to jeszcze nie działa -> załącznik
     zapomniałem wczoraj dodać przy uwadze 1, że pierwszy przykład, to tak naprawdę nie są takie same nazwy,
     bo w jednej jest na końcu spacja.
 
-    DONE
+    DONE - generacja kodu działa dla entity with space
 
 2. dlaczego nagrywanie nie ma swoich typowych funkcji, tzn. dlaczego nie jestem pytany, gdzie chcę 
     zapisać diagram. Nie mogę też np. nadpisać pliku, jeżeli nie potrzebuję starej wersji.
@@ -22,33 +77,8 @@
 
     DODANO TWORZENIE KLUCZA PK Z NOT NULL UNIQUE I AUTO INCREMENTED NA STARCIE
 
-4. szkoda, że nie działa generator i nie mam jak zobaczyć, co generuje program dla różnego rodzaju 
-    związków, np. jaki jest kod SQL w przypadku, gdy mamy związek 1:1 obligatoryjny po obydwóch stronach 
-    a jaki, gdy ten związek jest z jednej lub obu stron opcjonalny
-
-    prosiłbym więc o stworzenie diagramu ze wszystkimi możliwymi przypadkami i przesłanie mi go wraz 
-    z kodem, który program wygeneruje
-
-5. chciałbym, żeby przynajmniej jeszcze jedna notacja była możliwa (oprócz zmodyfikowanej notacji Chena).
-    A dokładniej, żebym mógł (i to może nawet domyślnie, a Chen byłby do wyboru) użyć notacji UML. To znaczy 
-    takiej, że jeżeli student musi mieć dokładnie jeden pokój, to przy pokoju pojawia się 1,1 a jeżeli pokój 
-    może mieć wielu studentów, to przy studencie jest napis 0,N
-
-6. interesujące są też przypadki, gdy w jednej z encji nie ma określonego klucza głównego, czyli gdy 
-    jest ona encją słabą. Jaki kod powstaje wtedy (np. dla związków rn67 i rn89 z dołączonego diagramu
-
-    A tak w ogóle, to gdy encja jest słaba, to powinniśmy mieć możliwość wskazania w niej tzw. klucza 
-    częściowego, który dopiero wraz z kluczem głównym encji stojącej po drugiej stronie związku 
-    staje się kluczem głównym (ale tabeli) - dlatego prosiłbym o dodanie do cech atrybutów jeszcze cechy 
-    klucza częściowego.
-
 7. punkty na związkach mogę tworzyć w nadmiarze, ale jak je prosto usunąć - aż chciałoby się, żeby 
     to działało tak: klikam w linię - w tym miejscu powstaje punkt. Klikam w ten punkt - punkt znika. 
     Ale tak to nie działa.
 
     DONE - USUWANIE PRZEZ KLIKNIECIE CTRL + LEWY MYSZY NA PUNK
-
-8. Problemem programu MySQL Workbench jest brak możliwość wyboru silnika
-    bazodanowego, dla którego chcemy wygenerować skrypt (jesteśmy skazani na użycie silnika
-    MySQL) ". Tyle, że u Pana jest podobnie, kod jest generowany tylko dla SQL Servera. To może niech 
-    będzie również generowany do MySQLa.
