@@ -17,6 +17,7 @@
     rozwiaznie:
     - gdy w node proerties nie ma PK to wyswietlana jest kolumna z partial key - mozliwe jest chyba wybranie
     tylko jednego klucza do tego partial czyli check który sie nadpisuje
+    
     - backend naprawic teraz gdy encja nie ma klucza glownego to kod sie nie generuje error musi byc tam
     jakies szukanie portów gdzie PK == true
     - jesli brak PK w entity to dodac jakos partial klucz z kluczem z drugiej relacji

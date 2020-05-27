@@ -9,6 +9,7 @@ export class Port extends PortModel {
   label: string;
   links: { [id: string]: Link };
   isPrimaryKey: boolean;
+  isPartialKey: boolean;
   isForeignKey: boolean;
   isAutoincremented: boolean;
   isNotNull: boolean;
@@ -33,6 +34,7 @@ export class Port extends PortModel {
 
     this.isPrimaryKey = isPrimaryKey;
     this.isForeignKey = isForeignKey;
+    this.isPartialKey = false;
 
     this.isNotNull = isNotNull;
     this.isUnique = isUnique;
@@ -47,6 +49,8 @@ export class Port extends PortModel {
     this.isNamePort = object.isNamePort;
 
     this.isPrimaryKey = object.isPrimaryKey;
+    this.isPartialKey = object.isPartialKey;
+
     this.isForeignKey = object.isForeignKey;
     this.isNotNull = object.isNotNull;
     this.isUnique = object.isUnique;
@@ -60,6 +64,8 @@ export class Port extends PortModel {
       links: this.links,
       isNamePort: this.isNamePort,
       isPrimaryKey: this.isPrimaryKey,
+      isPartialKey: this.isPartialKey,
+
       isForeignKey: this.isForeignKey,
       isNotNull: this.isNotNull,
       isUnique: this.isUnique,

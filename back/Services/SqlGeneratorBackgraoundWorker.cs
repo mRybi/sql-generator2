@@ -26,7 +26,7 @@ namespace Services {
         private int CountPk (Node node) {
             int pkCounter = 0;
             foreach (var port in node.Ports) {
-                if (port.IsPrimaryKey) {
+                if (port.IsPrimaryKey || port.IsPartialKey) {
                     pkCounter++;
                 }
             }
@@ -34,15 +34,26 @@ namespace Services {
             return pkCounter;
         }
 
-        private string PkNames (Node node) {
+        private string PkNamesMS (Node node) {
             var names = "";
             foreach (var port in node.Ports) {
-                if (port.IsPrimaryKey) {
-                    names += port.Label + ", ";
+                if (port.IsPrimaryKey || port.IsPartialKey) {
+                    names += "["+port.Label + "], ";
                 }
             }
 
             return names.Substring(0, names.Length -2);
+        }
+
+        private string PkNamesMy (Node node) {
+            var names = "";
+            foreach (var port in node.Ports) {
+                if (port.IsPrimaryKey || port.IsPartialKey) {
+                    names += $"`{port.Label}`,";
+                }
+            }
+
+            return names.Substring(0, names.Length -1);
         }
 
         private SerializedModel ConvertToUml (SerializedModel diagram) {
@@ -66,7 +77,6 @@ namespace Services {
 
                 if (right.Contains ('N') && left.Contains ('N')) {
 
-                    Console.WriteLine ("NN");
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
                     // relation node
@@ -120,17 +130,14 @@ namespace Services {
                     relationNode.Ports = newPorts.ToArray ();
 
                 } else if (left.Contains ('N')) {
-                    Console.WriteLine ("N0");
                     var isNotNull = right[0] == '1';
 
-                    Console.WriteLine ($"is not null: {isNotNull}:{right[0]}");
 
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
                     AddForeignPort (target, source, link, isNotNull);
 
                 } else if (right.Contains ('N')) {
-                    Console.WriteLine ("0N");
                     var isNotNull = left[0] == '1';
 
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
@@ -138,7 +145,6 @@ namespace Services {
                     AddForeignPort (target, source, link, isNotNull);
 
                 } else {
-                    Console.WriteLine ("else");
                     var isNotNull = right[0] == '1';
 
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
@@ -182,20 +188,29 @@ namespace Services {
                     string nodeConstaraints = $@"";
                     int pkCounter = CountPk (node);
 
-                    string names = PkNames (node);
+                    string names = PkNamesMy (node);
 
                     var ports = node.Ports.Where (x => x.IsNamePort == false);
 
                     // bool clusteredPK = true;
 
                     foreach (var port in ports) {
-                        if (port.IsPrimaryKey && port.IsAutoincremented) {
+                        if (port.IsPrimaryKey || port.IsAutoincremented) {
 
-                            nodePorts += $@"`{port.Label}` {port.PropertyType} NOT NULL AUTO_INCREMENT,";
+                               if(port.IsPartialKey) {
+                                nodePorts += $@"`{port.Label}` {port.PropertyType} NOT NULL,";
+                            } else {
+                                nodePorts += $@"`{port.Label}` {port.PropertyType} NOT NULL AUTO_INCREMENT,";
+                            }
+
                             nodeConstaraints += $@"
-                            PRIMARY KEY (`{names}`),
-                            UNIQUE INDEX `{port.Label}_UNIQUE` (`{port.Label}` ASC),
-                        ";
+                            PRIMARY KEY ({names}),";
+                            if(port.IsPrimaryKey) {
+
+                            nodeConstaraints += $@"UNIQUE INDEX `{port.Label}_UNIQUE` (`{port.Label}` ASC),";
+                            }
+                            
+                        
                         // clusteredPK = false;
                         } else {
                             nodePorts += $@"`{port.Label}` {port.PropertyType}";
@@ -227,15 +242,17 @@ namespace Services {
                         foreach (var linkID in fk.Links) {
                             var linkTarget = serializedDiagram.Links.FirstOrDefault (x => x.Id == linkID).Source;
                             var nodeLinked = serializedDiagram.Nodes.FirstOrDefault (x => x.Id == linkTarget);
-                            var linkedPKport = nodeLinked.Ports.Where(p => p.IsPrimaryKey).ToArray()[0].Label;
+                            var linkedPKport = nodeLinked.Ports.Where(p => p.IsPrimaryKey).ToArray();
              
                             if (nodeLinked.Name == node.Name) {
 
                                 linkTarget = serializedDiagram.Links.FirstOrDefault (x => x.Id == linkID).Target;
                                 nodeLinked = serializedDiagram.Nodes.FirstOrDefault (x => x.Id == linkTarget);
-                                linkedPKport = nodeLinked.Ports.Where(p => p.IsPrimaryKey).ToArray()[0].Label;
+                                linkedPKport = nodeLinked.Ports.Where(p => p.IsPrimaryKey).ToArray();
                             }
 
+                            if(linkedPKport.Length > 0)
+                            {
                             mySQLCode += $@"ALTER TABLE `{diagram.DatabaseName}`.`{node.Name}`
                              ADD CONSTRAINT `fk_{node.Name}_{fk.Label}` 
                              FOREIGN KEY(`{fk.Label}`) 
@@ -243,9 +260,12 @@ namespace Services {
                              ON DELETE NO ACTION ON UPDATE NO ACTION;
 												
                                                 
-                              CREATE INDEX `fk_{node.Name}_{fk.Label}_idx` ON `{diagram.DatabaseName}`.`{node.Name}` (`{linkedPKport}` ASC);                  
+                              CREATE INDEX `fk_{node.Name}_{fk.Label}_idx` ON `{diagram.DatabaseName}`.`{node.Name}` (`{linkedPKport[0].Label}` ASC);                  
                                                 
                                                 ";
+
+                            }
+
                         }
 
                     }
@@ -284,30 +304,29 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;";
                 var nodes = serializedDiagram.Nodes.Where (node => !node.IsLabel).ToArray ();
 
                 foreach (var node in nodes) {
-                    Console.WriteLine ("node" + node.Name + " " + node.Ports.Length + " " + node.Ports[0].Label);
 
                     string nodePorts = $@"";
                     string nodeConstaraints = $@"";
                     int pkCounter = CountPk (node);
-                    Console.WriteLine ("node pkCounter" + node.Name + " " + pkCounter);
 
-                    string names = PkNames (node);
-                    Console.WriteLine ("node names" + names);
+                    string names = PkNamesMS (node);
 
                     bool clusteredPK = true;
                     var ports = node.Ports.Where (x => x.IsNamePort == false);
-                    Console.WriteLine ("ports " + ports.ToArray ().Length + " " + pkCounter + " " + names);
 
                     foreach (var port in ports) {
-                        Console.WriteLine ("asd" + node.Name + " " + port.Label);
-                        if (port.IsPrimaryKey) {
-                            Console.WriteLine ("IsPrimaryKey" + node.Name + " " + port.Label);
+                        if (port.IsPrimaryKey || port.IsPartialKey) {
 
-                            nodePorts += $@"[{port.Label}] {port.PropertyType} NOT NULL IDENTITY (1,1),";
+                            if(port.IsPartialKey) {
+                                nodePorts += $@"[{port.Label}] {port.PropertyType} NOT NULL, ";
+                            } else {
+                                nodePorts += $@"[{port.Label}] {port.PropertyType} NOT NULL IDENTITY (1,1), ";
+                            }
+
                             if (pkCounter > 1 && clusteredPK) {
                                 nodeConstaraints += $@"CONSTRAINT [PK_{node.Name}] PRIMARY KEY CLUSTERED
                         (
-                          [{names.Substring(0, names.Length - 2)}] ASC
+                          {names} ASC
                         ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
                         ) ON [PRIMARY]
                         ";
@@ -321,7 +340,9 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;";
                         ";
                                 clusteredPK = false;
                             }
-                        } else {
+                        } 
+                        
+                        else {
                             nodePorts += $@"[{port.Label}] {port.PropertyType}";
                             if (port.IsNotNull) {
                                 nodePorts += $@" NOT NULL";
@@ -332,15 +353,6 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;";
                             nodePorts += $@", ";
                         }
 
-                        // else if (port.IsForeignKey || port.IsNotNull) {
-                        //     nodePorts += $@"[{port.Label}] {port.PropertyType} NOT NULL,";
-                        // } else if (port.IsUnique) {
-                        //     nodePorts += $@"[{port.Label}] {port.PropertyType} UNIQUE,";
-                        // } else {
-                        //     Console.WriteLine ("node" + node.Name + " " + port.Label);
-
-                        //     nodePorts += $@"[{port.Label}] {port.PropertyType},";
-                        // }
                     }
                     MSSQLCode += $@"CREATE TABLE [dbo].[{node.Name}] (
                 {nodePorts}
@@ -360,8 +372,10 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;";
                 CREATE NONCLUSTERED INDEX [fk_dm_{node.Name}_{fk.Label}_idx] ON [{node.Name}] ([{fk.Label}] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY];
             ";
                     }
-
-                    MSSQLCode += $@"CREATE UNIQUE NONCLUSTERED INDEX [{pkPort.Label}_UNIQUE] ON [{node.Name}] ([id] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY];
+                    if(pkPort != null) {
+                        MSSQLCode += $@"CREATE UNIQUE NONCLUSTERED INDEX [{pkPort.Label}_UNIQUE] ON [{node.Name}] ([id] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY];";
+                    }
+                MSSQLCode += $@"    
                 {fkPortsCode}
             ";
                 }
@@ -373,18 +387,20 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;";
                         foreach (var linkID in fk.Links) {
                             var linkTarget = serializedDiagram.Links.FirstOrDefault (x => x.Id == linkID).Source;
                             var nodeLinked = serializedDiagram.Nodes.FirstOrDefault (x => x.Id == linkTarget);
-                            var linkedPKport = nodeLinked.Ports.Where(p => p.IsPrimaryKey).ToArray()[0].Label;
+                            var linkedPKport = nodeLinked.Ports.Where(p => p.IsPrimaryKey).ToArray();
                             
                             if (nodeLinked.Name == node.Name) {
 
                                 linkTarget = serializedDiagram.Links.FirstOrDefault (x => x.Id == linkID).Target;
                                 nodeLinked = serializedDiagram.Nodes.FirstOrDefault (x => x.Id == linkTarget);
-                                linkedPKport = nodeLinked.Ports.Where(p => p.IsPrimaryKey).ToArray()[0].Label;
+                                linkedPKport = nodeLinked.Ports.Where(p => p.IsPrimaryKey).ToArray();
                             }
 
-                            MSSQLCode += $@"ALTER TABLE [{node.Name}] WITH CHECK ADD CONSTRAINT [fk_{node.Name}_{fk.Label}] FOREIGN KEY([{fk.Label}]) REFERENCES [dbo].[{nodeLinked.Name}]([{linkedPKport}]);
+                            if(linkedPKport.Length > 0) {
+                                MSSQLCode += $@"ALTER TABLE [{node.Name}] WITH CHECK ADD CONSTRAINT [fk_{node.Name}_{fk.Label}] FOREIGN KEY([{fk.Label}]) REFERENCES [dbo].[{nodeLinked.Name}]([{linkedPKport[0].Label}]);
 												GO
 												ALTER TABLE [{node.Name}] CHECK CONSTRAINT [fk_{node.Name}_{fk.Label}];";
+                            }
                         }
 
                     }

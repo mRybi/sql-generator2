@@ -28,6 +28,15 @@ export const PropertyTable = (props: Props) => {
 		setUpdatedItem(props.selectedItem);
 	}, [props.selectedItem]);
 
+	const clearPartialKeys = () => {
+		let ports =
+		updatedItem &&
+		updatedItem.ports &&
+		(updatedItem.ports as { [s: string]: Port });
+
+		Object.keys(ports).map(p => console.log(ports[p].isPartialKey = false));
+	}
+
 	const handleChangePK = (
 		event: React.ChangeEvent<HTMLInputElement>,
 		row: Port
@@ -39,6 +48,13 @@ export const PropertyTable = (props: Props) => {
 		(updatedItem.getPortFromID(
 			row.id
 		) as Port).isNotNull = row.isPrimaryKey ? true : false;
+
+		// (updatedItem.getPortFromID(
+		// 	row.id
+		// ) as Port).isPartialKey = row.isPrimaryKey ? false : false;
+
+		// clear partialkeys
+		clearPartialKeys();
 		forceUpdate();
 	};
 
@@ -48,6 +64,15 @@ export const PropertyTable = (props: Props) => {
 	) => {
 		event.persist();
 		(updatedItem.getPortFromID(row.id) as Port).isNotNull = !row.isNotNull;
+		forceUpdate();
+	};
+
+	const handleChangePartialKey = (
+		event: React.ChangeEvent<HTMLInputElement>,
+		row: Port
+	) => {
+		event.persist();
+		(updatedItem.getPortFromID(row.id) as Port).isPartialKey = !row.isPartialKey;
 		forceUpdate();
 	};
 
@@ -133,7 +158,7 @@ export const PropertyTable = (props: Props) => {
 			formatter: (cellContent: any, row: Port) => (
 				<div className="input">
 					<input
-					style={{width: '100px'}}
+						style={{ width: '100px' }}
 						className="darkInput"
 						type="text"
 						defaultValue={row.label}
@@ -148,10 +173,10 @@ export const PropertyTable = (props: Props) => {
 			text: "Property Type",
 			formatter: (cellContent: any, row: Port) => (
 				<div className="input">
-					<input 
-					style={{width: '100px'}}
+					<input
+						style={{ width: '100px' }}
 
-						type="text" 
+						type="text"
 						list="types"
 						className="darkInput"
 						onChange={event => handleChangepPropType(event, row)}
@@ -175,6 +200,21 @@ export const PropertyTable = (props: Props) => {
 							type="checkbox"
 							checked={row.isPrimaryKey}
 							onChange={event => handleChangePK(event, row)}
+						/>
+					</label>
+				</div>
+			)
+		},
+		{
+			dataField: "isPartialKey",
+			text: "Is Partial Key",
+			formatter: (cellContent: any, row: Port) => (
+				<div className="checkbox">
+					<label>
+						<input
+							type="checkbox"
+						checked={row.isPartialKey}
+						onChange={event => handleChangePartialKey(event, row)}
 						/>
 					</label>
 				</div>
@@ -255,13 +295,21 @@ export const PropertyTable = (props: Props) => {
 			})
 			.filter(p => !p.isNamePort);
 
+	let ispk = portsTable && portsTable.find(p => p.isPrimaryKey) ? true : false;
+
+	let cols = columns;
+
+	if (ispk) {
+		cols = cols.filter(col => col.dataField !== 'isPartialKey')
+	}
+	console.log(ispk, cols);
 
 	return (
 		<div>
 			<BootstrapTable
 				keyField="id"
 				data={portsTable}
-				columns={props.relView ? columns.filter(col => col.dataField !== 'isPrimaryKey') : columns}
+				columns={props.relView ? cols.filter(col => col.dataField !== 'isPrimaryKey') : cols}
 				bordered={false}
 			/>
 			<p

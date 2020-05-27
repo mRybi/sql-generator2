@@ -115,6 +115,8 @@ namespace Domain {
 
         [JsonProperty ("isPrimaryKey")]
         public bool IsPrimaryKey { get; set; }
+          [JsonProperty ("isPartialKey")]
+        public bool IsPartialKey { get; set; }
 
         [JsonProperty ("isForeignKey")]
         public bool IsForeignKey { get; set; }
