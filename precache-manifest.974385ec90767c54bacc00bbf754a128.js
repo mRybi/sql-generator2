@@ -4,24 +4,24 @@ self.__precacheManifest = [
     "url": "/sql-generator2/static/media/micon.91c9922e.woff2"
   },
   {
-    "revision": "78b7ba2305f52d649784",
-    "url": "/sql-generator2/static/css/main.1af81dc3.chunk.css"
+    "revision": "841685dcb170c809fbe8",
+    "url": "/sql-generator2/static/css/main.49abb7fa.chunk.css"
   },
   {
     "revision": "ef3cf4deb8d679c67bae4116907849c2",
     "url": "/sql-generator2/static/media/micon.ef3cf4de.svg"
   },
   {
-    "revision": "5bbe7b6b4c4706ad2e73",
-    "url": "/sql-generator2/static/js/1.5bbe7b6b.chunk.js"
+    "revision": "4565db1e75cdbefa0c92",
+    "url": "/sql-generator2/static/js/1.4565db1e.chunk.js"
   },
   {
     "revision": "46b53a9400f0147dbbd8",
     "url": "/sql-generator2/static/js/runtime~main.46b53a94.js"
   },
   {
-    "revision": "78b7ba2305f52d649784",
-    "url": "/sql-generator2/static/js/main.78b7ba23.chunk.js"
+    "revision": "841685dcb170c809fbe8",
+    "url": "/sql-generator2/static/js/main.841685dc.chunk.js"
   },
   {
     "revision": "d03687b61ea7e10c9064205236581078",
@@ -36,11 +36,11 @@ self.__precacheManifest = [
     "url": "/sql-generator2/static/media/micon.ccfd1d86.ttf"
   },
   {
-    "revision": "5bbe7b6b4c4706ad2e73",
+    "revision": "4565db1e75cdbefa0c92",
     "url": "/sql-generator2/static/css/1.132f00a5.chunk.css"
   },
   {
-    "revision": "7d6684334ae8b38575e2a4830c8a9ab8",
+    "revision": "173ebacbc54e80cfe9b315c59475e98a",
     "url": "/sql-generator2/index.html"
   }
 ];
