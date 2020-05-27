@@ -3,7 +3,9 @@ using Domain;
 
 namespace Services {
     public interface ISqlGeneratorBackgraoundWorker {
-        Task<string> Generate (Diagram diagram);
+        Task<string> GenerateMS (Diagram diagram);
+        Task<string> GenerateMy (Diagram diagram);
+
     }
 
 }

@@ -6,30 +6,6 @@
     prosiłbym więc o stworzenie diagramu ze wszystkimi możliwymi przypadkami i przesłanie mi go wraz 
     z kodem, który program wygeneruje
 
-5. chciałbym, żeby przynajmniej jeszcze jedna notacja była możliwa (oprócz zmodyfikowanej notacji Chena).
-    A dokładniej, żebym mógł (i to może nawet domyślnie, a Chen byłby do wyboru) użyć notacji UML. To znaczy 
-    takiej, że jeżeli student musi mieć dokładnie jeden pokój, to przy pokoju pojawia się 1,1 a jeżeli pokój 
-    może mieć wielu studentów, to przy studencie jest napis 0,N
-
-    JAKA JEST ROZNICA MEIDZY NOTACJA CHENA A UML
-    PODANY PRZYKLAD DZIAŁA I GENERUJE DOBRY SKRYPT
-    OK MAM UML ZAIMPLEMENTOWANEGO JEDNAK XD
-    CO ZROBIC:
-    - front sprawdzic czy mam wsyztskie mozliwosci relacji 1,n  0,1 itd
-    - front dodac do requesta generacji typ notacji / albo tylko wsywietlac jako Chen lub UML a napisac 
-        taki konwerter na UML co backend juz to umie.
-
-    PRZEPIS NA KONWERTER:
-    ZAMIEN PIERWSZE ZNAKI W LINKU LEWY Z PRAWYM:
-    - CHEN - 1,N -> 0,1
-    - UML - 0,N -> 1,1
-
-    zamiana działa tzreba sprawdzic czy wszytsko jest ok i czy to ma sens
-
-    wyglada na to samo
-
-    chyba działa
-
 6. interesujące są też przypadki, gdy w jednej z encji nie ma określonego klucza głównego, czyli gdy 
     jest ona encją słabą. Jaki kod powstaje wtedy (np. dla związków rn67 i rn89 z dołączonego diagramu
 
@@ -45,10 +21,7 @@
     jakies szukanie portów gdzie PK == true
     - jesli brak PK w entity to dodac jakos partial klucz z kluczem z drugiej relacji
 
-8. Problemem programu MySQL Workbench jest brak możliwość wyboru silnika
-    bazodanowego, dla którego chcemy wygenerować skrypt (jesteśmy skazani na użycie silnika
-    MySQL) ". Tyle, że u Pana jest podobnie, kod jest generowany tylko dla SQL Servera. To może niech 
-    będzie również generowany do MySQLa.
+
 
 
 --DONE--
@@ -82,3 +55,40 @@
     Ale tak to nie działa.
 
     DONE - USUWANIE PRZEZ KLIKNIECIE CTRL + LEWY MYSZY NA PUNK
+
+8. Problemem programu MySQL Workbench jest brak możliwość wyboru silnika
+    bazodanowego, dla którego chcemy wygenerować skrypt (jesteśmy skazani na użycie silnika
+    MySQL) ". Tyle, że u Pana jest podobnie, kod jest generowany tylko dla SQL Servera. To może niech 
+    będzie również generowany do MySQLa.
+
+    dodano funkcje generujaca mysqla 
+    prosty skrypt dziala - do przetestowania
+    dodac zakomentowane rzeczy
+
+    DONE
+
+--TEST--
+
+5. chciałbym, żeby przynajmniej jeszcze jedna notacja była możliwa (oprócz zmodyfikowanej notacji Chena).
+    A dokładniej, żebym mógł (i to może nawet domyślnie, a Chen byłby do wyboru) użyć notacji UML. To znaczy 
+    takiej, że jeżeli student musi mieć dokładnie jeden pokój, to przy pokoju pojawia się 1,1 a jeżeli pokój 
+    może mieć wielu studentów, to przy studencie jest napis 0,N
+
+    JAKA JEST ROZNICA MEIDZY NOTACJA CHENA A UML
+    PODANY PRZYKLAD DZIAŁA I GENERUJE DOBRY SKRYPT
+    OK MAM UML ZAIMPLEMENTOWANEGO JEDNAK XD
+    CO ZROBIC:
+    - front sprawdzic czy mam wsyztskie mozliwosci relacji 1,n  0,1 itd
+    - front dodac do requesta generacji typ notacji / albo tylko wsywietlac jako Chen lub UML a napisac 
+        taki konwerter na UML co backend juz to umie.
+
+    PRZEPIS NA KONWERTER:
+    ZAMIEN PIERWSZE ZNAKI W LINKU LEWY Z PRAWYM:
+    - CHEN - 1,N -> 0,1
+    - UML - 0,N -> 1,1
+
+    zamiana działa tzreba sprawdzic czy wszytsko jest ok i czy to ma sens
+
+    wyglada na to samo
+
+    chyba działa
