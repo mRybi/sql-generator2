@@ -12,7 +12,7 @@ namespace Controllers {
             _sqlGenerator = sqlGenerator;
         }
 
-        // GET api/setjob/mssql
+        // POST api/setjob/mssql
         [HttpPost("mssql")]
         public async Task<IActionResult> Mssql ([FromBody] Diagram diagram) {
             try {
@@ -24,7 +24,7 @@ namespace Controllers {
             }
         }
 
-        // GET api/setjob/mysql
+        // POST api/setjob/mysql
         [HttpPost("mysql")]
         public async Task<IActionResult> Mysql ([FromBody] Diagram diagram) {
             try {
