@@ -75,10 +75,13 @@ export class Port extends PortModel {
   }
 
   canLinkToPort(port: Port): boolean {
+    console.log('port -> canLinkToPort')
     return true;
   }
 
   createLinkModel(): Link {
+    console.log('port -> createLinkModel')
+
     return new Link("custom");
   }
 }

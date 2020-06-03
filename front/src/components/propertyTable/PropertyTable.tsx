@@ -45,15 +45,19 @@ export const PropertyTable = (props: Props) => {
 		(updatedItem.getPortFromID(
 			row.id
 		) as Port).isPrimaryKey = !row.isPrimaryKey;
+
 		(updatedItem.getPortFromID(
 			row.id
 		) as Port).isNotNull = row.isPrimaryKey ? true : false;
 
-		// (updatedItem.getPortFromID(
-		// 	row.id
-		// ) as Port).isPartialKey = row.isPrimaryKey ? false : false;
+		(updatedItem.getPortFromID(
+			row.id
+		) as Port).isAutoincremented = row.isPrimaryKey ? true : false;
 
-		// clear partialkeys
+		(updatedItem.getPortFromID(
+			row.id
+		) as Port).isUnique = row.isPrimaryKey ? true : false;
+
 		clearPartialKeys();
 		forceUpdate();
 	};
@@ -227,6 +231,7 @@ export const PropertyTable = (props: Props) => {
 				<div className="checkbox">
 					<label>
 						<input
+							disabled={row.isPrimaryKey}
 							type="checkbox"
 							checked={row.isNotNull}
 							onChange={event => handleChangeNull(event, row)}
@@ -242,6 +247,7 @@ export const PropertyTable = (props: Props) => {
 				<div className="checkbox">
 					<label>
 						<input
+							disabled={row.isPrimaryKey}
 							type="checkbox"
 							checked={row.isAutoincremented}
 							onChange={event => handleChangeAutoInc(event, row)}
@@ -257,6 +263,7 @@ export const PropertyTable = (props: Props) => {
 				<div className="checkbox">
 					<label>
 						<input
+							disabled={row.isPrimaryKey}
 							type="checkbox"
 							checked={row.isUnique}
 							onChange={event => handleChangeUnique(event, row)}
@@ -302,14 +309,13 @@ export const PropertyTable = (props: Props) => {
 	if (ispk) {
 		cols = cols.filter(col => col.dataField !== 'isPartialKey')
 	}
-	console.log(ispk, cols);
 
 	return (
 		<div>
 			<BootstrapTable
 				keyField="id"
 				data={portsTable}
-				columns={props.relView ? cols.filter(col => col.dataField !== 'isPrimaryKey') : cols}
+				columns={props.relView ? cols.filter(col => col.dataField !== 'isPrimaryKey' && col.dataField !== 'isPartialKey') : cols}
 				bordered={false}
 			/>
 			<p

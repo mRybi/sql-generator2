@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { DiagramWidget, PointModel } from "storm-react-diagrams";
+import { DiagramWidget, PointModel, LinkModelListener } from "storm-react-diagrams";
 import { TrayItemWidget } from "./components/dragAndDrop/TrayItemWidget";
 import { TrayWidget } from "./components/dragAndDrop/TrayWidget";
 import { Application } from "./components/dragAndDrop/Application";
@@ -18,6 +18,7 @@ import { SaveToFilePopup } from "./components/popups/SaveToFilePopup/SaveToFileP
 import { CSSProperties } from "react";
 import { SaveToJpegPopup } from "./components/popups/SaveToJpegPopup/SaveToJpegPopup";
 import _ from "lodash";
+import { Label } from "./infrastructure/models/Label";
 
 require("storm-react-diagrams/dist/style.min.css");
 require("react-bootstrap-table-next/dist/react-bootstrap-table2.min.css");
@@ -39,12 +40,26 @@ export const AppView = (props: Props) => {
   const [selectedNode, setSelectedNode] = React.useState(null);
   const [selectedLink, setSelectedLink] = React.useState(null);
 
+  const [isUml, setIsUml] = React.useState(true);
+
+
   const forceUpdate = useForceUpdate();
 
   React.useEffect(() => {
     setSelectedNode(null);
     setSelectedLink(null);
   }, []);
+
+  const changeRelation = () => {
+    let links = props.app.getDiagramEngine().getDiagramModel().getLinks();
+    Object.keys(links).map(id => {
+      let temp = (links[id].labels[0] as Label).label.substring(0,1);
+      let temp2 = (links[id].labels[2] as Label).label.substring(0,1);
+
+      (links[id].labels[0] as Label).label = temp2 + (links[id].labels[0] as Label).label.substring(1);
+      (links[id].labels[2] as Label).label = temp + (links[id].labels[2] as Label).label.substring(1);
+    });
+  }
 
   const refreshPopups = () => {
     setSelectedLink(null);
@@ -56,6 +71,14 @@ export const AppView = (props: Props) => {
     setSaveOptions(false);
     setShowLoadFileDialog(false);
     setShowRelationDialog(false);
+
+
+    let links = props.app.getDiagramEngine().getDiagramModel().getLinks();
+
+    Object.keys(links).map(id => {
+      links[id].targetPort == null && props.app.getDiagramEngine().getDiagramModel().removeLink(id);
+    });
+
   };
 
   const containerStyles: CSSProperties = {
@@ -137,6 +160,30 @@ export const AppView = (props: Props) => {
               JPEG
             </div>
           )}
+          <div
+            style={{ borderColor: "rgb(152,50,100)", marginTop: "100px" }}
+            className={`tray-item ${isUml ? 'selected' : ''}`}
+            onClick={() => {
+              if(!isUml) {
+                changeRelation();
+                setIsUml(true);
+              }
+            }}
+          >
+            UML
+          </div>
+          <div
+            style={{ borderColor: "rgb(152,50,100)" }}
+            className={`tray-item ${!isUml ? 'selected' : ''}`}
+            onClick={() => {
+              if(isUml) {
+                changeRelation();
+                setIsUml(false);
+              }
+            }}
+          >
+            Chen
+          </div>
           <div
             style={{ borderColor: "rgb(255,0,0)", marginTop: "100px" }}
             className="tray-item"
@@ -240,7 +287,8 @@ export const AppView = (props: Props) => {
                 .getDiagramEngine()
                 .getDiagramModel()
                 .getSelectedItems()[0].parent as Link;
-              props.app.getActiveDiagram().links[pointLink.id].removePoint(pointToRemove);
+                
+                pointLink && props.app.getDiagramEngine().getDiagramModel().links[pointLink.id].removePoint(pointToRemove);
             }
             refreshPopups();
           }}
@@ -252,7 +300,7 @@ export const AppView = (props: Props) => {
                 .getDiagramModel()
                 .getSelectedItems()[0] instanceof PointModel
             ) {
-              console.log('zmiana linku')
+              console.log('zmiana linku');
               setSelectedLink(
                 props.app
                   .getDiagramEngine()
@@ -291,6 +339,7 @@ export const AppView = (props: Props) => {
           />
         ) : null}
         <GenerationHandler
+          isUml={isUml}
           update={refreshPopups}
           isOpen={showDialog}
           serializeDiagram={props.app.getDiagramEngine().diagramModel.serializeDiagram()}
@@ -300,11 +349,13 @@ export const AppView = (props: Props) => {
           update={refreshPopups}
           isOpen={showLoadFileDialog}
           app={props.app}
+          setIsUml={setIsUml}
         />
         <SaveToFilePopup
           update={refreshPopups}
           diagramModel={props.app.getDiagramEngine().diagramModel}
           isOpen={showSaveFileDialog}
+          isUml={isUml}
         />
         <SaveToJpegPopup
           update={refreshPopups}

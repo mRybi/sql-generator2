@@ -179,7 +179,7 @@ namespace Services {
                     SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
               
               CREATE SCHEMA IF NOT EXISTS `{diagram.DatabaseName}` DEFAULT CHARACTER SET utf8 ; 
-              USE `{diagram.DatabaseName}`";
+              USE `{diagram.DatabaseName}`;";
 
                 var nodes = serializedDiagram.Nodes.Where (node => !node.IsLabel).ToArray ();
 
@@ -229,7 +229,7 @@ namespace Services {
                     }
                     mySQLCode += $@"CREATE TABLE IF NOT EXISTS `{diagram.DatabaseName}`.`{node.Name}` (
                 {nodePorts}
-                {nodeConstaraints})
+                {nodeConstaraints.Substring(0,nodeConstaraints.Length - 1)})
                 ENGINE = InnoDB;
             ";
                 }
@@ -256,7 +256,7 @@ namespace Services {
                             mySQLCode += $@"ALTER TABLE `{diagram.DatabaseName}`.`{node.Name}`
                              ADD CONSTRAINT `fk_{node.Name}_{fk.Label}` 
                              FOREIGN KEY(`{fk.Label}`) 
-                             REFERENCES `{diagram.DatabaseName}`.`{nodeLinked.Name}`(`{linkedPKport}`)
+                             REFERENCES `{diagram.DatabaseName}`.`{nodeLinked.Name}`(`{linkedPKport[0].Label}`)
                              ON DELETE NO ACTION ON UPDATE NO ACTION;
 												
                                                 

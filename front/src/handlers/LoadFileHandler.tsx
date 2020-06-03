@@ -7,14 +7,18 @@ class Props {
   isOpen: boolean;
   app: Application;
   update: () => void;
+  setIsUml: (isUml: boolean) => void;
 }
 
 export const LoadFileHandler = (props: Props) => {
   const loadDiagram = (name: string) => {
     let engine = props.app.getDiagramEngine();
-    let obj: ReturnType<DiagramModel["serialize"]> = JSON.parse(name);
+    let obj: {diagram: any, isUml: boolean} = JSON.parse(name);
+    
+    props.setIsUml(obj.isUml);
+
     let model2 = new DiagramModel();
-    model2.deSerializeDiagram(obj, engine);
+    model2.deSerializeDiagram(obj.diagram, engine);
     let newLinks: any[] = Object.keys(model2.links).map(x => {
       return model2.links[x];
     });

@@ -6,7 +6,7 @@ import FileSaver from "file-saver";
 
 class Props {
   isOpen: boolean;
-  generateScript?: (name: string, isUml: boolean) => void;
+  generateScript?: (name: string) => void;
   mssqlString: string;
   mysqlString: string;
   update: () => void;
@@ -14,8 +14,6 @@ class Props {
 
 export const ResultPopup = (props: Props) => {
   const [dbName, setDbName] = useState("DatabaseName");
-  const [uml, setUml] = useState(true);
-  const [chen, setChen] = useState(false);
   const [mySQLView, setmySQLView] = useState(false);
 
 
@@ -29,7 +27,7 @@ export const ResultPopup = (props: Props) => {
   let formatedMySQL =
     props.mysqlString &&
     sqlFormatter.format(props.mysqlString, {
-      language: "sql", // Defaults to "sql"
+      language: "db2", // Defaults to "sql"
       indent: "  " // Defaults to two spaces
     });
 
@@ -61,39 +59,11 @@ export const ResultPopup = (props: Props) => {
           onChange={event => setDbName(event.target.value)}
           value={dbName}
         />
-        <div style={{ display: 'inline' }}>
-          <label htmlFor="uml">UML</label>
-
-          <input
-            style={{ marginRight: "10px" }}
-            type="checkbox"
-            id="uml"
-            onChange={event => { 
-              setUml(event.target.checked); 
-              setChen(!event.target.checked); 
-            }}
-            checked={uml}
-          />
-        </div>
-        <div style={{ display: 'inline' }}>
-          <label htmlFor="chen">CHEN</label>
-
-          <input
-            style={{ marginRight: "10px" }}
-            type="checkbox"
-            id="chen"
-            onChange={event => { 
-              setChen(event.target.checked); 
-              setUml(!event.target.checked) 
-            }}
-            checked={chen}
-          />
-        </div>
 
         <button
          style={{ marginRight: "10px" }}
           onClick={() => {
-            props.generateScript(dbName, uml ? true : false)
+            props.generateScript(dbName)
           }}>
           Generate
             </button>
