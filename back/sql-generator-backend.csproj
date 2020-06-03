@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire" Version="1.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 

@@ -1,5 +1,6 @@
 Dzień dobry,
 
+----DONE----
 ad. 1 - te same nazwy
 Problem dalej istnieje, co więcej, efekty obrony przed nadaniem tej samej nazwy encji są czasami nie do 
 przyjęcia.
@@ -12,13 +13,6 @@ przyjęcia.
     c. Do istniejącego diagramu wstawiłem nowa encję - otrzymała ona nazwę Entity18 choc taka encja już 
     istnieje.
 
-
-
-ad.6 - dodac vpsa z backendem
-    A właściwie dlaczego nie ma generatora SQLa na stronie programu?
-
-
-----DONE----
 ad.2 - klucz główny not null
     DONE:
     Świetnie, tylko czemu mogę odhaczyć pole NotNull dla klucza głównego - ono powinno być nieaktywne.
@@ -56,3 +50,6 @@ ad.5 - mysql
     to robi?
 
     Samodzielnie.
+
+ad.6 - dodac vpsa z backendem
+    A właściwie dlaczego nie ma generatora SQLa na stronie programu?

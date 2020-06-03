@@ -204,6 +204,15 @@ export const AppView = (props: Props) => {
             var data = JSON.parse(
               event.dataTransfer.getData("storm-diagram-node")
             );
+
+            let allNodes = props.app
+              .getDiagramEngine()
+              .getDiagramModel()
+              .getNodes() as {
+                [id: string]: Node;
+              };
+            let names = Object.values(allNodes).map(node => allNodes[node.id].name.toLowerCase().trim());
+
             var nodesCount = _.keys(
               props.app
                 .getDiagramEngine()
@@ -211,11 +220,13 @@ export const AppView = (props: Props) => {
                 .getNodes()
             ).length;
 
+            let newNodeName = names.includes(`Entity${nodesCount + 1}`.toLowerCase().trim()) ? `Entity${nodesCount + 1}_${nodesCount + 1}` : `Entity${nodesCount + 1}`;
+
             var node = null;
             if (data.type === "table") {
               node = new Node(
                 false,
-                `Entity${nodesCount + 1}`,
+                newNodeName,
                 "rgb(0,192,255)"
               );
               node.addInPort(

@@ -37,11 +37,11 @@ export const NodeProperties = (props: Props) => {
     let allNodes = props.diagramEngine.diagramModel.getNodes() as {
       [id: string]: Node;
     };
-    let names = Object.values(allNodes).map(node => allNodes[node.id].name.trim());
+    let names = Object.values(allNodes).map(node => allNodes[node.id].name.toLowerCase().trim());
     
     console.log(names);
 
-    names.includes(event.target.value.trim())
+    names.includes(event.target.value.toLowerCase().trim())
       ? updatedItem.name = defaultName
       : updatedItem.name = event.target.value.trim();
     forceUpdate();

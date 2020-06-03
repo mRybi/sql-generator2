@@ -21,13 +21,13 @@ export const GenerationHandler = (props: Props) => {
     console.log(props.serializeDiagram, props.isUml)
     let serDiagram = props.serializeDiagram;
     let diagram = JSON.stringify(serDiagram, null, 2);
-    let response = await axios.post("http://localhost:5000/api/setjob/mssql", {
+    let response = await axios.post("http://51.83.185.113/api/setjob/mssql", {
       SerializedModel: diagram,
       DatabaseName: name,
       RelationType: props.isUml ? 'UML' : 'CHEN'
     });
 
-    let responseMy = await axios.post("http://localhost:5000/api/setjob/mysql", {
+    let responseMy = await axios.post("http://51.83.185.113/api/setjob/mysql", {
       SerializedModel: diagram,
       DatabaseName: name,
       RelationType: props.isUml ? 'UML' : 'CHEN'
