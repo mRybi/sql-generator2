@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/sql-generator2/static/media/micon.91c9922e.woff2"
   },
   {
-    "revision": "841685dcb170c809fbe8",
+    "revision": "991e03cdbb5f63090e4d",
     "url": "/sql-generator2/static/css/main.49abb7fa.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = [
     "url": "/sql-generator2/static/js/runtime~main.46b53a94.js"
   },
   {
-    "revision": "841685dcb170c809fbe8",
-    "url": "/sql-generator2/static/js/main.841685dc.chunk.js"
+    "revision": "991e03cdbb5f63090e4d",
+    "url": "/sql-generator2/static/js/main.991e03cd.chunk.js"
   },
   {
     "revision": "d03687b61ea7e10c9064205236581078",
@@ -40,7 +40,7 @@ self.__precacheManifest = [
     "url": "/sql-generator2/static/css/1.132f00a5.chunk.css"
   },
   {
-    "revision": "173ebacbc54e80cfe9b315c59475e98a",
+    "revision": "8bfa4f73a5af66c810b30e629cfa62bc",
     "url": "/sql-generator2/index.html"
   }
 ];
