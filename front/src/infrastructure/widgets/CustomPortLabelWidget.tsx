@@ -73,7 +73,7 @@ export class CustomPortLabelWidget extends BaseWidget<
         <div>
           {this.props.model.label}{" "}
           {this.props.model.propertyType !== undefined
-            ? PropertyType[this.props.model.propertyType]
+            ? this.props.model.propertyType
             : null}
         </div>
       </div>

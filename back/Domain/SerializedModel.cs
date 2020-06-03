@@ -16,6 +16,26 @@ namespace Domain {
         public Node[] Nodes { get; set; }
     }
 
+        public partial class RelationProperties {
+        [JsonProperty ("label")]
+        public string Label { get; set; }
+
+        [JsonProperty ("isPrimaryKey")]
+        public bool IsPrimaryKey { get; set; }
+
+                [JsonProperty ("isAutoincremented")]
+        public bool IsAutoincremented { get; set; }
+
+                [JsonProperty ("isNotNull")]
+        public bool IsNotNull { get; set; }
+
+                [JsonProperty ("isUnique")]
+        public bool IsUnique { get; set; }
+
+        [JsonProperty ("propertyType")]
+        public string propertyType { get; set; }
+    }
+
     public partial class Link {
         [JsonProperty ("id")]
         public Guid Id { get; set; }
@@ -34,13 +54,18 @@ namespace Domain {
 
         [JsonProperty ("labels")]
         public Label[] Labels { get; set; }
+        
+        [JsonProperty ("properties")]
+        public RelationProperties[] Properties { get; set; }
 
-        public Link (Guid source, Guid sourcePort, Guid target, Guid targetPort) {
+        public Link (Guid source, Guid sourcePort, Guid target, Guid targetPort, RelationProperties[] properties) {
             this.Id = new Guid ();
             this.Source = source;
             this.SourcePort = sourcePort;
             this.Target = target;
             this.TargetPort = targetPort;
+            this.Properties = properties;
+
         }
     }
 
@@ -60,11 +85,15 @@ namespace Domain {
         public Port[] Ports { get; set; }
 
         [JsonProperty ("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } 
+
+        [JsonProperty ("isLabel")]
+        public bool IsLabel { get; set; } 
 
         public Node (string name) {
             this.Id = new Guid ();
             this.Name = name;
+            this.IsLabel= false;
         }
     }
 
@@ -86,6 +115,8 @@ namespace Domain {
 
         [JsonProperty ("isPrimaryKey")]
         public bool IsPrimaryKey { get; set; }
+          [JsonProperty ("isPartialKey")]
+        public bool IsPartialKey { get; set; }
 
         [JsonProperty ("isForeignKey")]
         public bool IsForeignKey { get; set; }

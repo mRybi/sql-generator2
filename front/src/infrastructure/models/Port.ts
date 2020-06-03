@@ -9,11 +9,12 @@ export class Port extends PortModel {
   label: string;
   links: { [id: string]: Link };
   isPrimaryKey: boolean;
+  isPartialKey: boolean;
   isForeignKey: boolean;
   isAutoincremented: boolean;
   isNotNull: boolean;
   isUnique: boolean;
-  propertyType: PropertyType;
+  propertyType: string;// PropertyType;
 
   constructor(
     name: string,
@@ -23,7 +24,7 @@ export class Port extends PortModel {
     isNotNull?: boolean,
     isAutoincremented?: boolean,
     isUnique?: boolean,
-    propertyType?: PropertyType,
+    propertyType?:  string, //PropertyType,
     id?: string
   ) {
     super(name, "custom", id);
@@ -33,6 +34,7 @@ export class Port extends PortModel {
 
     this.isPrimaryKey = isPrimaryKey;
     this.isForeignKey = isForeignKey;
+    this.isPartialKey = false;
 
     this.isNotNull = isNotNull;
     this.isUnique = isUnique;
@@ -47,6 +49,8 @@ export class Port extends PortModel {
     this.isNamePort = object.isNamePort;
 
     this.isPrimaryKey = object.isPrimaryKey;
+    this.isPartialKey = object.isPartialKey;
+
     this.isForeignKey = object.isForeignKey;
     this.isNotNull = object.isNotNull;
     this.isUnique = object.isUnique;
@@ -60,6 +64,8 @@ export class Port extends PortModel {
       links: this.links,
       isNamePort: this.isNamePort,
       isPrimaryKey: this.isPrimaryKey,
+      isPartialKey: this.isPartialKey,
+
       isForeignKey: this.isForeignKey,
       isNotNull: this.isNotNull,
       isUnique: this.isUnique,
@@ -69,10 +75,13 @@ export class Port extends PortModel {
   }
 
   canLinkToPort(port: Port): boolean {
+    console.log('port -> canLinkToPort')
     return true;
   }
 
   createLinkModel(): Link {
+    console.log('port -> createLinkModel')
+
     return new Link("custom");
   }
 }

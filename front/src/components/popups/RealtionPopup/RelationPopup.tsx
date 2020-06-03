@@ -4,20 +4,37 @@ import Popup from "reactjs-popup";
 import { Link } from "../../../infrastructure/models/Link";
 import { Label } from "../../../infrastructure/models/Label";
 import { Node } from "../../../infrastructure/models/Node";
-import { DiagramModel } from "storm-react-diagrams";
+import { DiagramModel, DiagramEngine } from "storm-react-diagrams";
+import { Port } from "../../../infrastructure/models/Port";
+import { PropertyType } from "../../../infrastructure/models/PropertyType";
+import { PropertyTable } from "../../../components/propertyTable/PropertyTable";
+
 
 class Props {
   isOpen: boolean;
   link: Link;
   update: () => void;
   diagramModel: DiagramModel;
+  diagramEngine: DiagramEngine;
 }
 export const RelationPopup = (props: Props) => {
-  const [left, setLeft] = useState("0, N");
+  const [left, setLeft] = useState("1, N");
 
-  const [right, setRight] = useState("0, N");
+  const [right, setRight] = useState("1, N");
 
   const [relationName, setRelationName] = useState("relation name");
+
+  React.useEffect(() => {
+    console.log('link', props.link);
+    let leftLabel = props.link && props.link.labels.length > 0 && (props.link.labels[0] as Label).label;
+    let relLabel = props.link && props.link.labels.length > 0 && (props.link.labels[1] as Label).label;
+    let rightLabel = props.link && props.link.labels.length > 0 && (props.link.labels[2] as Label).label;
+
+    setLeft(leftLabel ? leftLabel : "1, N");
+    setRelationName(relLabel ? relLabel : "relation name");
+    setRight(rightLabel ? rightLabel : "1, N");
+
+  }, [props.link]);
 
   let update = () => {
     let labels = props.link.labels as Label[];
@@ -42,14 +59,19 @@ export const RelationPopup = (props: Props) => {
     (props.link.targetPort.parent as Node);
 
   const remove = () => {
+    const sourceP = props.link && props.link.sourcePort;
+    const targetP = props.link && props.link.targetPort;
+    sourceP.removeLink(props.link);
+    targetP.removeLink(props.link);
+
     props.diagramModel.removeLink(props.link);
     props.update();
   };
 
   const options = (
     <>
-      <option value="1, N">1, N</option>
       <option value="0, N">0, N</option>
+      <option value="1, N">1, N</option>
       <option value="0, 1">0, 1</option>
       <option value="1, 1">1, 1</option>
       <option value="N, N">N, N</option>
@@ -97,13 +119,24 @@ export const RelationPopup = (props: Props) => {
             <button onClick={update}>SAVE</button>
           </div>
           {renderOptionPicker("right")}
-          <div className="grid-item" />
+          {/* <div className="grid-item" /> */}
+          <div className="grid-item">
+
+          </div>
           <div className="grid-item">
             <button onClick={remove}>Remove</button>
           </div>
-          <div className="grid-item" />
+          {/* <div className="grid-item" /> */}
         </div>
+        {props.link && left.includes('N') && right.includes('N') &&
+          <div>
+            <h3 style={{ margin: 0 }}>Atributes:</h3>
+            <PropertyTable relView={true} diagramEngine={props.diagramEngine} selectedItem={props.link.properties} />
+          </div>
+        }
       </div>
+
+
     </Popup>
   );
 };

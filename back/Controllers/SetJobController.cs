@@ -11,12 +11,26 @@ namespace Controllers {
         public SetJobController (ISqlGeneratorBackgraoundWorker sqlGenerator) {
             _sqlGenerator = sqlGenerator;
         }
-        // GET api/setjob
-        [HttpPost]
-        public async Task<IActionResult> Post ([FromBody] Diagram diagram) {
+
+        // GET api/setjob/mssql
+        [HttpPost("mssql")]
+        public async Task<IActionResult> Mssql ([FromBody] Diagram diagram) {
             try {
-                var result = await _sqlGenerator.Generate (diagram);
-                return Ok (result);
+                var resultMS = await _sqlGenerator.GenerateMS (diagram);
+
+                return Ok (resultMS);
+            } catch (Exception e) {
+                throw e;
+            }
+        }
+
+        // GET api/setjob/mysql
+        [HttpPost("mysql")]
+        public async Task<IActionResult> Mysql ([FromBody] Diagram diagram) {
+            try {
+                var resultMy = await _sqlGenerator.GenerateMy (diagram);
+
+                return Ok (resultMy);
             } catch (Exception e) {
                 throw e;
             }
