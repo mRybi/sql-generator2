@@ -1,5 +1,18 @@
 1. Wyswietlanie 2 diagramow - switch on click - DONE
-2. Kopiowanie Conceptual do View
-3. LogicPort implemetation
+2. Kopiowanie Conceptual do View - DONE
+3. LogicPort implemetation - DONE
 4. Logic Link implemetation - DONE
-5. AppView - uzywanie odpowiednich portów - Port/LogicPort zalezne od isLogic state
+5. AppView - uzywanie odpowiednich portów - Port/LogicPort zalezne od isLogic state - DONE
+6. Musi byc kopiowanie raczej: - DONE
+    - napisac konwerter z conseptual na logic linkow i lączenie nodow  - DONE
+    - cos jak na backendzie  - DONE
+7. Dostosowac backend do 2 typow diagramow - mozna dodac diagram conceptujalny do generacji tak jak jest teraz
+    oraz logiczny juz z FK itd
+8. Funkcja do czyszczenia zmian w LogicView - Application.ts
+
+
+9. Porty z conceptual nie sa przemapowane na logic - DONE
+
+AppView.tsx
+    // moze jakas funkcja ktora klika na plansze jakis ref? 
+    // (po zmianie nie widac linmkow - klikniecie na plansze pokazuje linki)

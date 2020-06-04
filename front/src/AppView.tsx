@@ -193,9 +193,9 @@ export const AppView = (props: Props) => {
           </div>
           <div
             style={{ borderColor: "rgb(152,50,100)", marginTop: "100px" }}
-            className={`tray-item ${isUml ? 'selected' : ''}`}
+            className={`tray-item ${isUml ? 'selected' : ''}  ${isLogicModel ? 'disabled' : ''}`}
             onClick={() => {
-              if(!isUml) {
+              if(!isLogicModel && !isUml) {
                 changeRelation();
                 setIsUml(true);
               }
@@ -205,9 +205,9 @@ export const AppView = (props: Props) => {
           </div>
           <div
             style={{ borderColor: "rgb(152,50,100)" }}
-            className={`tray-item ${!isUml ? 'selected' : ''}`}
+            className={`tray-item ${!isUml ? 'selected' : ''} ${isLogicModel ? 'disabled' : ''}`}
             onClick={() => {
-              if(isUml) {
+              if(!isLogicModel && isUml) {
                 changeRelation();
                 setIsUml(false);
               }
@@ -339,7 +339,7 @@ export const AppView = (props: Props) => {
           }}
           onDoubleClick={event => {
             event.preventDefault();
-            if (
+            if ( !isLogicModel &&
               props.app
                 .getDiagramEngine()
                 .getDiagramModel()

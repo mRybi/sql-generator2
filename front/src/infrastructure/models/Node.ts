@@ -18,7 +18,7 @@ export class Node extends NodeModel {
 		this.isLabel = isLabel;
 	}
 
-	addInPort(logic: boolean, isNamedPort: boolean, label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: PropertyType): Port {
+	addInPort(logic: boolean, isNamedPort: boolean, label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: string): Port {
 		if(logic) {
 			return this.addPort(new LogicPort(label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
 		} else {
@@ -26,7 +26,7 @@ export class Node extends NodeModel {
 		}
 	}
 
-	addOutPort(isNamedPort: boolean,label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: PropertyType): Port {
+	addOutPort(isNamedPort: boolean,label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: string): Port {
 		return this.addPort(new Port(label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
 	}
 
