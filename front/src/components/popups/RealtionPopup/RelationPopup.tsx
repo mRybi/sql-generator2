@@ -16,6 +16,7 @@ class Props {
   update: () => void;
   diagramModel: DiagramModel;
   diagramEngine: DiagramEngine;
+  isLogic: boolean;
 }
 export const RelationPopup = (props: Props) => {
   const [left, setLeft] = useState("1, N");
@@ -131,7 +132,7 @@ export const RelationPopup = (props: Props) => {
         {props.link && left.includes('N') && right.includes('N') &&
           <div>
             <h3 style={{ margin: 0 }}>Atributes:</h3>
-            <PropertyTable relView={true} diagramEngine={props.diagramEngine} selectedItem={props.link.properties} />
+            <PropertyTable relView={true} diagramEngine={props.diagramEngine} selectedItem={props.link.properties} isLogic={props.isLogic} />
           </div>
         }
       </div>

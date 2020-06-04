@@ -7,6 +7,7 @@ class Props {
   isUml: boolean;
   isOpen: boolean;
   serializeDiagram: any;
+
   update: () => void;
 }
 

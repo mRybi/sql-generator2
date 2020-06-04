@@ -8,6 +8,7 @@ import { PropertyTable } from "../propertyTable/PropertyTable";
 
 class Props {
   selectedItem: Node;
+  isLogic: boolean;
   diagramEngine: DiagramEngine;
 }
 
@@ -117,7 +118,7 @@ export const NodeProperties = (props: Props) => {
             </Col>
             
             {!updatedItem.isLabel ? (
-        <PropertyTable selectedItem={props.selectedItem} diagramEngine={props.diagramEngine}/> 
+        <PropertyTable selectedItem={props.selectedItem} diagramEngine={props.diagramEngine} isLogic={props.isLogic}/> 
             ) : null}
           </Row>
         </Grid>

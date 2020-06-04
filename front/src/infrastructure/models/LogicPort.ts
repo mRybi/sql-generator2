@@ -1,12 +1,12 @@
 import * as _ from "lodash";
-import { Link } from "./Link";
 import { PortModel, DiagramEngine } from "storm-react-diagrams";
+import { LogicLink } from "./LogicLink";
 
-export class Port extends PortModel {
+export class LogicPort extends PortModel {
   in: boolean;
   isNamePort: boolean;
   label: string;
-  links: { [id: string]: Link };
+  links: { [id: string]: LogicLink };
   isPrimaryKey: boolean;
   isPartialKey: boolean;
   isForeignKey: boolean;
@@ -73,11 +73,11 @@ export class Port extends PortModel {
     });
   }
 
-  canLinkToPort(port: Port): boolean {
+  canLinkToPort(port: LogicPort): boolean {
     return true;
   }
 
-  createLinkModel(): Link {
-    return new Link("custom");
+  createLinkModel(): LogicLink {
+    return new LogicLink("custom");
   }
 }

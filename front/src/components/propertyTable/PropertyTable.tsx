@@ -12,6 +12,7 @@ class Props {
 	selectedItem: Node;
 	diagramEngine: DiagramEngine;
 	relView?: boolean;
+	isLogic: boolean;
 }
 
 export function useForceUpdate() {
@@ -119,6 +120,7 @@ export const PropertyTable = (props: Props) => {
 
 	const addNewPort = (newPortNumber: number) => {
 		updatedItem.addInPort(
+			props.isLogic,
 			false,
 			`new atribute ${newPortNumber}`,
 			false,

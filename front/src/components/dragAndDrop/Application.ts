@@ -4,7 +4,10 @@ import { CustomPortFactory } from "../../infrastructure/factories/CustomPortFact
 import { CustomNodeFactory } from "../../infrastructure/factories/CustomNodeFactory";
 import { CustomLinkLabelFactory } from "../../infrastructure/factories/CustomLinkLabelFactory";
 import { CustomLinkFactory } from "../../infrastructure/factories/CustomLinkFactory";
-
+import { Node } from "../../infrastructure/models/Node";
+import { LogicLink } from "../../infrastructure/models/LogicLink";
+import { LogicPort } from "../../infrastructure/models/LogicPort";
+ 
 export class Application {
   protected activeModel: SRD.DiagramModel;
   protected logicModel: SRD.DiagramModel;
@@ -38,10 +41,22 @@ export class Application {
   }
 
   public setLogicModel() {
+    let concNodes = this.activeModel.getNodes();
+    let concLinks = this.activeModel.getLinks();
+
+    Object.keys(concNodes).map(k => {
+      this.logicModel.addNode(concNodes[k]);
+    });
+
+    Object.keys(concLinks).map(k => {
+      this.logicModel.addLink(concLinks[k]);
+    });
+
     this.diagramEngine.setDiagramModel(this.logicModel);
   }
 
   public setConceptualModel() {
+    this.logicModel = new SRD.DiagramModel();
     this.diagramEngine.setDiagramModel(this.activeModel);
   }
 }

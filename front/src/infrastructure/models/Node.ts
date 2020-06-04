@@ -2,6 +2,7 @@ import * as _ from "lodash";
 import { NodeModel, Toolkit, DiagramEngine } from "storm-react-diagrams";
 import { Port } from "./Port";
 import { PropertyType } from "./PropertyType";
+import { LogicPort } from "./LogicPort";
 
 export class Node extends NodeModel {
 	name: string;
@@ -17,8 +18,12 @@ export class Node extends NodeModel {
 		this.isLabel = isLabel;
 	}
 
-	addInPort(isNamedPort: boolean, label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: PropertyType): Port {
-		return this.addPort(new Port(label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
+	addInPort(logic: boolean, isNamedPort: boolean, label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: PropertyType): Port {
+		if(logic) {
+			return this.addPort(new LogicPort(label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
+		} else {
+			return this.addPort(new Port(label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
+		}
 	}
 
 	addOutPort(isNamedPort: boolean,label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: PropertyType): Port {
@@ -51,4 +56,6 @@ export class Node extends NodeModel {
 			return !portModel.in;
 		});
 	}
+
+
 }

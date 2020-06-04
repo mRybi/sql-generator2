@@ -261,6 +261,7 @@ export const AppView = (props: Props) => {
                 "rgb(0,192,255)"
               );
               node.addInPort(
+                isLogicModel,
                 false,
                 "Id",
                 true,
@@ -271,6 +272,7 @@ export const AppView = (props: Props) => {
                 PropertyType.INT
               );
               node.addInPort(
+                isLogicModel,
                 true,
                 "",
                 false,
@@ -281,6 +283,7 @@ export const AppView = (props: Props) => {
                 PropertyType.INT
               );
               node.addInPort(
+                isLogicModel,
                 true,
                 "1",
                 false,
@@ -376,6 +379,7 @@ export const AppView = (props: Props) => {
         </div>
         {selectedNode != null ? (
           <NodeProperties
+            isLogic={isLogicModel}
             selectedItem={selectedNode}
             diagramEngine={props.app.getDiagramEngine()}
           />
@@ -385,7 +389,6 @@ export const AppView = (props: Props) => {
           update={refreshPopups}
           isOpen={showDialog}
           serializeDiagram={props.app.getDiagramEngine().diagramModel.serializeDiagram()}
-
         />
         <LoadFileHandler
           update={refreshPopups}
@@ -412,6 +415,8 @@ export const AppView = (props: Props) => {
           update={refreshPopups}
           isOpen={showRelationDialog}
           link={selectedLink}
+
+          isLogic={isLogicModel}
         />
       </div>
     </div>
