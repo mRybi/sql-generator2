@@ -42,6 +42,9 @@ export const AppView = (props: Props) => {
 
   const [isUml, setIsUml] = React.useState(true);
 
+  const [isLogicModel, setIsLogicModel] = React.useState(false);
+
+
 
   const forceUpdate = useForceUpdate();
 
@@ -160,6 +163,34 @@ export const AppView = (props: Props) => {
               JPEG
             </div>
           )}
+          <div
+            style={{ borderColor: "rgb(0,50,100)", marginTop: "100px" }}
+            className={`tray-item ${!isLogicModel ? 'selected' : ''}`}
+            onClick={() => {
+              if(isLogicModel) {
+                props.app.setConceptualModel();
+                setIsLogicModel(false);
+                // moze jakas funkcja ktora klika na plansze jakis ref? 
+                // (po zmianie nie widac linmkow - klikniecie na plansze pokazuje linki)
+              }
+            }}
+          >
+            Conceptual View
+          </div>
+          <div
+            style={{ borderColor: "rgb(0,50,100)" }}
+            className={`tray-item ${isLogicModel ? 'selected' : ''}`}
+            onClick={() => {
+              if(!isLogicModel) {
+                props.app.setLogicModel();
+                setIsLogicModel(true);
+                // moze jakas funkcja ktora klika na plansze jakis ref? 
+                // (po zmianie nie widac linmkow - klikniecie na plansze pokazuje linki)
+              }
+            }}
+          >
+            Logic View
+          </div>
           <div
             style={{ borderColor: "rgb(152,50,100)", marginTop: "100px" }}
             className={`tray-item ${isUml ? 'selected' : ''}`}

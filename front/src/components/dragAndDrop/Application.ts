@@ -7,6 +7,8 @@ import { CustomLinkFactory } from "../../infrastructure/factories/CustomLinkFact
 
 export class Application {
   protected activeModel: SRD.DiagramModel;
+  protected logicModel: SRD.DiagramModel;
+
   protected diagramEngine: SRD.DiagramEngine;
 
   constructor() {
@@ -22,14 +24,24 @@ export class Application {
 
   public newModel() {
     this.activeModel = new SRD.DiagramModel();
+    this.logicModel = new SRD.DiagramModel();
+
     this.diagramEngine.setDiagramModel(this.activeModel);
   }
 
   public getActiveDiagram(): SRD.DiagramModel {
-    return this.activeModel;
+    return this.diagramEngine.getDiagramModel();
   }
 
   public getDiagramEngine(): SRD.DiagramEngine {
     return this.diagramEngine;
+  }
+
+  public setLogicModel() {
+    this.diagramEngine.setDiagramModel(this.logicModel);
+  }
+
+  public setConceptualModel() {
+    this.diagramEngine.setDiagramModel(this.activeModel);
   }
 }

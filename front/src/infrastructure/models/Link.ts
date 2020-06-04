@@ -36,9 +36,7 @@ export class Link extends LinkModel<DefaultLinkModelListener> {
   properties: Node;
 
   constructor(type: string = "custom") {
-    
     super(type);
-    console.log('Link -> constructor');
     this.color = "rgba(255,255,255,0.5)";
     this.width = 3;
     this.curvyness = 300;
