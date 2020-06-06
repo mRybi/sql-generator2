@@ -136,6 +136,9 @@ namespace Domain {
         [JsonProperty ("propertyType")]
         public string PropertyType { get; set; }
 
+        [JsonProperty ("fkPortId")]
+        public Guid FkNodeId { get; set; }
+
         public Port (bool isNamePort, string name, string propertyType, Guid parentNode, Boolean isPrimaryKey, Boolean isForeignKey, Boolean isAutoincremented, Boolean isNotNull, Boolean isUnique = false, Guid[] links = null) {
             this.IsNamePort = isNamePort;
             this.Name = name;

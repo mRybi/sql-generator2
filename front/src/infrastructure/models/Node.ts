@@ -18,11 +18,11 @@ export class Node extends NodeModel {
 		this.isLabel = isLabel;
 	}
 
-	addInPort(logic: boolean, isNamedPort: boolean, label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: string): Port {
+	addInPort(logic: boolean, isNamedPort: boolean, label: string, isPK: boolean, isFK: boolean, isUnique: boolean, isAuto: boolean, isNotNull: boolean, propertyType: string, fkPortId?: string): Port {
 		if(logic) {
-			return this.addPort(new LogicPort(label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
+			return this.addPort(new LogicPort(label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID(), fkPortId));
 		} else {
-			return this.addPort(new Port(label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID()));
+			return this.addPort(new Port(label, isNamedPort, isPK, isFK, isNotNull, isAuto, isUnique, propertyType, Toolkit.UID(), fkPortId));
 		}
 	}
 

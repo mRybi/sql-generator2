@@ -31,7 +31,9 @@ html {
 }
 
 .selected {
-  background-color: black
+  background-color: black;
+  border-width: 4px !important;
+  // text-decoration: underline;
 }
 
 .locked {

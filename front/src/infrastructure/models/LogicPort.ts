@@ -14,6 +14,7 @@ export class LogicPort extends PortModel {
   isNotNull: boolean;
   isUnique: boolean;
   propertyType: string;// PropertyType;
+  fkPortId: string;
 
   constructor(
     name: string,
@@ -24,7 +25,8 @@ export class LogicPort extends PortModel {
     isAutoincremented?: boolean,
     isUnique?: boolean,
     propertyType?:  string, //PropertyType,
-    id?: string
+    id?: string,
+    fkPortId?: string
   ) {
     super(name, "custom", id);
     this.label = name;
@@ -40,6 +42,8 @@ export class LogicPort extends PortModel {
     this.isAutoincremented = isAutoincremented;
 
     this.propertyType = propertyType;
+    this.fkPortId = fkPortId;
+
   }
 
   deSerialize(object: any, engine: DiagramEngine) {
@@ -55,6 +59,8 @@ export class LogicPort extends PortModel {
     this.isUnique = object.isUnique;
     this.isAutoincremented = object.isAutoincremented;
     this.propertyType = object.propertyType;
+    this.fkPortId = object.fkPortId;
+
   }
 
   serialize() {
@@ -69,7 +75,8 @@ export class LogicPort extends PortModel {
       isNotNull: this.isNotNull,
       isUnique: this.isUnique,
       isAutoincremented: this.isAutoincremented,
-      propertyType: this.propertyType
+      propertyType: this.propertyType,
+      fkPortId: this.fkPortId
     });
   }
 

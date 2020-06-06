@@ -80,7 +80,7 @@ namespace Services {
                     source = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Source);
                     target = serializedDiagram.Nodes.FirstOrDefault (n => n.Id == link.Target);
                     // relation node
-                    Node relationNode = new Node ($"rl_{source.Name}_{link.Labels[1].LabelLabel}_{target.Name}");
+                    Node relationNode = new Node ($"{link.Labels[1].LabelLabel}");
                     var nodes = serializedDiagram.Nodes.Append (relationNode);
                     serializedDiagram.Nodes = nodes.ToArray ();
                     // id
@@ -171,7 +171,9 @@ namespace Services {
             if (serializedDiagram.Nodes.Length == 0) {
                 throw new Exception ("Diagram is empty");
             } else {
-                this.PrepareForeignKeys (serializedDiagram);
+                if(diagram.DiagramType == "Conceptual") {
+                    this.PrepareForeignKeys (serializedDiagram);
+                }
                 // STRUCTURE AND PRIMARY KEY CLUSTERS
                 string mySQLCode =
                     $@"SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -239,7 +241,25 @@ namespace Services {
                 foreach (var node in serializedDiagram.Nodes) {
                     var fkPorts = node.Ports.Where (port => port.IsForeignKey);
                     foreach (var fk in fkPorts) {
+                        if(diagram.DiagramType == "Logic") {
+                                var fkNode = serializedDiagram.Nodes.FirstOrDefault(n => n.Id == fk.FkNodeId);
+                                var linkedPKport = fkNode.Ports.Where(p => p.IsPrimaryKey).ToArray();
+
+                            mySQLCode += $@"ALTER TABLE `{diagram.DatabaseName}`.`{node.Name}`
+                             ADD CONSTRAINT `fk_{node.Name}_{fk.Label}` 
+                             FOREIGN KEY(`{fk.Label}`) 
+                             REFERENCES `{diagram.DatabaseName}`.`{fkNode.Name}`(`{linkedPKport[0].Label}`)
+                             ON DELETE NO ACTION ON UPDATE NO ACTION;
+												
+                                                
+                              CREATE INDEX `fk_{node.Name}_{fk.Label}_idx` ON `{diagram.DatabaseName}`.`{node.Name}` (`{linkedPKport[0].Label}` ASC);                  
+                                                
+                                                ";
+                        } else {
+
                         foreach (var linkID in fk.Links) {
+                            if(diagram.DiagramType == "Conceptual") {
+
                             var linkTarget = serializedDiagram.Links.FirstOrDefault (x => x.Id == linkID).Source;
                             var nodeLinked = serializedDiagram.Nodes.FirstOrDefault (x => x.Id == linkTarget);
                             var linkedPKport = nodeLinked.Ports.Where(p => p.IsPrimaryKey).ToArray();
@@ -267,6 +287,8 @@ namespace Services {
                             }
 
                         }
+                        }
+                        }
 
                     }
 
@@ -290,7 +312,9 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;";
             if (serializedDiagram.Nodes.Length == 0) {
                 throw new Exception ("Diagram is empty");
             } else {
-                this.PrepareForeignKeys (serializedDiagram);
+                if(diagram.DiagramType == "Conceptual") {
+                    this.PrepareForeignKeys (serializedDiagram);
+                }
                 // STRUCTURE AND PRIMARY KEY CLUSTERS
                 string MSSQLCode =
                     $@"USE master 
@@ -384,28 +408,38 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;";
                 foreach (var node in serializedDiagram.Nodes) {
                     var fkPorts = node.Ports.Where (port => port.IsForeignKey);
                     foreach (var fk in fkPorts) {
+                            if(diagram.DiagramType == "Logic") {
+                                var fkNode = serializedDiagram.Nodes.FirstOrDefault(n => n.Id == fk.FkNodeId);
+                                var linkedPKport = fkNode.Ports.Where(p => p.IsPrimaryKey).ToArray();
+
+                                MSSQLCode += $@"ALTER TABLE [{node.Name}] WITH CHECK ADD CONSTRAINT [fk_{node.Name}_{fk.Label}] FOREIGN KEY([{fk.Label}]) REFERENCES [dbo].[{fkNode.Name}]([{linkedPKport[0].Label}]);
+                                                    GO
+                                                    ALTER TABLE [{node.Name}] CHECK CONSTRAINT [fk_{node.Name}_{fk.Label}];";
+                                } else {
+
                         foreach (var linkID in fk.Links) {
-                            var linkTarget = serializedDiagram.Links.FirstOrDefault (x => x.Id == linkID).Source;
-                            var nodeLinked = serializedDiagram.Nodes.FirstOrDefault (x => x.Id == linkTarget);
-                            var linkedPKport = nodeLinked.Ports.Where(p => p.IsPrimaryKey).ToArray();
-                            
-                            if (nodeLinked.Name == node.Name) {
+                            if(diagram.DiagramType == "Conceptual") {
+                                var linkTarget = serializedDiagram.Links.FirstOrDefault (x => x.Id == linkID).Source;
+                                var nodeLinked = serializedDiagram.Nodes.FirstOrDefault (x => x.Id == linkTarget);
+                                var linkedPKport = nodeLinked.Ports.Where(p => p.IsPrimaryKey).ToArray();
+                                
+                                if (nodeLinked.Name == node.Name) {
 
-                                linkTarget = serializedDiagram.Links.FirstOrDefault (x => x.Id == linkID).Target;
-                                nodeLinked = serializedDiagram.Nodes.FirstOrDefault (x => x.Id == linkTarget);
-                                linkedPKport = nodeLinked.Ports.Where(p => p.IsPrimaryKey).ToArray();
-                            }
+                                    linkTarget = serializedDiagram.Links.FirstOrDefault (x => x.Id == linkID).Target;
+                                    nodeLinked = serializedDiagram.Nodes.FirstOrDefault (x => x.Id == linkTarget);
+                                    linkedPKport = nodeLinked.Ports.Where(p => p.IsPrimaryKey).ToArray();
+                                }
 
-                            if(linkedPKport.Length > 0) {
-                                MSSQLCode += $@"ALTER TABLE [{node.Name}] WITH CHECK ADD CONSTRAINT [fk_{node.Name}_{fk.Label}] FOREIGN KEY([{fk.Label}]) REFERENCES [dbo].[{nodeLinked.Name}]([{linkedPKport[0].Label}]);
-												GO
-												ALTER TABLE [{node.Name}] CHECK CONSTRAINT [fk_{node.Name}_{fk.Label}];";
-                            }
-                        }
+                                if(linkedPKport.Length > 0) {
+                                    MSSQLCode += $@"ALTER TABLE [{node.Name}] WITH CHECK ADD CONSTRAINT [fk_{node.Name}_{fk.Label}] FOREIGN KEY([{fk.Label}]) REFERENCES [dbo].[{nodeLinked.Name}]([{linkedPKport[0].Label}]);
+                                                    GO
+                                                    ALTER TABLE [{node.Name}] CHECK CONSTRAINT [fk_{node.Name}_{fk.Label}];";
+                                }
+                            } }}
 
                     }
-
                 }
+                
 
                 return MSSQLCode;
             }

@@ -44,28 +44,21 @@ export class Application {
     return this.diagramEngine;
   }
 
-  private clearNodes() {
-    let logiNodes = this.logicModel.getNodes();
-    Object.keys(logiNodes).map((k) => {
-      this.logicModel.removeNode(logiNodes[k]);
-    });
-
-  }
-
   public setLogicModel() {
 
     let concNodes = this.activeModel.getNodes();
+
     Object.keys(concNodes).map((k) => {
-      console.log('ports: ', concNodes[k].ports);
-      let node = concNodes[k].clone(concNodes[k]) as Node;
+      let node = concNodes[k].clone() as Node;
 
       let nodePorts = concNodes[k].getPorts();
 
       Object.keys(nodePorts).map(k => {
-        node.addPort(nodePorts[k]);
+        let port = nodePorts[k] as Port;
+        let logicPort = new LogicPort(port.name, port.isNamePort, port.isPrimaryKey, port.isForeignKey, port.isNotNull, port.isAutoincremented, port.isUnique, port.propertyType);
+        node.addPort(logicPort);
       })
 
-      console.log('ports new : ', node.ports);
 
       this.logicModel.addNode(node);
     });
@@ -91,7 +84,6 @@ export class Application {
       let targetLabel = (concLinks[k].labels[2] as Label).label;
 
       if (sourceLabel.includes("N") && targetLabel.includes("N")) {
-        console.log("dodac rel node", concLinks[k]);
         let relNode = ((concLinks[k] as Link).properties as Node).clone();
         relNode.name = (concLinks[k].labels[1] as Label).label;
         relNode.setPosition(sourceNode.x + 150, sourceNode.y - 100);
@@ -139,7 +131,8 @@ export class Application {
           false,
           false,
           true,
-          "INT"
+          "INT",
+          sourceNodeId // add
         );
 
         relNode.addInPort(
@@ -151,7 +144,8 @@ export class Application {
           false,
           false,
           true,
-          "INT"
+          "INT",
+          targetNodeId // added
         );
 
         this.logicModel.addNode(relNode);
@@ -176,8 +170,6 @@ export class Application {
 
         this.logicModel.addAll(link, link2);
       } else if (sourceLabel.includes("N")) {
-        console.log("sorce label N");
-
         //dodaj FK
         logicNodes[sourceNodeId].addInPort(
           true,
@@ -188,7 +180,8 @@ export class Application {
           false,
           false,
           true,
-          "INT"
+          "INT",
+          targetNodeId
         );
         //dodaj link
         let node = logicNodes[sourceNodeId];
@@ -200,8 +193,6 @@ export class Application {
         link.setTargetPort(targetP);
         this.logicModel.addLink(link);
       } else if (targetLabel.includes("N")) {
-        console.log("target label N");
-
         //dodaj FK
         logicNodes[targetNodeId].addInPort(
           true,
@@ -212,7 +203,8 @@ export class Application {
           false,
           false,
           true,
-          "INT"
+          "INT",
+          sourceNodeId
         );
         //dodaj link
         let node = logicNodes[targetNodeId];
@@ -224,7 +216,6 @@ export class Application {
         link.setTargetPort(targetP);
         this.logicModel.addLink(link);
       } else {
-        console.log("sorce label N");
 
         //dodaj FK
         logicNodes[sourceNodeId].addInPort(
@@ -236,7 +227,8 @@ export class Application {
           false,
           false,
           true,
-          "INT"
+          "INT",
+          targetNodeId
         );
         //dodaj link
         let node = logicNodes[sourceNodeId];
@@ -248,8 +240,6 @@ export class Application {
         link.setTargetPort(targetP);
         this.logicModel.addLink(link);
       }
-      console.log('logic: ', logicNodes[sourceNodeId]);
-      console.log('conte: ', this.activeModel.getNodes());
     });
 
     this.diagramEngine.setDiagramModel(this.logicModel);
@@ -259,8 +249,34 @@ export class Application {
     this.logicModel = null;
     this.logicModel = new SRD.DiagramModel();
 
-    // this.clearNodes();
+    let activeModelCopy = new SRD.DiagramModel();
+
+    let nodes = this.activeModel.getNodes();
+
+    Object.keys(nodes).map(k => {
+      activeModelCopy.addNode(nodes[k]);
+    })
+
+    let links = this.activeModel.getLinks();
+
+    Object.keys(links).map(k => {
+      activeModelCopy.addLink(links[k]);
+    })
+
+    this.activeModel = activeModelCopy;
 
     this.diagramEngine.setDiagramModel(this.activeModel);
+  }
+
+  public loadConceptualModel(model :SRD.DiagramModel) {
+    this.activeModel = model;
+
+    this.diagramEngine.setDiagramModel(this.activeModel);
+  }
+
+  public loadLogicModel(model :SRD.DiagramModel) {
+    this.logicModel = model;
+
+    this.diagramEngine.setDiagramModel(this.logicModel);
   }
 }

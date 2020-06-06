@@ -6,13 +6,41 @@
 6. Musi byc kopiowanie raczej: - DONE
     - napisac konwerter z conseptual na logic linkow i lączenie nodow  - DONE
     - cos jak na backendzie  - DONE
-7. Dostosowac backend do 2 typow diagramow - mozna dodac diagram conceptujalny do generacji tak jak jest teraz
-    oraz logiczny juz z FK itd
-8. Funkcja do czyszczenia zmian w LogicView - Application.ts
+
+7. Porty z conceptual nie sa przemapowane na logic - DONE
 
 
-9. Porty z conceptual nie sa przemapowane na logic - DONE
 
+FRONTED
+1.
 AppView.tsx
     // moze jakas funkcja ktora klika na plansze jakis ref? 
-    // (po zmianie nie widac linmkow - klikniecie na plansze pokazuje linki)
+    // (po zmianie nie widac linmkow - klikniecie na plansze pokazuje linki) -- DONE
+
+2. logic view nie mozna usuwac linkow - DONE
+3. logic view towrzy normalne linki gdy port jest z conceptual - mapowanie portow jakos na logicPort 
+    zamiast normalnego port -- DONE
+
+3. Pomyslec jak powinno wygladac tworzenie logicznego - teraz wszytsko trzeba recznie
+
+
+PIATEK 05.06
+1. czy można bardziej wyróżnić, która notacja aktualnie jest używana? To ciemniejsze tło aktualnie 
+    używanej za mało wyróżnia - mam monitor, na którym nie byłem w stanie tego zauważyć
+2. czasami wprowadzanie zmian w encji powoduje (np. nazwy) powoduje, że encja znika bezpowrotnie
+3. przesyła zrzut, na którym jest widoczny związek. Wcześniej dodałem mu atrybut. Ale tego atrybutu
+    nie ma, i nie ma jak wstawić nowego. Coś też się stało z krotnościami - ustawiam na 0,N a uparcie 
+    pozostaje na ekranie 1,N . - Clipboard 2.jpeg
+
+Feature request:
+i jeszcze mam pytanie - jak mogę zacząć nowy tworzenie nowego diagramu? W tej chwili muszę usuwać ręcznie.
+ A na dodatek nie mogę (nie potrafię) zaznaczyć jakichkolwiek obiektów (np. wszystkich), żeby przyspieszyć 
+ usuwanie. Przydałby się przycisk New Diagram.
+
+BACKEND - DONE
+8. Dostosowac backend do 2 typow diagramow - mozna do  lkuuiutipidac diagram conceptujalny do generacji tak jak jest teraz
+    oraz logiczny juz z FK itd : 
+    - mysle ze dodac do requesta co to za typ diagramu(logic/ conceptual) 
+    - i albo uzywac metody add FK(conceptual) albo nie(logic)
+
+Zapisywanie i wczytawnie diagramow - jak teraz jak sa 2 modele?

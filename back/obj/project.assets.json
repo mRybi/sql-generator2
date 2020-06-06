@@ -2,67 +2,6 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "Hangfire/1.7.0": {
-        "type": "package",
-        "dependencies": {
-          "Hangfire.AspNetCore": "[1.7.0]",
-          "Hangfire.Core": "[1.7.0]",
-          "Hangfire.SqlServer": "[1.7.0]"
-        }
-      },
-      "Hangfire.AspNetCore/1.7.0": {
-        "type": "package",
-        "dependencies": {
-          "Hangfire.Core": "[1.7.0]",
-          "Microsoft.AspNetCore.Antiforgery": "2.0.0",
-          "Microsoft.AspNetCore.Hosting.Abstractions": "2.0.0",
-          "Microsoft.AspNetCore.Http.Abstractions": "2.0.0",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "2.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "2.0.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/Hangfire.AspNetCore.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Hangfire.AspNetCore.dll": {}
-        }
-      },
-      "Hangfire.Core/1.7.0": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "11.0.1"
-        },
-        "compile": {
-          "lib/netstandard2.0/Hangfire.Core.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Hangfire.Core.dll": {}
-        },
-        "resource": {
-          "lib/netstandard2.0/es/Hangfire.Core.resources.dll": {
-            "locale": "es"
-          },
-          "lib/netstandard2.0/zh-TW/Hangfire.Core.resources.dll": {
-            "locale": "zh-TW"
-          },
-          "lib/netstandard2.0/zh/Hangfire.Core.resources.dll": {
-            "locale": "zh"
-          }
-        }
-      },
-      "Hangfire.SqlServer/1.7.0": {
-        "type": "package",
-        "dependencies": {
-          "Hangfire.Core": "[1.7.0]",
-          "System.Data.SqlClient": "4.4.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/Hangfire.SqlServer.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Hangfire.SqlServer.dll": {}
-        }
-      },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "type": "package",
         "dependencies": {
@@ -4398,103 +4337,6 @@
     }
   },
   "libraries": {
-    "Hangfire/1.7.0": {
-      "sha512": "h/Si3l5KLNIGWslll10d1qaCqBEStfBUoBSipeN8UJGDu2oKpgotJ4zV2xooxC/YpdPta2WE1YWACNsCL+JOkA==",
-      "type": "package",
-      "path": "hangfire/1.7.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "hangfire.1.7.0.nupkg.sha512",
-        "hangfire.nuspec",
-        "readme.txt"
-      ]
-    },
-    "Hangfire.AspNetCore/1.7.0": {
-      "sha512": "WkDu/m+puMl7SS4q8fcuh61diYAHWuvuQNQ/3UiGapnl+dWto+lA7SbcVtBULpdkwa04Eai9z/kV5xe4B2jChg==",
-      "type": "package",
-      "path": "hangfire.aspnetcore/1.7.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "COPYING",
-        "COPYING.LESSER",
-        "LICENSE.md",
-        "LICENSE_ROYALTYFREE",
-        "LICENSE_STANDARD",
-        "NOTICES",
-        "hangfire.aspnetcore.1.7.0.nupkg.sha512",
-        "hangfire.aspnetcore.nuspec",
-        "lib/net451/Hangfire.AspNetCore.dll",
-        "lib/net451/Hangfire.AspNetCore.xml",
-        "lib/netstandard1.3/Hangfire.AspNetCore.dll",
-        "lib/netstandard1.3/Hangfire.AspNetCore.xml",
-        "lib/netstandard2.0/Hangfire.AspNetCore.dll",
-        "lib/netstandard2.0/Hangfire.AspNetCore.xml"
-      ]
-    },
-    "Hangfire.Core/1.7.0": {
-      "sha512": "ZWfWcE+kOWjKy7l/rsVtZmxs5XdltJY5ndx+vy7enD85ZVgc0Z+nIOZ/PfBhQQ68vGOfwOudpQVHuwXlSn7/fQ==",
-      "type": "package",
-      "path": "hangfire.core/1.7.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "COPYING",
-        "COPYING.LESSER",
-        "LICENSE.md",
-        "LICENSE_ROYALTYFREE",
-        "LICENSE_STANDARD",
-        "NOTICES",
-        "hangfire.core.1.7.0.nupkg.sha512",
-        "hangfire.core.nuspec",
-        "lib/net45/Hangfire.Core.dll",
-        "lib/net45/Hangfire.Core.xml",
-        "lib/net45/es/Hangfire.Core.resources.dll",
-        "lib/net45/zh-TW/Hangfire.Core.resources.dll",
-        "lib/net45/zh/Hangfire.Core.resources.dll",
-        "lib/net46/Hangfire.Core.dll",
-        "lib/net46/Hangfire.Core.xml",
-        "lib/net46/es/Hangfire.Core.resources.dll",
-        "lib/net46/zh-TW/Hangfire.Core.resources.dll",
-        "lib/net46/zh/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/Hangfire.Core.dll",
-        "lib/netstandard1.3/Hangfire.Core.xml",
-        "lib/netstandard1.3/es/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/zh-TW/Hangfire.Core.resources.dll",
-        "lib/netstandard1.3/zh/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/Hangfire.Core.dll",
-        "lib/netstandard2.0/Hangfire.Core.xml",
-        "lib/netstandard2.0/es/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/zh-TW/Hangfire.Core.resources.dll",
-        "lib/netstandard2.0/zh/Hangfire.Core.resources.dll"
-      ]
-    },
-    "Hangfire.SqlServer/1.7.0": {
-      "sha512": "2gWcsGu2ws16mAml2FPwabdfk/NI+Ap+xLBU2geCvi+1vFA0SiQVW67GB9Iv6JzaxCqq88JUsHMAzJPwYkJM4A==",
-      "type": "package",
-      "path": "hangfire.sqlserver/1.7.0",
-      "hasTools": true,
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "COPYING",
-        "COPYING.LESSER",
-        "LICENSE.md",
-        "LICENSE_ROYALTYFREE",
-        "LICENSE_STANDARD",
-        "NOTICES",
-        "hangfire.sqlserver.1.7.0.nupkg.sha512",
-        "hangfire.sqlserver.nuspec",
-        "lib/net45/Hangfire.SqlServer.dll",
-        "lib/net45/Hangfire.SqlServer.xml",
-        "lib/netstandard1.3/Hangfire.SqlServer.dll",
-        "lib/netstandard1.3/Hangfire.SqlServer.xml",
-        "lib/netstandard2.0/Hangfire.SqlServer.dll",
-        "lib/netstandard2.0/Hangfire.SqlServer.xml",
-        "tools/install.sql"
-      ]
-    },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
       "sha512": "owAlEIUZXWSnkK8Z1c+zR47A0X6ykF4XjbPok4lQKNuciUfHLGPd6QnI+rt/8KlQ17PmF+I4S3f+m+Qe4IvViw==",
       "type": "package",
@@ -11947,7 +11789,6 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
-      "Hangfire >= 1.7.0",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.NETCore.App >= 2.1.0"
     ]
@@ -11991,10 +11832,6 @@
     "frameworks": {
       "netcoreapp2.1": {
         "dependencies": {
-          "Hangfire": {
-            "target": "Package",
-            "version": "[1.7.0, )"
-          },
           "Microsoft.AspNetCore.App": {
             "suppressParent": "All",
             "target": "Package",
