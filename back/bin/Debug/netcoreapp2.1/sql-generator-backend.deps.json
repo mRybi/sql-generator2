@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "ad9a2953111960b229b24ca0aa477608a40fa5cd"
+    "signature": "8d19439ef22c432fe18f0eac697c8789fe30c00a"
   },
   "compilationOptions": {
     "defines": [
@@ -24,7 +24,6 @@
     ".NETCoreApp,Version=v2.1": {
       "sql-generator-backend/1.0.0": {
         "dependencies": {
-          "Hangfire": "1.7.0",
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.NETCore.App": "2.1.0"
         },
@@ -33,72 +32,6 @@
         },
         "compile": {
           "sql-generator-backend.dll": {}
-        }
-      },
-      "Hangfire/1.7.0": {
-        "dependencies": {
-          "Hangfire.AspNetCore": "1.7.0",
-          "Hangfire.Core": "1.7.0",
-          "Hangfire.SqlServer": "1.7.0"
-        }
-      },
-      "Hangfire.AspNetCore/1.7.0": {
-        "dependencies": {
-          "Hangfire.Core": "1.7.0",
-          "Microsoft.AspNetCore.Antiforgery": "2.1.1",
-          "Microsoft.AspNetCore.Hosting.Abstractions": "2.1.1",
-          "Microsoft.AspNetCore.Http.Abstractions": "2.1.1",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "2.1.1",
-          "Microsoft.Extensions.Logging.Abstractions": "2.1.1"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Hangfire.AspNetCore.dll": {
-            "assemblyVersion": "1.7.0.0",
-            "fileVersion": "0.0.0.0"
-          }
-        },
-        "compile": {
-          "lib/netstandard2.0/Hangfire.AspNetCore.dll": {}
-        }
-      },
-      "Hangfire.Core/1.7.0": {
-        "dependencies": {
-          "Newtonsoft.Json": "11.0.2"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Hangfire.Core.dll": {
-            "assemblyVersion": "1.7.0.0",
-            "fileVersion": "0.0.0.0"
-          }
-        },
-        "resources": {
-          "lib/netstandard2.0/es/Hangfire.Core.resources.dll": {
-            "locale": "es"
-          },
-          "lib/netstandard2.0/zh-TW/Hangfire.Core.resources.dll": {
-            "locale": "zh-TW"
-          },
-          "lib/netstandard2.0/zh/Hangfire.Core.resources.dll": {
-            "locale": "zh"
-          }
-        },
-        "compile": {
-          "lib/netstandard2.0/Hangfire.Core.dll": {}
-        }
-      },
-      "Hangfire.SqlServer/1.7.0": {
-        "dependencies": {
-          "Hangfire.Core": "1.7.0",
-          "System.Data.SqlClient": "4.5.1"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Hangfire.SqlServer.dll": {
-            "assemblyVersion": "1.7.0.0",
-            "fileVersion": "0.0.0.0"
-          }
-        },
-        "compile": {
-          "lib/netstandard2.0/Hangfire.SqlServer.dll": {}
         }
       },
       "Microsoft.NETCore.App/2.1.0": {
@@ -3222,34 +3155,6 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
-    },
-    "Hangfire/1.7.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-h/Si3l5KLNIGWslll10d1qaCqBEStfBUoBSipeN8UJGDu2oKpgotJ4zV2xooxC/YpdPta2WE1YWACNsCL+JOkA==",
-      "path": "hangfire/1.7.0",
-      "hashPath": "hangfire.1.7.0.nupkg.sha512"
-    },
-    "Hangfire.AspNetCore/1.7.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-WkDu/m+puMl7SS4q8fcuh61diYAHWuvuQNQ/3UiGapnl+dWto+lA7SbcVtBULpdkwa04Eai9z/kV5xe4B2jChg==",
-      "path": "hangfire.aspnetcore/1.7.0",
-      "hashPath": "hangfire.aspnetcore.1.7.0.nupkg.sha512"
-    },
-    "Hangfire.Core/1.7.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-ZWfWcE+kOWjKy7l/rsVtZmxs5XdltJY5ndx+vy7enD85ZVgc0Z+nIOZ/PfBhQQ68vGOfwOudpQVHuwXlSn7/fQ==",
-      "path": "hangfire.core/1.7.0",
-      "hashPath": "hangfire.core.1.7.0.nupkg.sha512"
-    },
-    "Hangfire.SqlServer/1.7.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-2gWcsGu2ws16mAml2FPwabdfk/NI+Ap+xLBU2geCvi+1vFA0SiQVW67GB9Iv6JzaxCqq88JUsHMAzJPwYkJM4A==",
-      "path": "hangfire.sqlserver/1.7.0",
-      "hashPath": "hangfire.sqlserver.1.7.0.nupkg.sha512"
     },
     "Microsoft.NETCore.App/2.1.0": {
       "type": "package",

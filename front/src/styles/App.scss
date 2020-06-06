@@ -23,19 +23,25 @@ html {
 
 .srd-demo-canvas {
   height: 100%;
-      min-height: 300px;
-      background-color: #3c3c3c !important;
-      background-image: linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent);
-      background-size: 50px 50px;
+  min-height: 300px;
+  background-color: #3c3c3c !important;
+  background-image: linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent);
+  background-size: 50px 50px;
 
 }
 
 .selected {
-  background-color: black
+  background-color: black;
+  border-width: 4px !important;
+  // text-decoration: underline;
 }
 
 .locked {
   background-color: violet
+}
+
+.disabled {
+  cursor: not-allowed !important;
 }
 
 .srd-default-link__label { overflow: visible; }

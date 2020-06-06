@@ -29,7 +29,7 @@ class RelationProperties {
   isUnique: boolean;
   propertyType: PropertyType
 }
-export class Link extends LinkModel<DefaultLinkModelListener> {
+export class LogicLink extends LinkModel<DefaultLinkModelListener> {
   width: number;
   color: string;
   curvyness: number;
@@ -40,11 +40,8 @@ export class Link extends LinkModel<DefaultLinkModelListener> {
     this.color = "rgba(255,255,255,0.5)";
     this.width = 3;
     this.curvyness = 0;
-    this.addLabel("0,N");
-    this.addLabel("relation name");
-    this.addLabel("0,N");
+
     this.properties = new Node(false, 'relNode')
-    
   }
 
  

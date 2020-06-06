@@ -8,15 +8,18 @@ class Props {
   app: Application;
   update: () => void;
   setIsUml: (isUml: boolean) => void;
+  setIsLogic: (isLogic: boolean) => void;
 }
 
 export const LoadFileHandler = (props: Props) => {
   const loadDiagram = (name: string) => {
     let engine = props.app.getDiagramEngine();
     try {
-      let obj: {diagram: any, isUml: boolean} = JSON.parse(name);
+      let obj: {diagram: any, isUml: boolean, isLogic: boolean} = JSON.parse(name);
     
       props.setIsUml(obj.isUml);
+      obj.isLogic ? props.setIsLogic(obj.isLogic) : props.setIsLogic(false);
+
   
       let model2 = new DiagramModel();
       model2.deSerializeDiagram(obj.diagram, engine);
@@ -27,9 +30,14 @@ export const LoadFileHandler = (props: Props) => {
       newLinks.forEach(link => {
         link.labels.splice(0, 3);
       });
-      engine.setDiagramModel(model2);
+
+      if(obj.isLogic) {
+        props.app.loadLogicModel(model2);
+      } else {
+        props.app.loadConceptualModel(model2);
+      }
+
       engine.repaintCanvas();
-      console.log(engine.diagramModel.serializeDiagram());
       props.update();
     } catch (error) {
       console.log(error);

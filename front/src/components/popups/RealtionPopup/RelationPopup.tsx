@@ -9,13 +9,13 @@ import { Port } from "../../../infrastructure/models/Port";
 import { PropertyType } from "../../../infrastructure/models/PropertyType";
 import { PropertyTable } from "../../../components/propertyTable/PropertyTable";
 
-
 class Props {
   isOpen: boolean;
   link: Link;
   update: () => void;
   diagramModel: DiagramModel;
   diagramEngine: DiagramEngine;
+  isLogic: boolean;
 }
 export const RelationPopup = (props: Props) => {
   const [left, setLeft] = useState("1, N");
@@ -25,15 +25,22 @@ export const RelationPopup = (props: Props) => {
   const [relationName, setRelationName] = useState("relation name");
 
   React.useEffect(() => {
-    console.log('link', props.link);
-    let leftLabel = props.link && props.link.labels.length > 0 && (props.link.labels[0] as Label).label;
-    let relLabel = props.link && props.link.labels.length > 0 && (props.link.labels[1] as Label).label;
-    let rightLabel = props.link && props.link.labels.length > 0 && (props.link.labels[2] as Label).label;
+    let leftLabel =
+      props.link &&
+      props.link.labels.length > 0 &&
+      (props.link.labels[0] as Label).label;
+    let relLabel =
+      props.link &&
+      props.link.labels.length > 0 &&
+      (props.link.labels[1] as Label).label;
+    let rightLabel =
+      props.link &&
+      props.link.labels.length > 0 &&
+      (props.link.labels[2] as Label).label;
 
     setLeft(leftLabel ? leftLabel : "1, N");
     setRelationName(relLabel ? relLabel : "relation name");
     setRight(rightLabel ? rightLabel : "1, N");
-
   }, [props.link]);
 
   let update = () => {
@@ -83,7 +90,7 @@ export const RelationPopup = (props: Props) => {
       <div className="grid-item">
         <select
           className="darkSelect"
-          onChange={event =>
+          onChange={(event) =>
             side === "left"
               ? setLeft(event.target.value)
               : setRight(event.target.value)
@@ -96,47 +103,59 @@ export const RelationPopup = (props: Props) => {
     );
   };
 
-  return (
-    <Popup modal closeOnDocumentClick open={props.isOpen} closeOnEscape>
-      <div className="SQLResultDialog">
-        <div className="grid-container">
-          <div className="grid-item">
-            <p>{sourcePort && sourcePort.name}</p>
-          </div>
-          <div className="grid-item">
-            <input
-              className="darkInput"
-              type="text"
-              defaultValue={relationName}
-              onChange={event => setRelationName(event.target.value)}
-            ></input>
-          </div>
-          <div className="grid-item">
-            <p>{targetPort && targetPort.name}</p>
-          </div>
-          {renderOptionPicker("left")}
-          <div className="grid-item">
-            <button onClick={update}>SAVE</button>
-          </div>
-          {renderOptionPicker("right")}
-          {/* <div className="grid-item" /> */}
-          <div className="grid-item">
-
-          </div>
+  if (props.isLogic) {
+    return (
+      <Popup modal closeOnDocumentClick open={props.isOpen} closeOnEscape>
+        <div className="SQLResultDialog">
           <div className="grid-item">
             <button onClick={remove}>Remove</button>
           </div>
-          {/* <div className="grid-item" /> */}
         </div>
-        {props.link && left.includes('N') && right.includes('N') &&
-          <div>
-            <h3 style={{ margin: 0 }}>Atributes:</h3>
-            <PropertyTable relView={true} diagramEngine={props.diagramEngine} selectedItem={props.link.properties} />
+      </Popup>
+    );
+  } else
+    return (
+      <Popup modal closeOnDocumentClick open={props.isOpen} closeOnEscape>
+        <div className="SQLResultDialog">
+          <div className="grid-container">
+            <div className="grid-item">
+              <p>{sourcePort && sourcePort.name}</p>
+            </div>
+            <div className="grid-item">
+              <input
+                className="darkInput"
+                type="text"
+                defaultValue={relationName}
+                onChange={(event) => setRelationName(event.target.value)}
+              ></input>
+            </div>
+            <div className="grid-item">
+              <p>{targetPort && targetPort.name}</p>
+            </div>
+            {renderOptionPicker("left")}
+            <div className="grid-item">
+              <button onClick={update}>SAVE</button>
+            </div>
+            {renderOptionPicker("right")}
+            {/* <div className="grid-item" /> */}
+            <div className="grid-item"></div>
+            <div className="grid-item">
+              <button onClick={remove}>Remove</button>
+            </div>
+            {/* <div className="grid-item" /> */}
           </div>
-        }
-      </div>
-
-
-    </Popup>
-  );
+          {props.link && left.includes("N") && right.includes("N") && (
+            <div>
+              <h3 style={{ margin: 0 }}>Atributes:</h3>
+              <PropertyTable
+                relView={true}
+                diagramEngine={props.diagramEngine}
+                selectedItem={props.link.properties}
+                isLogic={props.isLogic}
+              />
+            </div>
+          )}
+        </div>
+      </Popup>
+    );
 };

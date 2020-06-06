@@ -28,6 +28,9 @@ interface Props {
 }
 
 export const AppView = (props: Props) => {
+  const diagramDiv = React.useRef(null);
+
+
   const jpegFileTarget: React.RefObject<any> = null;
 
   const [showDialog, setShowDialog] = React.useState(false);
@@ -117,6 +120,7 @@ export const AppView = (props: Props) => {
             style={{ borderColor: "rgb(255,123,0)", marginTop: "100px" }}
             className="tray-item"
             onClick={() => {
+              props.app.setConceptualModel();
               setShowLoadFileDialog(true);
               setSelectedNode(null);
             }}
@@ -170,8 +174,15 @@ export const AppView = (props: Props) => {
               if(isLogicModel) {
                 props.app.setConceptualModel();
                 setIsLogicModel(false);
-                // moze jakas funkcja ktora klika na plansze jakis ref? 
-                // (po zmianie nie widac linmkow - klikniecie na plansze pokazuje linki)
+                
+                
+                // diagramDiv.current.click();
+                // refreshPopups();
+
+                //  props.app.getDiagramEngine().getDiagramModel().setOffsetX(100);
+                //  props.app.getDiagramEngine().recalculatePortsVisually();
+                //  props.app.getDiagramEngine().repaintCanvas();
+
               }
             }}
           >
@@ -184,8 +195,6 @@ export const AppView = (props: Props) => {
               if(!isLogicModel) {
                 props.app.setLogicModel();
                 setIsLogicModel(true);
-                // moze jakas funkcja ktora klika na plansze jakis ref? 
-                // (po zmianie nie widac linmkow - klikniecie na plansze pokazuje linki)
               }
             }}
           >
@@ -193,9 +202,9 @@ export const AppView = (props: Props) => {
           </div>
           <div
             style={{ borderColor: "rgb(152,50,100)", marginTop: "100px" }}
-            className={`tray-item ${isUml ? 'selected' : ''}`}
+            className={`tray-item ${isUml ? 'selected' : ''}  ${isLogicModel ? 'disabled' : ''}`}
             onClick={() => {
-              if(!isUml) {
+              if(!isLogicModel && !isUml) {
                 changeRelation();
                 setIsUml(true);
               }
@@ -205,9 +214,9 @@ export const AppView = (props: Props) => {
           </div>
           <div
             style={{ borderColor: "rgb(152,50,100)" }}
-            className={`tray-item ${!isUml ? 'selected' : ''}`}
+            className={`tray-item ${!isUml ? 'selected' : ''} ${isLogicModel ? 'disabled' : ''}`}
             onClick={() => {
-              if(isUml) {
+              if(!isLogicModel && isUml) {
                 changeRelation();
                 setIsUml(false);
               }
@@ -228,6 +237,7 @@ export const AppView = (props: Props) => {
         </TrayWidget>
 
         <div
+          ref={diagramDiv}
           id="diagram-layer"
           className="diagram-layer"
           onDrop={event => {
@@ -261,6 +271,7 @@ export const AppView = (props: Props) => {
                 "rgb(0,192,255)"
               );
               node.addInPort(
+                isLogicModel,
                 false,
                 "Id",
                 true,
@@ -271,6 +282,7 @@ export const AppView = (props: Props) => {
                 PropertyType.INT
               );
               node.addInPort(
+                isLogicModel,
                 true,
                 "",
                 false,
@@ -281,6 +293,7 @@ export const AppView = (props: Props) => {
                 PropertyType.INT
               );
               node.addInPort(
+                isLogicModel,
                 true,
                 "1",
                 false,
@@ -315,6 +328,7 @@ export const AppView = (props: Props) => {
           onDragOver={event => {
             event.preventDefault();
           }}
+
           onClick={event => {
             event.preventDefault();
             if (event.ctrlKey && props.app
@@ -336,13 +350,12 @@ export const AppView = (props: Props) => {
           }}
           onDoubleClick={event => {
             event.preventDefault();
-            if (
+            if ( //!isLogicModel &&
               props.app
                 .getDiagramEngine()
                 .getDiagramModel()
                 .getSelectedItems()[0] instanceof PointModel
             ) {
-              console.log('zmiana linku');
               setSelectedLink(
                 props.app
                   .getDiagramEngine()
@@ -368,7 +381,7 @@ export const AppView = (props: Props) => {
           }}
         >
           <DiagramWidget
-            allowLooseLinks={true}
+            allowLooseLinks={false}
             deleteKeys={[46]}
             className="srd-demo-canvas"
             diagramEngine={props.app.getDiagramEngine()}
@@ -376,24 +389,27 @@ export const AppView = (props: Props) => {
         </div>
         {selectedNode != null ? (
           <NodeProperties
+            isLogic={isLogicModel}
             selectedItem={selectedNode}
             diagramEngine={props.app.getDiagramEngine()}
           />
         ) : null}
         <GenerationHandler
           isUml={isUml}
+          isLogic={isLogicModel}
           update={refreshPopups}
           isOpen={showDialog}
           serializeDiagram={props.app.getDiagramEngine().diagramModel.serializeDiagram()}
-
         />
         <LoadFileHandler
           update={refreshPopups}
           isOpen={showLoadFileDialog}
           app={props.app}
           setIsUml={setIsUml}
+          setIsLogic={setIsLogicModel}
         />
         <SaveToFilePopup
+          isLogic={isLogicModel}
           update={refreshPopups}
           diagramModel={props.app.getDiagramEngine().diagramModel}
           isOpen={showSaveFileDialog}
@@ -412,6 +428,8 @@ export const AppView = (props: Props) => {
           update={refreshPopups}
           isOpen={showRelationDialog}
           link={selectedLink}
+
+          isLogic={isLogicModel}
         />
       </div>
     </div>

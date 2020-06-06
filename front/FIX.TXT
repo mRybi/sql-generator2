@@ -1,55 +1,46 @@
-Dzień dobry,
+1. Wyswietlanie 2 diagramow - switch on click - DONE
+2. Kopiowanie Conceptual do View - DONE
+3. LogicPort implemetation - DONE
+4. Logic Link implemetation - DONE
+5. AppView - uzywanie odpowiednich portów - Port/LogicPort zalezne od isLogic state - DONE
+6. Musi byc kopiowanie raczej: - DONE
+    - napisac konwerter z conseptual na logic linkow i lączenie nodow  - DONE
+    - cos jak na backendzie  - DONE
 
-----DONE----
-ad. 1 - te same nazwy
-Problem dalej istnieje, co więcej, efekty obrony przed nadaniem tej samej nazwy encji są czasami nie do 
-przyjęcia.
-    a. Otóż, gdy chciałem encji Entity17 w diagramie, który Pan przysłał, zmienić nazwę na Entity15 , to 
-    encja ta znikała z diagramu łącznie ze związkiem. I nawet nie mam jak cofnąć tej operacji! Chyba, że 
-    można a ja nie doczytałem.
-
-    b. I nadal program jest czuły na wielkość liter - wysyłam diagram w którym jest Entity15 i entity15.
-    
-    c. Do istniejącego diagramu wstawiłem nowa encję - otrzymała ona nazwę Entity18 choc taka encja już 
-    istnieje.
-
-ad.2 - klucz główny not null
-    DONE:
-    Świetnie, tylko czemu mogę odhaczyć pole NotNull dla klucza głównego - ono powinno być nieaktywne.
-    Przy okazji, wstawiłem encję i odhaczyłem PK dla jej jedynego atrybutu ID. Ale nie mogłem odhaczyć 
-    AutoIncrement. Dopiero po wstawieniu drugiego atrybutu było to możliwe.
-
-    Przy okazji odkryłem, że mogę zrobić związek, w którym jeden z końców nie jest związany z żadną encją. 
-    Proszę to zmienić. Jeżeli nie połączę dwóch encji, to nie ma związku na diagramie.
-
-ad.3 - uml
-    Świetnie, ale dlaczego ustalam notację dopiero przy generowaniu skryptu? Dzięki takiemu "pomysłowi" nie 
-    mogę sprawdzić tego, co Pan przysłał, bo nie wiem, jaka notacja została użyta. Proszę o informację, jak 
-    mam odczytywać diagram.
-    
-    Myślę, że trzeba to zrobić na początku tworzenia diagramu, a jeżeli diagram już istnieje, to po jego 
-    otwarciu powinna być gdzieś informacja, jaka notacja jest używana. A najlepiej by było, gdyby użytkownik 
-    mógł w trakcie zmienić notację (co oczywiście wiązałoby się z dokonaniem automatycznym zmian w już 
-    istniejących związkach).
-
-ad.4 - usuwanie punktow - działa
-    Nie wiem dlaczego, ale u mnie (tzn. na tej stronie, do której mam link) ctrl z lewym przyciskiem 
-    nie działa...
-
-    nie działa na zaladowanych diagramach
+7. Porty z conceptual nie sa przemapowane na logic - DONE
 
 
-ad.5 - mysql
-    Przesłał mi Pan skrypty. Wziąłem ten do MySQLa i chciałem uruchomić go w MySQL 8.0 - nie udało się, 
-    dużo błędów. 
-    
-    Czy Pan sprawdzał te skrypty, czy działają, zanim je Pan przesłał?
-    Formater SQL zle zadziałał i dodał niepotrszebne spacje. Juz działa.
 
-    A przy okazji, generowanie skryptu robi Pan samodzielnie, czy też ma Pan jakąś np. bibliotekę, która 
-    to robi?
+FRONTED
+1.
+AppView.tsx
+    // moze jakas funkcja ktora klika na plansze jakis ref? 
+    // (po zmianie nie widac linmkow - klikniecie na plansze pokazuje linki) -- DONE
 
-    Samodzielnie.
+2. logic view nie mozna usuwac linkow - DONE
+3. logic view towrzy normalne linki gdy port jest z conceptual - mapowanie portow jakos na logicPort 
+    zamiast normalnego port -- DONE
 
-ad.6 - dodac vpsa z backendem
-    A właściwie dlaczego nie ma generatora SQLa na stronie programu?
+3. Pomyslec jak powinno wygladac tworzenie logicznego - teraz wszytsko trzeba recznie
+
+
+PIATEK 05.06
+1. czy można bardziej wyróżnić, która notacja aktualnie jest używana? To ciemniejsze tło aktualnie 
+    używanej za mało wyróżnia - mam monitor, na którym nie byłem w stanie tego zauważyć
+2. czasami wprowadzanie zmian w encji powoduje (np. nazwy) powoduje, że encja znika bezpowrotnie
+3. przesyła zrzut, na którym jest widoczny związek. Wcześniej dodałem mu atrybut. Ale tego atrybutu
+    nie ma, i nie ma jak wstawić nowego. Coś też się stało z krotnościami - ustawiam na 0,N a uparcie 
+    pozostaje na ekranie 1,N . - Clipboard 2.jpeg
+
+Feature request:
+i jeszcze mam pytanie - jak mogę zacząć nowy tworzenie nowego diagramu? W tej chwili muszę usuwać ręcznie.
+ A na dodatek nie mogę (nie potrafię) zaznaczyć jakichkolwiek obiektów (np. wszystkich), żeby przyspieszyć 
+ usuwanie. Przydałby się przycisk New Diagram.
+
+BACKEND - DONE
+8. Dostosowac backend do 2 typow diagramow - mozna do  lkuuiutipidac diagram conceptujalny do generacji tak jak jest teraz
+    oraz logiczny juz z FK itd : 
+    - mysle ze dodac do requesta co to za typ diagramu(logic/ conceptual) 
+    - i albo uzywac metody add FK(conceptual) albo nie(logic)
+
+Zapisywanie i wczytawnie diagramow - jak teraz jak sa 2 modele?

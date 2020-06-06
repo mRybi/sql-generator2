@@ -12,6 +12,7 @@ class Props {
 	selectedItem: Node;
 	diagramEngine: DiagramEngine;
 	relView?: boolean;
+	isLogic: boolean;
 }
 
 export function useForceUpdate() {
@@ -59,6 +60,22 @@ export const PropertyTable = (props: Props) => {
 		) as Port).isUnique = row.isPrimaryKey ? true : false;
 
 		clearPartialKeys();
+		forceUpdate();
+	};
+
+	const handleChangeFK = (
+		event: React.ChangeEvent<HTMLInputElement>,
+		row: Port
+	) => {
+		event.persist();
+		(updatedItem.getPortFromID(
+			row.id
+		) as Port).isForeignKey = !row.isForeignKey;
+
+		(updatedItem.getPortFromID(
+			row.id
+		) as Port).isNotNull = row.isForeignKey ? true : false;
+
 		forceUpdate();
 	};
 
@@ -119,6 +136,7 @@ export const PropertyTable = (props: Props) => {
 
 	const addNewPort = (newPortNumber: number) => {
 		updatedItem.addInPort(
+			props.isLogic,
 			false,
 			`new atribute ${newPortNumber}`,
 			false,
@@ -210,6 +228,21 @@ export const PropertyTable = (props: Props) => {
 			)
 		},
 		{
+			dataField: "isForeignKey",
+			text: "Is Foreign Key",
+			formatter: (cellContent: any, row: Port) => (
+				<div className="checkbox">
+					<label>
+						<input
+							type="checkbox"
+							checked={row.isForeignKey}
+							onChange={event => handleChangeFK(event, row)}
+						/>
+					</label>
+				</div>
+			)
+		},
+		{
 			dataField: "isPartialKey",
 			text: "Is Partial Key",
 			formatter: (cellContent: any, row: Port) => (
@@ -231,7 +264,7 @@ export const PropertyTable = (props: Props) => {
 				<div className="checkbox">
 					<label>
 						<input
-							disabled={row.isPrimaryKey}
+							disabled={row.isPrimaryKey || row.isForeignKey}
 							type="checkbox"
 							checked={row.isNotNull}
 							onChange={event => handleChangeNull(event, row)}
@@ -308,6 +341,10 @@ export const PropertyTable = (props: Props) => {
 
 	if (ispk) {
 		cols = cols.filter(col => col.dataField !== 'isPartialKey')
+	}
+
+	if(!props.isLogic) {
+		cols = cols.filter(c => c.dataField !== 'isForeignKey')
 	}
 
 	return (
