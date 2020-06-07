@@ -1,6 +1,6 @@
 {
   "name": "sql-gen2",
-  "homepage": "http://gen.sql-generator.pl/.",
+  "homepage": "http://gen.sql-generator.pl/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
