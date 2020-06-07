@@ -14,12 +14,6 @@ namespace sql_generator_backend {
 
             services.AddMvc ();
             services.AddCors ();
-
-            services.AddHttpsRedirection(options =>
-            {
-                options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
-                options.HttpsPort = 443;
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
