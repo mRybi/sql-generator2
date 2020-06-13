@@ -6,6 +6,8 @@ import {
   DefaultLinkWidget
 } from "storm-react-diagrams";
 import { Link } from "../models/Link";
+import { CustomLinkWidget } from "../widgets/CustomLinkWidget";
+
 
 export class CustomLinkFactory extends AbstractLinkFactory<Link> {
   constructor() {
@@ -16,7 +18,7 @@ export class CustomLinkFactory extends AbstractLinkFactory<Link> {
     diagramEngine: DiagramEngine,
     link: DefaultLinkModel
   ): JSX.Element {
-    return React.createElement(DefaultLinkWidget, {
+    return React.createElement(CustomLinkWidget, {
       link: link,
       diagramEngine: diagramEngine
     });
@@ -28,7 +30,7 @@ export class CustomLinkFactory extends AbstractLinkFactory<Link> {
 
   generateLinkSegment(
     model: Link,
-    widget: DefaultLinkWidget,
+    widget: CustomLinkWidget,
     selected: boolean,
     path: string
   ) {

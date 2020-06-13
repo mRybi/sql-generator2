@@ -3,8 +3,10 @@ import { LabelModel, DiagramEngine } from "storm-react-diagrams";
 
 export class Label extends LabelModel {
   label: string;
+  isFirst: boolean;
 
   constructor(label: string) {
+    console.log('ctor label')
     super("custom");
     this.label = label;
     this.offsetY = -23;

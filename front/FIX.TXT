@@ -1,46 +1,41 @@
-1. Wyswietlanie 2 diagramow - switch on click - DONE
-2. Kopiowanie Conceptual do View - DONE
-3. LogicPort implemetation - DONE
-4. Logic Link implemetation - DONE
-5. AppView - uzywanie odpowiednich portów - Port/LogicPort zalezne od isLogic state - DONE
-6. Musi byc kopiowanie raczej: - DONE
-    - napisac konwerter z conseptual na logic linkow i lączenie nodow  - DONE
-    - cos jak na backendzie  - DONE
+1. -- DONE --  
+    Proszę sprawdzić, dlaczego występuje opisana niżej sytuacja i czy można temu zaradzić:
+    Edytuję właściwości encji. Klikam dwukrotnie w nazwę encji. Chcę usunąć dowolny znak - naciskam 
+    przycisk Delete. Okno właściwości pozostaje, ale z diagramu znika ta encja.
+2. -- DONE -- o co chodzi z napisem Relation??
+    w diagramie logicznym też można wprowadzać zmiany (które, jeśli wrócę do modelu konceptualnego, znikną),
+    ale nie działa to tak jak powinno. 
+    Przykład.
+    wstawiam w modelu logicznym nową relację (Czy byłaby możliwość, żeby wtedy, gdy wyświetlany jest model 
+    logiczny, na przycisku Entity pojawił się napis Relation?) i łączę ją np z inną relacją, która będzie 
+    relacją nadrzędną. Muszę samodzielnie w nowej relacji wstawić atrybut, który będzie kluczem obcym. Ale 
+    to i tak na nic, bo nie mam jak wskazać do której relacji on się odnosi. I w konsekwencji nie mogę 
+    wygenerować kodu.
+    proponuję zrobić coś takiego:
+    Załóżmy, że mam dwie relacje, które nie są ze sobą połączone.
+    Łączę relację podrzędną z relacją nadrzędną.
+    Program z automatu wstawia do relacji podrzędnej atrybuty z klucza głównego relacji nadrzędnej 
+    i zaznacza dla nich, że tworzą klucz obcy.
+    Jeżeli się pomyliłem i miało być odwrotnie, klikam dwukrotnie w linię łączącą. Wyświetla mi się okno, w 
+    którym jest nie tylko przycisk Remove ale również przycisk np Reverse. Po kliknięciu w przycisk 
+    automatycznie z jednej relacji klucz obcy znika a w drugiej się pojawia.
 
-7. Porty z conceptual nie sa przemapowane na logic - DONE
+3. Z tego co pamiętam, to nie ma możliwości wstawienia strzałki przy linii łączącej relację nadrzędną
+    z podrzędną. A czy można na ich końcach wstawić symbole: '1' przy relacji nadrzędnej i 'N' przy relacji 
+    podrzędnej.
+
+    dodaja sie ale jak jest m2m to cos sie kreci byc moze jest to nadpisywane w canlinktoPort
+    naprawic wyswietlanie relPopup -- DONE --
+    w reverse zamieniac labele -- DONE --
+
+4. Z modelu logicznego nie generuje się kod. Z tego, co zdążyłem zauważyć, mogę dodać atrybuty w modelu 
+    logicznym, i wtedy program generuje nowy kod uwzględniający te nowe atrybuty. Ale jak robię jakieś 
+    zmiany w obrębie powiązań między relacjami, to kod już nie chce się generować
+
+    PROBLEM:
+    dodałem FkNodeId ktory działa tylko dla M2M relacji bo tylko wtedy sie dodaje.
+    czyli teraz nie działa 1:N relacje bo FkNodeId jest null
+    ROZWIAZANIE:
 
 
-
-FRONTED
-1.
-AppView.tsx
-    // moze jakas funkcja ktora klika na plansze jakis ref? 
-    // (po zmianie nie widac linmkow - klikniecie na plansze pokazuje linki) -- DONE
-
-2. logic view nie mozna usuwac linkow - DONE
-3. logic view towrzy normalne linki gdy port jest z conceptual - mapowanie portow jakos na logicPort 
-    zamiast normalnego port -- DONE
-
-3. Pomyslec jak powinno wygladac tworzenie logicznego - teraz wszytsko trzeba recznie
-
-
-PIATEK 05.06
-1. czy można bardziej wyróżnić, która notacja aktualnie jest używana? To ciemniejsze tło aktualnie 
-    używanej za mało wyróżnia - mam monitor, na którym nie byłem w stanie tego zauważyć
-2. czasami wprowadzanie zmian w encji powoduje (np. nazwy) powoduje, że encja znika bezpowrotnie
-3. przesyła zrzut, na którym jest widoczny związek. Wcześniej dodałem mu atrybut. Ale tego atrybutu
-    nie ma, i nie ma jak wstawić nowego. Coś też się stało z krotnościami - ustawiam na 0,N a uparcie 
-    pozostaje na ekranie 1,N . - Clipboard 2.jpeg
-
-Feature request:
-i jeszcze mam pytanie - jak mogę zacząć nowy tworzenie nowego diagramu? W tej chwili muszę usuwać ręcznie.
- A na dodatek nie mogę (nie potrafię) zaznaczyć jakichkolwiek obiektów (np. wszystkich), żeby przyspieszyć 
- usuwanie. Przydałby się przycisk New Diagram.
-
-BACKEND - DONE
-8. Dostosowac backend do 2 typow diagramow - mozna do  lkuuiutipidac diagram conceptujalny do generacji tak jak jest teraz
-    oraz logiczny juz z FK itd : 
-    - mysle ze dodac do requesta co to za typ diagramu(logic/ conceptual) 
-    - i albo uzywac metody add FK(conceptual) albo nie(logic)
-
-Zapisywanie i wczytawnie diagramow - jak teraz jak sa 2 modele?
+5. Remove w logic link nie usuwa portu fk z node'a -- DONE --

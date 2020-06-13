@@ -35,16 +35,18 @@ export class LogicLink extends LinkModel<DefaultLinkModelListener> {
   curvyness: number;
   properties: Node;
 
-  constructor(type: string = "custom") {
+  constructor(type: string = "custom", labelF: string, labelS: string) {
     super(type);
     this.color = "rgba(255,255,255,0.5)";
     this.width = 3;
     this.curvyness = 0;
 
+    this.addLabel(labelF);
+    this.addLabel(labelS);
+
     this.properties = new Node(false, 'relNode')
   }
 
- 
   serialize() {
     let relPorts = this.properties && this.properties.ports && Object.values(this.properties.ports);
     let properties = relPorts && relPorts.map(a => {
@@ -92,6 +94,7 @@ export class LogicLink extends LinkModel<DefaultLinkModelListener> {
     labelOb.setLabel(label);
     return super.addLabel(labelOb);
   }
+
 
   setWidth(width: number) {
     this.width = width;

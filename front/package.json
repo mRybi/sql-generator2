@@ -1,11 +1,12 @@
 {
   "name": "sql-gen2",
-  "homepage": "http://gen.sql-generator.pl/",
+  "homepage": "https://gen.sql-generator.pl/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@babel/core": "7.1.6",
     "@types/dom-to-image": "^2.6.0",
+    "@types/pathfinding": "0.0.4",
     "@types/react": "16.7.18",
     "@types/react-dom": "16.9.5",
     "axios": "^0.19.2",

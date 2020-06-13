@@ -1,7 +1,6 @@
 import { Port } from "../models/Port";
 import { BaseWidgetProps, BaseWidget, PortWidget } from "storm-react-diagrams";
 import React, { CSSProperties } from "react";
-import { PropertyType } from "../models/PropertyType";
 
 export interface DefaultPortLabelProps extends BaseWidgetProps {
   model: Port;

@@ -8,6 +8,7 @@ import { DiagramModel, DiagramEngine } from "storm-react-diagrams";
 import { Port } from "../../../infrastructure/models/Port";
 import { PropertyType } from "../../../infrastructure/models/PropertyType";
 import { PropertyTable } from "../../../components/propertyTable/PropertyTable";
+import { LogicPort } from "../../../infrastructure/models/LogicPort";
 
 class Props {
   isOpen: boolean;
@@ -27,15 +28,15 @@ export const RelationPopup = (props: Props) => {
   React.useEffect(() => {
     let leftLabel =
       props.link &&
-      props.link.labels.length > 0 &&
+      props.link.labels.length > 2 &&
       (props.link.labels[0] as Label).label;
     let relLabel =
       props.link &&
-      props.link.labels.length > 0 &&
+      props.link.labels.length > 2 &&
       (props.link.labels[1] as Label).label;
     let rightLabel =
       props.link &&
-      props.link.labels.length > 0 &&
+      props.link.labels.length > 2 &&
       (props.link.labels[2] as Label).label;
 
     setLeft(leftLabel ? leftLabel : "1, N");
@@ -72,6 +73,24 @@ export const RelationPopup = (props: Props) => {
     targetP.removeLink(props.link);
 
     props.diagramModel.removeLink(props.link);
+
+    if(props.isLogic) {
+      let thisParent = props.link.targetPort.getParent() as Node;
+      let portNode = props.link.sourcePort.getParent() as Node;
+  
+      let portNodePorts = portNode.getPorts() as {[s: string]: LogicPort};
+      let thisParentPorts = thisParent.getPorts() as {[s: string]: LogicPort};
+  
+      let czyMaPortZPKjakoFk = Object.keys(thisParentPorts).filter(id => thisParentPorts[id].fkPortId === portNode.id)[0];
+      let czyMaPortZPKjakoFk2 = Object.keys(portNodePorts).filter(id => portNodePorts[id].fkPortId === thisParent.id)[0];
+      
+      if(czyMaPortZPKjakoFk) {
+        thisParent.removePort(thisParentPorts[czyMaPortZPKjakoFk]);
+      } else {
+        portNode.removePort(portNodePorts[czyMaPortZPKjakoFk2]);
+      }
+    }
+
     props.update();
   };
 
@@ -103,12 +122,49 @@ export const RelationPopup = (props: Props) => {
     );
   };
 
+  const reverseLink = () => {
+    let thisParent = props.link.targetPort.getParent() as Node;
+    let portNode = props.link.sourcePort.getParent() as Node;
+
+    let portNodePorts = portNode.getPorts() as {[s: string]: LogicPort};
+    let thisParentPorts = thisParent.getPorts() as {[s: string]: LogicPort};
+
+    let czyMaPortZPKjakoFk = Object.keys(thisParentPorts).filter(id => thisParentPorts[id].fkPortId === portNode.id)[0];
+    let czyMaPortZPKjakoFk2 = Object.keys(portNodePorts).filter(id => portNodePorts[id].fkPortId === thisParent.id)[0];
+    
+
+    if(czyMaPortZPKjakoFk) {
+      let labels = props.link.labels as Label[];
+      labels[0].label = '1';
+      labels[1].label = 'N';
+
+      thisParent.removePort(thisParentPorts[czyMaPortZPKjakoFk]);
+
+      let pk = Object.keys(thisParentPorts).filter(id => thisParentPorts[id].isPrimaryKey)[0];
+      portNode.addInPort(true,false,thisParent.name + thisParentPorts[pk].name, false, true, false,false,true,'INT', thisParent.id)
+    } else {
+      let labels = props.link.labels as Label[];
+      labels[0].label = 'N';
+      labels[1].label = '1';
+
+      portNode.removePort(portNodePorts[czyMaPortZPKjakoFk2]);
+
+      let pk = Object.keys(portNodePorts).filter(id => portNodePorts[id].isPrimaryKey)[0];
+      thisParent.addInPort(true,false,portNode.name + portNodePorts[pk].name, false, true, false,false,true,'INT', thisParent.id)
+    }
+    
+    props.update();
+  }
+
   if (props.isLogic) {
     return (
       <Popup modal closeOnDocumentClick open={props.isOpen} closeOnEscape>
         <div className="SQLResultDialog">
           <div className="grid-item">
             <button onClick={remove}>Remove</button>
+          </div>
+          <div className="grid-item">
+            <button onClick={reverseLink}>Reverse</button>
           </div>
         </div>
       </Popup>

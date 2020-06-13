@@ -80,11 +80,15 @@ export class Application {
         (k) => (logicNodes[k] as Node).name == targetNode.name
       )[0];
 
+      // let targetPorts = targetNode.getPorts() as {[s: string]: LogicPort}
+
+      // let targetPK = Object.keys(targetPorts).filter(p => targetPorts[p].isPrimaryKey)[0];
+
       let sourceLabel = (concLinks[k].labels[0] as Label).label;
       let targetLabel = (concLinks[k].labels[2] as Label).label;
 
       if (sourceLabel.includes("N") && targetLabel.includes("N")) {
-        let relNode = ((concLinks[k] as Link).properties as Node).clone();
+        let relNode = ((concLinks[k] as Link).properties as Node).clone() as Node;
         relNode.name = (concLinks[k].labels[1] as Label).label;
         relNode.setPosition(sourceNode.x + 150, sourceNode.y - 100);
         relNode.addInPort(
@@ -145,7 +149,7 @@ export class Application {
           false,
           true,
           "INT",
-          targetNodeId // added
+          targetNodeId
         );
 
         this.logicModel.addNode(relNode);
@@ -155,7 +159,8 @@ export class Application {
         let sourceP = node.ports["1"];
         let targetP = relNode.ports[""];
 
-        let link = new LogicLink("custom");
+        let link = new LogicLink("custom", 'N', '1');
+        
         link.setSourcePort(sourceP);
         link.setTargetPort(targetP);
 
@@ -164,7 +169,8 @@ export class Application {
         let sourceP2 = relNode.ports["1"];
         let targetP2 = node2.ports[""];
 
-        let link2 = new LogicLink("custom");
+        let link2 = new LogicLink("custom", '1', 'N');
+
         link2.setSourcePort(sourceP2);
         link2.setTargetPort(targetP2);
 
@@ -188,7 +194,8 @@ export class Application {
         let sourceP = node.ports["1"];
         let targetP = logicNodes[targetNodeId].ports[""];
 
-        let link = new LogicLink("custom");
+        let link = new LogicLink("custom", '1', 'N');
+        
         link.setSourcePort(sourceP);
         link.setTargetPort(targetP);
         this.logicModel.addLink(link);
@@ -211,7 +218,8 @@ export class Application {
         let sourceP = node.ports["1"];
         let targetP = logicNodes[sourceNodeId].ports[""];
 
-        let link = new LogicLink("custom");
+        let link = new LogicLink("custom", 'N', '1');
+
         link.setSourcePort(sourceP);
         link.setTargetPort(targetP);
         this.logicModel.addLink(link);
@@ -235,7 +243,8 @@ export class Application {
         let sourceP = node.ports["1"];
         let targetP = logicNodes[targetNodeId].ports[""];
 
-        let link = new LogicLink("custom");
+        let link = new LogicLink("custom", '1', 'N');
+
         link.setSourcePort(sourceP);
         link.setTargetPort(targetP);
         this.logicModel.addLink(link);

@@ -1,6 +1,8 @@
 import * as _ from "lodash";
 import { PortModel, DiagramEngine } from "storm-react-diagrams";
 import { LogicLink } from "./LogicLink";
+import { Node } from "./Node";
+
 
 export class LogicPort extends PortModel {
   in: boolean;
@@ -81,10 +83,25 @@ export class LogicPort extends PortModel {
   }
 
   canLinkToPort(port: LogicPort): boolean {
+    let thisParent = this.getParent() as Node;
+    let portNode = port.getParent() as Node;
+
+    let portNodePorts = portNode.getPorts() as {[s: string]: LogicPort};
+    let thisParentPorts = thisParent.getPorts() as {[s: string]: LogicPort};
+
+    let czyMaPortZPKjakoFk = Object.keys(thisParentPorts).filter(id => thisParentPorts[id].fkPortId === portNode.id)[0];
+    let czyMaPortZPKjakoFk2 = Object.keys(portNodePorts).filter(id => portNodePorts[id].fkPortId === thisParent.id)[0];
+    
+    let pk = Object.keys(thisParentPorts).filter(id => thisParentPorts[id].isPrimaryKey)[0];
+
+    if(!czyMaPortZPKjakoFk && !czyMaPortZPKjakoFk2) {
+      portNode.addInPort(true,false,thisParent.name + thisParentPorts[pk].name, false, true, false,false,true,'INT', thisParent.id)
+    }
+
     return true;
   }
 
   createLinkModel(): LogicLink {
-    return new LogicLink("custom");
+    return new LogicLink("custom", '1', 'N');
   }
 }

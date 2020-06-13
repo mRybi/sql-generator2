@@ -382,7 +382,7 @@ export const AppView = (props: Props) => {
         >
           <DiagramWidget
             allowLooseLinks={false}
-            deleteKeys={[46]}
+            deleteKeys={[selectedNode ? null : 46]}
             className="srd-demo-canvas"
             diagramEngine={props.app.getDiagramEngine()}
           />

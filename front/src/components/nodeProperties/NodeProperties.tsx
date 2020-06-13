@@ -40,8 +40,6 @@ export const NodeProperties = (props: Props) => {
     };
     let names = Object.values(allNodes).map(node => allNodes[node.id].name.toLowerCase().trim());
     
-    console.log(names);
-
     names.includes(event.target.value.toLowerCase().trim())
       ? updatedItem.name = defaultName
       : updatedItem.name = event.target.value.trim();
