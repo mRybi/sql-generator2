@@ -22,10 +22,11 @@ export const GenerationHandler = (props: Props) => {
   const generateScript = async (name: string) => {
     let serDiagram = props.serializeDiagram;
     let diagram = JSON.stringify(serDiagram, null, 2);
-    console.log('diagram: ', serDiagram);
-    // let response = await axios.post("https://sql-generator.pl/api/setjob/mssql", {
+    console.log('diagram: ', diagram);
 
-    let response = await axios.post("https://51.83.185.113/api/setjob/mssql", {
+    let response = await axios.post("https://sql-generator.pl/api/setjob/mssql", {
+
+    // let response = await axios.post("https://51.83.185.113/api/setjob/mssql", {
     // let response = await axios.post("http://localhost:5000/api/setjob/mssql", {
 
       SerializedModel: diagram,
