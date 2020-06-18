@@ -3,7 +3,8 @@ import {
   AbstractLinkFactory,
   DiagramEngine,
   DefaultLinkModel,
-  DefaultLinkWidget
+  DefaultLinkWidget,
+  Toolkit
 } from "storm-react-diagrams";
 import { Link } from "../models/Link";
 import { CustomLinkWidget } from "../widgets/CustomLinkWidget";
@@ -28,19 +29,32 @@ export class CustomLinkFactory extends AbstractLinkFactory<Link> {
     return new Link("custom");
   }
 
-  generateLinkSegment(
-    model: Link,
-    widget: CustomLinkWidget,
-    selected: boolean,
-    path: string
-  ) {
-    return (
-      <path
-        className={selected ? widget.bem("--path-selected") : ""}
-        strokeWidth={model.width}
-        stroke={model.color}
-        d={path}
-      />
-    );
-  }
+  // generateLinkSegment(
+  //   model: Link,
+  //   widget: CustomLinkWidget,
+  //   selected: boolean,
+  //   path: string
+  // ) {
+  //   return (
+  //     <path
+  //       className={selected ? widget.bem("--path-selected") : ""}
+  //       strokeWidth={model.width}
+  //       stroke={model.color}
+  //       d={path}
+  //     />
+  //   );
+  // }
+
+  generateLinkSegment(model: DefaultLinkModel, widget: DefaultLinkWidget, selected: boolean, path: string, startMarkerId: string = "-", endMarkerId: string = "-") {
+		return (
+			<path
+				className={selected ? widget.bem("--path-selected") : ""}
+				strokeWidth={model.width}
+				stroke={model.color}
+				d={path}
+				markerStart={"url(#" + startMarkerId + ")"}
+				markerEnd={"url(#" + endMarkerId + ")"}
+			/>
+		);
+	}
 }

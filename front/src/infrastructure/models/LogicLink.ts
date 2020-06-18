@@ -34,6 +34,7 @@ export class LogicLink extends LinkModel<DefaultLinkModelListener> {
   color: string;
   curvyness: number;
   properties: Node;
+  markers: any;
 
   constructor(type: string = "custom", labelF: string, labelS: string) {
     super(type);
@@ -45,6 +46,7 @@ export class LogicLink extends LinkModel<DefaultLinkModelListener> {
     this.addLabel(labelS);
 
     this.properties = new Node(false, 'relNode')
+    this.markers = {startMarker: false, endMarker: false};
   }
 
   serialize() {
@@ -117,4 +119,8 @@ export class LogicLink extends LinkModel<DefaultLinkModelListener> {
       }
     );
   }
+
+  setMarkers(startMarker: boolean, endMarker: boolean) {
+		this.markers = {startMarker: startMarker, endMarker: endMarker};
+	}
 }

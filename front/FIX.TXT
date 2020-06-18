@@ -1,41 +1,30 @@
-1. -- DONE --  
-    Proszę sprawdzić, dlaczego występuje opisana niżej sytuacja i czy można temu zaradzić:
-    Edytuję właściwości encji. Klikam dwukrotnie w nazwę encji. Chcę usunąć dowolny znak - naciskam 
-    przycisk Delete. Okno właściwości pozostaje, ale z diagramu znika ta encja.
-2. -- DONE -- o co chodzi z napisem Relation??
-    w diagramie logicznym też można wprowadzać zmiany (które, jeśli wrócę do modelu konceptualnego, znikną),
-    ale nie działa to tak jak powinno. 
-    Przykład.
-    wstawiam w modelu logicznym nową relację (Czy byłaby możliwość, żeby wtedy, gdy wyświetlany jest model 
-    logiczny, na przycisku Entity pojawił się napis Relation?) i łączę ją np z inną relacją, która będzie 
-    relacją nadrzędną. Muszę samodzielnie w nowej relacji wstawić atrybut, który będzie kluczem obcym. Ale 
-    to i tak na nic, bo nie mam jak wskazać do której relacji on się odnosi. I w konsekwencji nie mogę 
-    wygenerować kodu.
-    proponuję zrobić coś takiego:
-    Załóżmy, że mam dwie relacje, które nie są ze sobą połączone.
-    Łączę relację podrzędną z relacją nadrzędną.
-    Program z automatu wstawia do relacji podrzędnej atrybuty z klucza głównego relacji nadrzędnej 
-    i zaznacza dla nich, że tworzą klucz obcy.
-    Jeżeli się pomyliłem i miało być odwrotnie, klikam dwukrotnie w linię łączącą. Wyświetla mi się okno, w 
-    którym jest nie tylko przycisk Remove ale również przycisk np Reverse. Po kliknięciu w przycisk 
-    automatycznie z jednej relacji klucz obcy znika a w drugiej się pojawia.
 
-3. Z tego co pamiętam, to nie ma możliwości wstawienia strzałki przy linii łączącej relację nadrzędną
-    z podrzędną. A czy można na ich końcach wstawić symbole: '1' przy relacji nadrzędnej i 'N' przy relacji 
-    podrzędnej.
+ad.3
+    najlepsza byłaby strzałka...
+    Zamiast 'N' lepiej dać '*'.
+    Coś jest nie tak z tym przyporządkowaniem 1 i N. 
+    Dosyłam rysunek. Na rysunku 
+    a. Entity1 jest nadrzędna w stosunku do Entity2, więc '1' powinien byc przy Entity1
+    b. Podobnie jest z Entity1 i Relation_name - t w Relation_name jest klub obcy wskazujący na klucz główny 
+        w Entity1
+    c. i niespodzianka - pomiędzy Entity2 a Relation_name przyporządkowanie jest prawidłowe.
+    Na rysunku widać, że te linie się krzyżują. Czy można gdzieś chwycić linię (dotyczy to zarówno diagramu 
+        konceptualnego jak i logicznego) i przeciągnąć jeden z jej końców gdzie indziej (do drugiego 'kwadratu'
+        w tej samej encji/relacji lub do zupełnie innej encji/relacji)?
 
-    dodaja sie ale jak jest m2m to cos sie kreci byc moze jest to nadpisywane w canlinktoPort
-    naprawic wyswietlanie relPopup -- DONE --
-    w reverse zamieniac labele -- DONE --
-
-4. Z modelu logicznego nie generuje się kod. Z tego, co zdążyłem zauważyć, mogę dodać atrybuty w modelu 
-    logicznym, i wtedy program generuje nowy kod uwzględniający te nowe atrybuty. Ale jak robię jakieś 
-    zmiany w obrębie powiązań między relacjami, to kod już nie chce się generować
-
-    PROBLEM:
-    dodałem FkNodeId ktory działa tylko dla M2M relacji bo tylko wtedy sie dodaje.
-    czyli teraz nie działa 1:N relacje bo FkNodeId jest null
-    ROZWIAZANIE:
+1. Dołączam też plik z diagramem. Miałem z nim pewien problem. Otóż utworzyłem diagram konc. i zobaczyłem, 
+    jak wygląda diagram logiczny (wyglądał tak, jak ten na dosłanym rysunku). Następnie zapisałem diagram. 
+    Odświeżyłem okno i wczytałem zapisany diagram. Wyświetlił mi się diagram konceptualny ale nie mogłem 
+    wyświetlić diagramu logicznego. Wstawiłem jakąś nową encję, ale to nic nie dało. Dalej nie było przejścia 
+    do diagramu logicznego.
+2. Odświeżyłem więc okno i utworzyłem na nowo ten diagram. Mogłem już przejść do diagramu logicznego, 
+    ale pojawiły mi się tam dodatkowe relacje, a jedna z nich była w (chyba) nieskończonej liczbie, bo co 
+    ja usunąłem to i tak na diagramie jeszcze była.
 
 
-5. Remove w logic link nie usuwa portu fk z node'a -- DONE --
+
+ad.2 --DONE--
+    tak, chodziło mi tylko o zmianę tekstu na przycisku. Bo działanie już jest inne.
+3. --DONE-- Proszę zmienić nazwę na przycisku "Logic View" na "Logical view". --DONE--
+4. --DONE-- Coś się stało ze stroną( ?), bo nie mogłem z żadnego diagramu generować kodu SQL. Ćwiczyłem na stronie 
+    https://gen.sql-generator.pl/  --DONE--

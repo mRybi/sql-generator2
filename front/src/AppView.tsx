@@ -107,7 +107,7 @@ export const AppView = (props: Props) => {
         <TrayWidget>
           <TrayItemWidget
             model={{ type: "table" }}
-            name="Entity"
+            name={isLogicModel ? "Relation" :"Entity"}
             color="rgb(0,192,255)"
           />
           <TrayItemWidget
@@ -198,7 +198,7 @@ export const AppView = (props: Props) => {
               }
             }}
           >
-            Logic View
+            Logical View
           </div>
           <div
             style={{ borderColor: "rgb(152,50,100)", marginTop: "100px" }}
