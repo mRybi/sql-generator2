@@ -9,7 +9,7 @@ namespace sql_generator_backend {
 
         public static IWebHostBuilder CreateWebHostBuilder (string[] args) =>
             WebHost.CreateDefaultBuilder (args)
-            .UseUrls("localhost:5001")
+            // .UseUrls("https://localhost:5001")
             .UseStartup<Startup> ();
     }
 }

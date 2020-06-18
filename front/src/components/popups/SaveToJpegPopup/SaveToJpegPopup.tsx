@@ -1,8 +1,8 @@
 import "./SaveToJpegPopup.scss";
 import React, { useState } from "react";
 import Popup from "reactjs-popup";
-import { DiagramModel } from "storm-react-diagrams";
 import domtoimage from "dom-to-image";
+import { DiagramModel } from "@projectstorm/react-diagrams";
 
 class Props {
   isOpen: boolean;

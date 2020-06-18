@@ -1,0 +1,25 @@
+1. DefaultNodeWidget.tsx zamienic te brzydkie named porty na ladne styled.compoenent a nie jak zwierzak 
+    w inline styles
+2. DefaultPortLabelWidget.tsx --//--
+3. Wszytsko na styled compoenents
+
+
+MOZE DODAC WSZYSTKEI DODATKOWE INFO JAKO OPTIONS A NIE JAKO POLA JAK DEBIL? NP ISpk ISnotnull
+
+DODAC MOZLIWOSCI KTORE DAJE NOWY TYP DIAGRAMOW:
+- RIGHT ANGLE LINKS?
+- SMART ROUTING
+- TO AUTOMATYCZNE UKLADANIE / ROZGOSPODAROWANIE NODEOW ZEBY SIE NIE PRZEVCINALY LINKI
+
+
+FIX:
+FRONTEND
+- --DONE-- gdy wczytujemy logical diagram to nowe linki sa robione jako Conceptual ( gdy wczytamy conceptual i zmienimy 
+    na logic to wszytsko ok)
+- --DONE-- node properties sie nie otwieraja czasami (tylko gdy wczytany diagram) ( --DONE-- nie dziala zmiana nazwy )
+- --DONE-- rel node z m2m nie otwiera sie node properties
+- --DONE-- zmiana nazwy labela nie dziala i nie wyglada jak powinna
+- --DONE-- kl;awisz del usuwa encje podczas zmiany nazwy
+- --DONE-- label gdy dlugi tekst nie robi sie kwardeatowy tylko dlugi w opor
+BACKEND
+- --DONE DO TESTOW BEZ ZMIOAN NA BACK-- generowanie kodu dostosowac do nowego jsona (zzz)

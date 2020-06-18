@@ -1,0 +1,62 @@
+html {
+  height: 100vh;
+  font-size: 14px;
+}
+
+.App {
+  text-align: center;
+}
+
+.tray-item{
+  color: white;
+  font-family: Helvetica, Arial;
+  padding: 5px;
+  margin: 0px 10px;
+  border: solid 1px;
+  border-radius: 5px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.diagram {
+  height: 1000px;
+}
+
+.srd-demo-canvas {
+  height: 100%;
+  min-height: 300px;
+  background-color: #3c3c3c !important;
+  background-image: linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.05) 76%, transparent 77%, transparent);
+  background-size: 50px 50px;
+
+}
+
+.selected {
+  background-color: black;
+  border-width: 4px !important;
+}
+
+.locked {
+  background-color: violet
+}
+
+.disabled {
+  cursor: not-allowed !important;
+}
+
+.srd-default-link__label { overflow: visible; }
+
+.content {
+  height: 100vh;
+}

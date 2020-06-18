@@ -1,8 +1,8 @@
 import "./SaveToFilePopup.scss";
 import React, { useState } from "react";
 import Popup from "reactjs-popup";
-import { DiagramModel } from "storm-react-diagrams";
 import FileSaver from "file-saver";
+import { DiagramModel } from "@projectstorm/react-diagrams";
 
 class Props {
   isUml: boolean;
@@ -17,7 +17,7 @@ export const SaveToFilePopup = (props: Props) => {
   const [fileName, setFileName] = useState("diagram");
 
   const download = () => {
-    const diagramJson = JSON.stringify({diagram: props.diagramModel.serializeDiagram(), isUml: props.isUml, isLogic: props.isLogic});
+    const diagramJson = JSON.stringify({diagram: props.diagramModel.serialize(), isUml: props.isUml, isLogic: props.isLogic});
 
     let blob = new Blob([diagramJson], { type: "text/plain;charset=utf-8" });
     FileSaver.saveAs(blob, `${fileName}.dbjson`);

@@ -1,7 +1,6 @@
 import { ResultPopup } from "../components/popups/ResultPopup/ResultPopup";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "../infrastructure/models/Link";
 
 class Props {
   isUml: boolean;
@@ -21,13 +20,30 @@ export const GenerationHandler = (props: Props) => {
 
   const generateScript = async (name: string) => {
     let serDiagram = props.serializeDiagram;
-    let diagram = JSON.stringify(serDiagram, null, 2);
-    console.log('diagram: ', diagram);
 
-    // let response = await axios.post("https://sql-generator.pl/api/setjob/mssql", {
+    let dNodes = serDiagram["layers"][1]["models"];
+
+    let nodes = Object.keys(dNodes).map(id => {
+      return dNodes[id];
+    })
+
+    let dLinks = serDiagram["layers"][0]["models"];
+
+    let links = Object.keys(dLinks).map(id => {
+      return dLinks[id];
+    })
+    
+    let newOBJ = {
+      nodes,
+      links
+    }
+    let diagram = JSON.stringify(newOBJ, null, 2);
+    console.log('diagram: ', diagram);
+    
+    let response = await axios.post("https://sql-generator.pl/api/setjob/mssql", {
 
     // let response = await axios.post("https://51.83.185.113/api/setjob/mssql", {
-    let response = await axios.post("http://localhost:5000/api/setjob/mssql", {
+    // let response = await axios.post("http://localhost:5000/api/setjob/mssql", {
 
       SerializedModel: diagram,
       DatabaseName: name,
@@ -35,8 +51,8 @@ export const GenerationHandler = (props: Props) => {
       DiagramType: props.isLogic ? 'Logic' : 'Conceptual'
     });
 
-    // let responseMy = await axios.post("https://sql-generator.pl/api/setjob/mysql", {
-    let responseMy = await axios.post("http://localhost:5000/api/setjob/mysql", {
+    let responseMy = await axios.post("https://sql-generator.pl/api/setjob/mysql", {
+    // let responseMy = await axios.post("http://localhost:5000/api/setjob/mysql", {
       SerializedModel: diagram,
       DatabaseName: name,
       RelationType: props.isUml ? 'UML' : 'CHEN',

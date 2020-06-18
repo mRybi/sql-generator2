@@ -1,20 +1,22 @@
 import "./RelationPopup.scss";
 import React, { useState } from "react";
 import Popup from "reactjs-popup";
-import { Link } from "../../../infrastructure/models/Link";
-import { Label } from "../../../infrastructure/models/Label";
-import { Node } from "../../../infrastructure/models/Node";
-import { DiagramModel, DiagramEngine } from "storm-react-diagrams";
-import { Port } from "../../../infrastructure/models/Port";
+import { DefaultLinkModel } from "../../../infrastructure/models/DefaultLinkModel";
+import { DefaultLabelModel } from "../../../infrastructure/models/DefaultLabelModel";
+import { DefaultNodeModel } from "../../../infrastructure/models/DefaultNodeModel";
 import { PropertyType } from "../../../infrastructure/models/PropertyType";
-import { PropertyTable } from "../../../components/propertyTable/PropertyTable";
-import { LogicPort } from "../../../infrastructure/models/LogicPort";
+// import { LogicPort } from "../../../infrastructure/models/LogicPort";
+import { AdvancedPortModel } from "../../../infrastructure/models/ArrowPortModel";
+import { DiagramModel, DiagramEngine } from "@projectstorm/react-diagrams";
+import { PropertyTable } from "../../PropertyTable/PropertyTable";
+import { DefaultPortModel } from "../../../infrastructure/models/DefaultPortModel";
+import { ArrowLinkModel } from "../../../infrastructure/models/ArrowLinkModel";
+import { Toolkit } from "../../../infrastructure/Toolkit";
 
 class Props {
   isOpen: boolean;
-  link: Link;
+  link: DefaultLinkModel;
   update: () => void;
-  diagramModel: DiagramModel;
   diagramEngine: DiagramEngine;
   isLogic: boolean;
 }
@@ -28,16 +30,16 @@ export const RelationPopup = (props: Props) => {
   React.useEffect(() => {
     let leftLabel =
       props.link &&
-      props.link.labels.length > 2 &&
-      (props.link.labels[0] as Label).label;
+      props.link.getLabels().length > 2 &&
+      (props.link.getLabels()[0] as DefaultLabelModel).getOptions().label;
     let relLabel =
       props.link &&
-      props.link.labels.length > 2 &&
-      (props.link.labels[1] as Label).label;
+      props.link.getLabels().length > 2 &&
+      (props.link.getLabels()[1] as DefaultLabelModel).getOptions().label;
     let rightLabel =
       props.link &&
-      props.link.labels.length > 2 &&
-      (props.link.labels[2] as Label).label;
+      props.link.getLabels().length > 2 &&
+      (props.link.getLabels()[2] as DefaultLabelModel).getOptions().label;
 
     setLeft(leftLabel ? leftLabel : "1, N");
     setRelationName(relLabel ? relLabel : "relation name");
@@ -45,11 +47,11 @@ export const RelationPopup = (props: Props) => {
   }, [props.link]);
 
   let update = () => {
-    let labels = props.link.labels as Label[];
-    labels[0].label = left;
-    labels[2].label = right;
-    labels[1].label = relationName;
-    let points = props.link.points;
+    let labels = props.link.getLabels() as DefaultLabelModel[];
+    labels[0].getOptions().label = left;
+    labels[2].getOptions().label = right;
+    labels[1].getOptions().label = relationName;
+    let points = props.link.getPoints();
     for (let index = 1; index < points.length - 1; index++) {
       const element = points[index];
       element.remove();
@@ -59,30 +61,31 @@ export const RelationPopup = (props: Props) => {
 
   const sourcePort =
     props.link &&
-    props.link.sourcePort &&
-    (props.link.sourcePort.parent as Node);
+    props.link.getSourcePort() &&
+    (props.link.getSourcePort().getParent() as DefaultNodeModel);
   const targetPort =
     props.link &&
-    props.link.targetPort &&
-    (props.link.targetPort.parent as Node);
+    props.link.getTargetPort() &&
+    (props.link.getTargetPort().getParent() as DefaultNodeModel);
 
   const remove = () => {
-    const sourceP = props.link && props.link.sourcePort;
-    const targetP = props.link && props.link.targetPort;
+    const sourceP = props.link && props.link.getSourcePort();
+    const targetP = props.link && props.link.getTargetPort();
     sourceP.removeLink(props.link);
     targetP.removeLink(props.link);
 
-    props.diagramModel.removeLink(props.link);
+    props.diagramEngine.getModel().removeLink(props.link);
+
 
     if(props.isLogic) {
-      let thisParent = props.link.targetPort.getParent() as Node;
-      let portNode = props.link.sourcePort.getParent() as Node;
+      let thisParent = props.link.getTargetPort().getParent() as DefaultNodeModel;
+      let portNode = props.link.getSourcePort().getParent() as DefaultNodeModel;
   
-      let portNodePorts = portNode.getPorts() as {[s: string]: LogicPort};
-      let thisParentPorts = thisParent.getPorts() as {[s: string]: LogicPort};
+      let portNodePorts = portNode.getPorts() as {[s: string]: AdvancedPortModel};
+      let thisParentPorts = thisParent.getPorts() as {[s: string]: AdvancedPortModel};
   
-      let czyMaPortZPKjakoFk = Object.keys(thisParentPorts).filter(id => thisParentPorts[id].fkPortId === portNode.id)[0];
-      let czyMaPortZPKjakoFk2 = Object.keys(portNodePorts).filter(id => portNodePorts[id].fkPortId === thisParent.id)[0];
+      let czyMaPortZPKjakoFk = Object.keys(thisParentPorts).filter(id => thisParentPorts[id].fkPortId === portNode.getOptions().id)[0];
+      let czyMaPortZPKjakoFk2 = Object.keys(portNodePorts).filter(id => portNodePorts[id].fkPortId === thisParent.getOptions().id)[0];
       
       if(czyMaPortZPKjakoFk) {
         thisParent.removePort(thisParentPorts[czyMaPortZPKjakoFk]);
@@ -123,36 +126,51 @@ export const RelationPopup = (props: Props) => {
   };
 
   const reverseLink = () => {
-    let thisParent = props.link.targetPort.getParent() as Node;
-    let portNode = props.link.sourcePort.getParent() as Node;
+    let thisParent = props.link.getTargetPort().getParent() as DefaultNodeModel;
+    let portNode = props.link.getSourcePort().getParent() as DefaultNodeModel;
 
-    let portNodePorts = portNode.getPorts() as {[s: string]: LogicPort};
-    let thisParentPorts = thisParent.getPorts() as {[s: string]: LogicPort};
+    let portNodePorts = portNode.getPorts() as {[s: string]: DefaultPortModel};
+    let thisParentPorts = thisParent.getPorts() as {[s: string]: DefaultPortModel};
 
-    let czyMaPortZPKjakoFk = Object.keys(thisParentPorts).filter(id => thisParentPorts[id].fkPortId === portNode.id)[0];
-    let czyMaPortZPKjakoFk2 = Object.keys(portNodePorts).filter(id => portNodePorts[id].fkPortId === thisParent.id)[0];
+    // let portNodePorts = portNode.getPorts() as {[s: string]: LogicPort};
+    // let thisParentPorts = thisParent.getPorts() as {[s: string]: LogicPort};
+
+    let czyMaPortZPKjakoFk = Object.keys(thisParentPorts).filter(id => thisParentPorts[id].fkPortId === portNode.getOptions().id)[0];
+    let czyMaPortZPKjakoFk2 = Object.keys(portNodePorts).filter(id => portNodePorts[id].fkPortId === thisParent.getOptions().id)[0];
     
 
     if(czyMaPortZPKjakoFk) {
-      let labels = props.link.labels as Label[];
-      labels[0].label = '1';
-      labels[1].label = 'N';
-
       thisParent.removePort(thisParentPorts[czyMaPortZPKjakoFk]);
-
       let pk = Object.keys(thisParentPorts).filter(id => thisParentPorts[id].isPrimaryKey)[0];
-      portNode.addInPort(true,false,thisParent.name + thisParentPorts[pk].name, false, true, false,false,true,'INT', thisParent.id)
-    } else {
-      let labels = props.link.labels as Label[];
-      labels[0].label = 'N';
-      labels[1].label = '1';
-
+      portNode.addPort(new AdvancedPortModel(
+        // true,
+        
+        thisParent.getOptions().name + thisParentPorts[pk].getOptions().name,false,false, true, false, true, true, 'INT', Toolkit.UID(), thisParent.getOptions().id));
+    
+    
+      } else {
       portNode.removePort(portNodePorts[czyMaPortZPKjakoFk2]);
 
       let pk = Object.keys(portNodePorts).filter(id => portNodePorts[id].isPrimaryKey)[0];
-      thisParent.addInPort(true,false,portNode.name + portNodePorts[pk].name, false, true, false,false,true,'INT', thisParent.id)
-    }
+      portNode.addPort(new AdvancedPortModel(
+        // true,
+        portNode.getOptions().name + portNodePorts[pk].getOptions().name,false,false, true, false, true, true, 'INT', Toolkit.UID(), portNode.getOptions().id));
     
+
+      }
+
+        let newSourceP = props.link.getTargetPort();
+        let newTargetP = props.link.getSourcePort();
+        let model = props.diagramEngine.getModel();
+
+        model.removeLink(props.link);
+
+        let link = new ArrowLinkModel({ type: 'arrow' });
+
+        link.setSourcePort(newSourceP);
+        link.setTargetPort(newTargetP);
+        model.addLink(link);
+
     props.update();
   }
 
@@ -175,7 +193,7 @@ export const RelationPopup = (props: Props) => {
         <div className="SQLResultDialog">
           <div className="grid-container">
             <div className="grid-item">
-              <p>{sourcePort && sourcePort.name}</p>
+              <p>{sourcePort && sourcePort.getOptions().name}</p>
             </div>
             <div className="grid-item">
               <input
@@ -186,7 +204,7 @@ export const RelationPopup = (props: Props) => {
               ></input>
             </div>
             <div className="grid-item">
-              <p>{targetPort && targetPort.name}</p>
+              <p>{targetPort && targetPort.getOptions().name}</p>
             </div>
             {renderOptionPicker("left")}
             <div className="grid-item">
