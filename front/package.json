@@ -1,5 +1,6 @@
 {
-  "name": "my-app",
+  "name": "sql-gen2",
+  "homepage": "https://gen.sql-generator.pl/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -36,6 +37,8 @@
     "typescript": "~3.7.2"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
