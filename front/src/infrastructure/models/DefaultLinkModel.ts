@@ -1,5 +1,4 @@
 import {
-	DiagramEngine,
 	LabelModel,
 	LinkModel,
 	LinkModelGenerics,
@@ -75,7 +74,7 @@ export class DefaultLinkModel extends LinkModel<DefaultLinkModelGenerics> {
 	}
 
 	getSVGPath(): string {
-		if (this.points.length == 2) {
+		if (this.points.length === 2) {
 			const curve = new BezierCurve();
 			curve.setSource(this.getFirstPoint().getPosition());
 			curve.setTarget(this.getLastPoint().getPosition());

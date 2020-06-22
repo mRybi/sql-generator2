@@ -1,4 +1,3 @@
-import { DefaultPortModel } from '../models/DefaultPortModel';
 import { AbstractModelFactory } from '@projectstorm/react-canvas-core';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
 import { AdvancedPortModel } from '../models/ArrowPortModel';

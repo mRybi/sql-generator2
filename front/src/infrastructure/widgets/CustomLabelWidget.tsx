@@ -1,10 +1,7 @@
 import * as React from 'react';
-import * as _ from 'lodash';
 import { DiagramEngine } from '@projectstorm/react-diagrams-core';
 import { DefaultNodeModel } from '../models/DefaultNodeModel';
-import { DefaultPortLabel } from '../widgets/DefaultPortLabelWidget';
 import styled from '@emotion/styled';
-import { css } from '@emotion/core';
 
 	export const Node = styled.div<{ background: string; selected: boolean }>`
 		background-color: ${(p) => p.background};
@@ -34,10 +31,6 @@ export interface DefaultNodeProps {
 	engine: DiagramEngine;
 }
 
-/**
- * Default node that models the DefaultNodeModel. It creates two columns
- * for both all the input ports on the left, and the output ports on the right.
- */
 export class CustomLabelWidget extends React.Component<DefaultNodeProps> {
 	render() {
 		return (

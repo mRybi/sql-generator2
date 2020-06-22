@@ -85,12 +85,12 @@ export class Application {
 
       let sourceNode = concLinks[k].sourcePort.getParent() as DefaultNodeModel;
       let sourceNodeId = logicNodes.filter(
-        node => (node as DefaultNodeModel).getOptions().name == sourceNode.getOptions().name
+        node => (node as DefaultNodeModel).getOptions().name === sourceNode.getOptions().name
       )[0].getOptions().id;
 
       let targetNode = concLinks[k].targetPort.getParent() as DefaultNodeModel;
       let targetNodeId = logicNodes.filter(
-        node => (node as DefaultNodeModel).getOptions().name == targetNode.getOptions().name
+        node => (node as DefaultNodeModel).getOptions().name === targetNode.getOptions().name
       )[0].getOptions().id;
 
       let sourceLabel = (concLinks[k].labels[0] as DefaultLabelModel).getOptions().label;

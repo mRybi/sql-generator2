@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { NodeModel, NodeModelGenerics, PortModelAlignment } from '@projectstorm/react-diagrams-core';
+import { NodeModel, NodeModelGenerics } from '@projectstorm/react-diagrams-core';
 import { DefaultPortModel } from '../models/DefaultPortModel';
 import { BasePositionModelOptions, DeserializeEvent } from '@projectstorm/react-canvas-core';
 

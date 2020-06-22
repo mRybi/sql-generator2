@@ -6,7 +6,7 @@ import {
 	PortModelOptions
 } from '@projectstorm/react-diagrams-core';
 import { DefaultLinkModel } from '../models/DefaultLinkModel';
-import { AbstractModelFactory, DeserializeEvent } from '@projectstorm/react-canvas-core';
+import { AbstractModelFactory } from '@projectstorm/react-canvas-core';
 import { Toolkit } from '../Toolkit';
 
 export interface DefaultPortModelOptions extends PortModelOptions {

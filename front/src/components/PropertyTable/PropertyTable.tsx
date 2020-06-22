@@ -1,9 +1,8 @@
 import "./PropertyTable.scss";
-import React, { useState } from "react";
+import React from "react";
 import { PropertyType } from "../../infrastructure/models/PropertyType";
 import { DefaultPortModel } from "../../infrastructure/models/DefaultPortModel";
 import BootstrapTable from "react-bootstrap-table-next";
-import { DefaultLinkModel } from "../../infrastructure/models/DefaultLinkModel";
 import { DefaultNodeModel } from "../../infrastructure/models/DefaultNodeModel";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import { DiagramEngine } from "@projectstorm/react-diagrams";

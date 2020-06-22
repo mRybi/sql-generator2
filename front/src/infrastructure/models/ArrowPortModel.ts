@@ -1,9 +1,9 @@
-import { LinkModel, LinkModelGenerics, PortModel, PortModelAlignment, DiagramModel, DiagramEngine } from "@projectstorm/react-diagrams";
+import { LinkModel, LinkModelGenerics, PortModel, PortModelAlignment } from "@projectstorm/react-diagrams";
 import { ArrowLinkModel } from "./ArrowLinkModel";
 import { DefaultPortModel } from "./DefaultPortModel";
 import { DefaultNodeModel } from "./DefaultNodeModel";
 import { Toolkit } from "../Toolkit";
-import { AbstractModelFactory, DeserializeEvent } from '@projectstorm/react-canvas-core';
+import { AbstractModelFactory } from '@projectstorm/react-canvas-core';
 
 
 export class AdvancedPortModel extends DefaultPortModel {

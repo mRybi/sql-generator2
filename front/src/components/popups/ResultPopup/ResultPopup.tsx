@@ -1,5 +1,5 @@
 import "./ResultPopup.scss";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Popup from "reactjs-popup";
 import sqlFormatter from "sql-formatter";
 import FileSaver from "file-saver";

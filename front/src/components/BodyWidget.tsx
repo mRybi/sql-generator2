@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { TrayWidget } from './TrayWidget';
 import { TrayItemWidget } from './TrayItemWidget';
-import { PortModelAlignment, PointModel } from '@projectstorm/react-diagrams';
+import { PointModel } from '@projectstorm/react-diagrams';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
 import styled from '@emotion/styled';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
@@ -54,8 +54,6 @@ export const Layer = styled.div`
 	`;
 
 export const BodyWidget = (props: BodyWidgetProps) => {
-	const jpegFileTarget: React.RefObject<any> = null;
-
 	const [showDialog, setShowDialog] = React.useState(false);
 	const [showRelationDialog, setShowRelationDialog] = React.useState(false);
 	const [showLoadFileDialog, setShowLoadFileDialog] = React.useState(false);
@@ -271,12 +269,8 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 								.getDiagramEngine()
 								.getModel()
 								.getSelectedEntities()[0] as PointModel;
-							const pointLink = props.app
-								.getDiagramEngine()
-								.getModel()
-								.getSelectedEntities()[0].getParent() as DefaultLinkModel;
 
-								pointToRemove.remove();
+							pointToRemove.remove();
 						}
 						refreshPopups();
 					}}
