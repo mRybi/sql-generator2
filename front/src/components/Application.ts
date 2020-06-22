@@ -14,6 +14,7 @@ import { DefaultLinkModel } from '../infrastructure/models/DefaultLinkModel';
 import { Toolkit } from '../infrastructure/Toolkit';
 import { DefaultDiagramState } from '@projectstorm/react-diagrams';
 import { ArrowPortFactory } from '../infrastructure/factories/ArrowPortFactory';
+import { stat } from 'fs';
 
 
 export class Application {
@@ -23,7 +24,7 @@ export class Application {
   protected diagramEngine: SRD.DiagramEngine;
 
   constructor() {
-    this.diagramEngine = SRD.default();
+    this.diagramEngine = SRD.default({registerDefaultZoomCanvasAction: true});
     this.diagramEngine.getNodeFactories().registerFactory(new CustomLabelFactory());
 
     this.diagramEngine.getNodeFactories().registerFactory(new DefaultNodeFactory());
@@ -37,7 +38,8 @@ export class Application {
     this.diagramEngine.getLinkFactories().registerFactory(new DefaultLinkFactory());
 
     const state = this.diagramEngine.getStateMachine().getCurrentState();
-      if (state instanceof DefaultDiagramState) {
+
+    if (state instanceof DefaultDiagramState) {
         state.dragNewLink.config.allowLooseLinks = false;
       }
 
@@ -47,6 +49,10 @@ export class Application {
   public newModel() {
     this.activeModel = new SRD.DiagramModel();
     this.logicModel = new SRD.DiagramModel();
+
+    console.log(this.activeModel.getOffsetX(), this.activeModel.getOffsetX());
+
+
 
     this.diagramEngine.setModel(this.activeModel);
   }

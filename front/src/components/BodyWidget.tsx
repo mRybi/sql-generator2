@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { TrayWidget } from './TrayWidget';
 import { TrayItemWidget } from './TrayItemWidget';
-import {  PortModelAlignment, PointModel } from '@projectstorm/react-diagrams';
+import { PortModelAlignment, PointModel } from '@projectstorm/react-diagrams';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
 import styled from '@emotion/styled';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
@@ -126,7 +126,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 			</Header>
 			<Content>
 				<TrayWidget>
-					<TrayItemWidget model={{ type: 'default' }} name={isLogicModel ? "Relation" :"Entity"} color="rgb(0,192,255)" />
+					<TrayItemWidget model={{ type: 'default' }} name={isLogicModel ? "Relation" : "Entity"} color="rgb(0,192,255)" />
 					<TrayItemWidget model={{ type: 'label' }} name="Label" color="rgb(192,255,0)" />
 
 					<TrayItemDiv name="Load Diagram" color="rgb(255,123,0)" marginTop="100px" onClick={() => {
@@ -231,7 +231,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 						var node: DefaultNodeModel;
 						if (data.type === "default") {
 							node = new DefaultNodeModel(
-								  false,
+								false,
 								newNodeName,
 								"rgb(0,192,255)"
 							);
@@ -241,9 +241,9 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 								node.addPort(new AdvancedPortModel('', true, false, false, false, false, false, 'INT'));
 								node.addPort(new AdvancedPortModel('1', true, false, false, false, false, false, 'INT'));
 							} else {
-								node.addPort(new DefaultPortModel(isLogicModel,'Id', false, true, false, true, true, true, 'INT'));
-								node.addPort(new DefaultPortModel(isLogicModel,'', true, false, false, false, false, false, 'INT'));
-								node.addPort(new DefaultPortModel(isLogicModel,'1', true, false, false, false, false, false, 'INT'));
+								node.addPort(new DefaultPortModel(isLogicModel, 'Id', false, true, false, true, true, true, 'INT'));
+								node.addPort(new DefaultPortModel(isLogicModel, '', true, false, false, false, false, false, 'INT'));
+								node.addPort(new DefaultPortModel(isLogicModel, '1', true, false, false, false, false, false, 'INT'));
 							}
 						} else {
 							node = new DefaultNodeModel(
@@ -256,10 +256,16 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 						var point = props.app.getDiagramEngine().getRelativeMousePoint(event);
 						node.setPosition(point);
 						props.app.getDiagramEngine().getModel().addNode(node);
+						// props.app.getDiagramEngine().zoomToFit();
+						// props.app.getDiagramEngine().repaintCanvas();
+						// props.app.getDiagramEngine().repaintCanvas();
+
+
 						forceUpdate();
 					}}
 					onDragOver={(event) => {
 						event.preventDefault();
+						props.app.getDiagramEngine().zoomToFit()
 					}}
 					onClick={event => {
 						event.preventDefault();
@@ -304,9 +310,9 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 						) {
 							refreshPopups();
 							let selectedNode = props.app
-							.getDiagramEngine()
-							.getModel()
-							.getSelectedEntities()[0] as DefaultNodeModel;
+								.getDiagramEngine()
+								.getModel()
+								.getSelectedEntities()[0] as DefaultNodeModel;
 
 							setSelectedNode(
 								selectedNode
@@ -315,7 +321,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 					}}
 				>
 					<DemoCanvasWidget>
-						<CanvasWidget engine={props.app.getDiagramEngine()} />
+							<CanvasWidget engine={props.app.getDiagramEngine()} />
 					</DemoCanvasWidget>
 				</Layer>
 				{selectedNode != null ? (

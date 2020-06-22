@@ -19,6 +19,10 @@ export class AdvancedPortModel extends DefaultPortModel {
 		super(true, name,isNamePort, isPrimaryKey, isForeignKey, isNotNull,isAutoincremented, isUnique, propertyType, id,fkPortId,alignemnt);
 	}
 	canLinkToPort(port: PortModel): boolean {
+		if(port === this) {
+			return false;
+		}
+		
 		let thisParent = this.getParent() as DefaultNodeModel;
 		let portNode = port.getParent() as DefaultNodeModel;
 	

@@ -115,6 +115,9 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
 	}
 
 	canLinkToPort(port: PortModel): boolean {
+		if(port === this) {
+			return false;
+		}
 		return true;
 	}
 
