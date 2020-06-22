@@ -11,23 +11,30 @@ DODAC MOZLIWOSCI KTORE DAJE NOWY TYP DIAGRAMOW:
 - SMART ROUTING
 - TO AUTOMATYCZNE UKLADANIE / ROZGOSPODAROWANIE NODEOW ZEBY SIE NIE PRZEVCINALY LINKI
 
+- wszytswko w @emotion + naprawic te namespace S.
+
 --POPRAWKI--
 
 Uwagi merytoryczne:
-1. strzałki powinny  (a przynajmniej tak jest najczęściej) biec od tabeli podrzędnej do nadrzędnej
-2. każdy związek może mieć atrybuty, a w tej chwili atrybuty mogę zdefiniować tylko dla związków N:N
-3. program nie radzi sobie z encjami słabymi (rys_3). Po przekształceniu do modelu logicznego wstawia 
+1. --DONE-- strzałki powinny  (a przynajmniej tak jest najczęściej) biec od tabeli podrzędnej do nadrzędnej
+2. --JAK??-- każdy związek może mieć atrybuty, a w tej chwili atrybuty mogę zdefiniować tylko dla związków N:N
+3. --DONE-- program nie radzi sobie z encjami słabymi (rys_3). Po przekształceniu do modelu logicznego wstawia 
     wprawdzie z tabeli nadrzędnej klucz główny i zaznacza go jako obcy, ale już nie zaznacza w utworzonej 
     tabeli żadnego klucza - a kluczem głównym powinny być klucze główne z encji identyfikujących oraz klucz 
     częściowy encji, jeżeli istniał. 
 3a. Nie generuje się w takim przypadku kod.
 
+ZROBIONE:
+ jesli podczas laczenia klucz główny był to nie dodaje partial key
+ jesli encja nie miala pk to wtedy tworzony jest partial key dla danego FK i można/nalezy wybrac sobie 
+        jakis partial do tego aby stworzyl klucz
+
 
 Uwagi dot. działania programu:
-1. Rys_1. Pomniejszyłem sobie trochę diagram, bo było na nim dużo encji. W efekcie encje są widoczne, 
+1. --DONE-- Rys_1. Pomniejszyłem sobie trochę diagram, bo było na nim dużo encji. W efekcie encje są widoczne, 
     ale (na dole rysunku) od któregoś momentu związki są jakby przykryte tłem. JEST PROBLEM Z WIELKOSCIA 
     PLANSZY COS SIE ZWALILO I JAK WYCHODZIMY ZA OBSZAR TO DYMY SA. USTAWIC JAKOS RANGE PLANSZY
-2. Rys_2. Chciałem nagrać tę sytuacje jako obrazek, ale Save nie działało
+2. --DONE-- Rys_2. Chciałem nagrać tę sytuacje jako obrazek, ale Save nie działało
 3. --DONE-- dwukrotne kliknięcie w róg encji/relacji powoduje utworzenie związku z lewym górnym rogiem pola 
     roboczego (Rys_4).
 

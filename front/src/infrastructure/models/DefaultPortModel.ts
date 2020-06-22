@@ -37,6 +37,7 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
 		isNamePort: boolean,
 		isPrimaryKey?: boolean,
 		isForeignKey?: boolean,
+		isPartialKey?: boolean,
 		isNotNull?: boolean,
 		isAutoincremented?: boolean,
 		isUnique?: boolean,
@@ -59,7 +60,7 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
 
 		this.isPrimaryKey = isPrimaryKey;
 		this.isForeignKey = isForeignKey;
-		this.isPartialKey = false;
+		this.isPartialKey = isPartialKey;
 
 		this.isNotNull = isNotNull;
 		this.isUnique = isUnique;

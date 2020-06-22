@@ -229,9 +229,10 @@ namespace Services {
                         }
 
                     }
+                    var constraints = nodeConstaraints.Length > 1 ? nodeConstaraints.Substring(0,nodeConstaraints.Length - 1) : nodeConstaraints;
                     mySQLCode += $@"CREATE TABLE IF NOT EXISTS `{diagram.DatabaseName}`.`{node.Name}` (
                 {nodePorts}
-                {nodeConstaraints.Substring(0,nodeConstaraints.Length - 1)})
+                {constraints})
                 ENGINE = InnoDB;
             ";
                 }

@@ -144,8 +144,7 @@ export const RelationPopup = (props: Props) => {
       let pk = Object.keys(thisParentPorts).filter(id => thisParentPorts[id].isPrimaryKey)[0];
       portNode.addPort(new AdvancedPortModel(
         // true,
-        
-        thisParent.getOptions().name + thisParentPorts[pk].getOptions().name,false,false, true, false, true, true, 'INT', Toolkit.UID(), thisParent.getOptions().id));
+        thisParent.getOptions().name + thisParentPorts[pk].getOptions().name,false,false,false, true, false, true, true, 'INT', Toolkit.UID(), thisParent.getOptions().id));
     
     
       } else {
@@ -154,7 +153,8 @@ export const RelationPopup = (props: Props) => {
       let pk = Object.keys(portNodePorts).filter(id => portNodePorts[id].isPrimaryKey)[0];
       portNode.addPort(new AdvancedPortModel(
         // true,
-        portNode.getOptions().name + portNodePorts[pk].getOptions().name,false,false, true, false, true, true, 'INT', Toolkit.UID(), portNode.getOptions().id));
+
+        portNode.getOptions().name + portNodePorts[pk].getOptions().name,false,false,false, true, false, true, true, 'INT', Toolkit.UID(), portNode.getOptions().id));
     
 
       }
@@ -218,7 +218,7 @@ export const RelationPopup = (props: Props) => {
             </div>
             {/* <div className="grid-item" /> */}
           </div>
-          {props.link && left.includes("N") && right.includes("N") && (
+          {props.link && (
             <div>
               <h3 style={{ margin: 0 }}>Atributes:</h3>
               <PropertyTable

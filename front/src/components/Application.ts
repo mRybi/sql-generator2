@@ -1,4 +1,4 @@
-import * as SRD from '@projectstorm/react-diagrams';
+import createEngine, { DiagramModel, DiagramEngine } from '@projectstorm/react-diagrams';
 import { ArrowLinkFactory } from '../infrastructure/factories/ArrowLinkFactory';
 import { DefaultNodeFactory } from '../infrastructure/factories/DefaultNodeFactory';
 import { DefaultLabelFactory } from '../infrastructure/factories/DefaultLabelFactory';
@@ -14,17 +14,15 @@ import { DefaultLinkModel } from '../infrastructure/models/DefaultLinkModel';
 import { Toolkit } from '../infrastructure/Toolkit';
 import { DefaultDiagramState } from '@projectstorm/react-diagrams';
 import { ArrowPortFactory } from '../infrastructure/factories/ArrowPortFactory';
-import { stat } from 'fs';
-
 
 export class Application {
-  protected activeModel!: SRD.DiagramModel;
-  protected logicModel!: SRD.DiagramModel;
+  protected activeModel!: DiagramModel;
+  protected logicModel!: DiagramModel;
 
-  protected diagramEngine: SRD.DiagramEngine;
+  protected diagramEngine: DiagramEngine;
 
   constructor() {
-    this.diagramEngine = SRD.default({registerDefaultZoomCanvasAction: true});
+	this.diagramEngine = createEngine({});
     this.diagramEngine.getNodeFactories().registerFactory(new CustomLabelFactory());
 
     this.diagramEngine.getNodeFactories().registerFactory(new DefaultNodeFactory());
@@ -47,21 +45,17 @@ export class Application {
   }
 
   public newModel() {
-    this.activeModel = new SRD.DiagramModel();
-    this.logicModel = new SRD.DiagramModel();
-
-    console.log(this.activeModel.getOffsetX(), this.activeModel.getOffsetX());
-
-
+    this.activeModel = new DiagramModel();
+	  this.logicModel = new DiagramModel();
 
     this.diagramEngine.setModel(this.activeModel);
   }
 
-  public getActiveDiagram(): SRD.DiagramModel {
+  public getActiveDiagram(): DiagramModel {
     return this.activeModel;
   }
 
-  public getDiagramEngine(): SRD.DiagramEngine {
+  public getDiagramEngine(): DiagramEngine {
     return this.diagramEngine;
   }
 
@@ -76,8 +70,7 @@ export class Application {
 
       Object.keys(nodePorts).map(k => {
         let port = nodePorts[k] as DefaultPortModel;
-        let logicPort = new AdvancedPortModel(port.getOptions().name, port.isNamePort, port.isPrimaryKey, port.isForeignKey, port.isNotNull, port.isAutoincremented, port.isUnique, port.propertyType);
-        //let logicPort = new ArrowPortModel(port.getOptions().name, port.isNamePort, port.isPrimaryKey, port.isForeignKey, port.isNotNull, port.isAutoincremented, port.isUnique, port.propertyType);
+        let logicPort = new AdvancedPortModel(port.getOptions().name, port.isNamePort, port.isPrimaryKey, port.isForeignKey, port.isPartialKey, port.isNotNull, port.isAutoincremented, port.isUnique, port.propertyType);
         node.addPort(logicPort);
       })
 
@@ -108,13 +101,13 @@ export class Application {
         relNode.getOptions().name = (concLinks[k].labels[1] as DefaultLabelModel).getOptions().label;
         relNode.setPosition(sourceNode.getPosition().x + 150, sourceNode.getPosition().y - 100);
 
-        relNode.addPort(new AdvancedPortModel('Id', false, true, false, true, true, true, 'INT'));
-        relNode.addPort(new AdvancedPortModel('', true, false, false, false, false, false, 'INT'));
-        relNode.addPort(new AdvancedPortModel('1', true, false, false, false, false, false, 'INT'));
+        relNode.addPort(new AdvancedPortModel('Id', false, true, false,false, true, true, true, 'INT'));
+        relNode.addPort(new AdvancedPortModel('', true, false, false,false, false, false, false, 'INT'));
+        relNode.addPort(new AdvancedPortModel('1', true, false, false,false, false, false, false, 'INT'));
 
 
-        relNode.addPort(new AdvancedPortModel(sourceNode.getOptions().name + "Id", false, false, true, true, false, false, 'INT', Toolkit.UID(), sourceNodeId));
-        relNode.addPort(new AdvancedPortModel(targetNode.getOptions().name + "Id", false, false, true, true, false, false, 'INT', Toolkit.UID(), targetNodeId));
+        relNode.addPort(new AdvancedPortModel(sourceNode.getOptions().name + "Id", false, false,false, true, true, false, false, 'INT', Toolkit.UID(), sourceNodeId));
+        relNode.addPort(new AdvancedPortModel(targetNode.getOptions().name + "Id", false, false,false, true, true, false, false, 'INT', Toolkit.UID(), targetNodeId));
 
         this.logicModel.addNode(relNode);
 
@@ -143,7 +136,7 @@ export class Application {
         //dodaj FK
         let node = logicNodes.filter(n => n.getOptions().id === sourceNodeId)[0];
 
-        node.addPort(new AdvancedPortModel(targetNode.getOptions().name + "Id", false, false, true, true, false, false, 'INT', Toolkit.UID(), targetNodeId));
+        node.addPort(new AdvancedPortModel(targetNode.getOptions().name + "Id", false, false,false, true, true, false, false, 'INT', Toolkit.UID(), targetNodeId));
 
         //dodaj link
         let tNode = logicNodes.filter(n => n.getOptions().id === targetNodeId)[0];
@@ -160,7 +153,7 @@ export class Application {
         //dodaj FK
         let node = logicNodes.filter(n => n.getOptions().id === targetNodeId)[0];
 
-        node.addPort(new AdvancedPortModel(sourceNode.getOptions().name + "Id", false, false, true, true, false, false, 'INT', Toolkit.UID(), sourceNodeId));
+        node.addPort(new AdvancedPortModel(sourceNode.getOptions().name + "Id", false, false,false, true, true, false, false, 'INT', Toolkit.UID(), sourceNodeId));
 
         //dodaj link
         let tNode = logicNodes.filter(n => n.getOptions().id === sourceNodeId)[0];
@@ -177,7 +170,7 @@ export class Application {
         //dodaj FK
         let node = logicNodes.filter(n => n.getOptions().id === targetNodeId)[0];
 
-        node.addPort(new AdvancedPortModel(sourceNode.getOptions().name + "Id", false, false, true, true, false, false, 'INT', Toolkit.UID(), sourceNodeId));
+        node.addPort(new AdvancedPortModel( sourceNode.getOptions().name + "Id", false, false,false, true, true, false, false, 'INT', Toolkit.UID(), sourceNodeId));
 
         //dodaj link
         let tNode = logicNodes.filter(n => n.getOptions().id === sourceNodeId)[0];
@@ -198,9 +191,9 @@ export class Application {
 
   public setConceptualModel() {
     this.logicModel = null;
-    this.logicModel = new SRD.DiagramModel();
+    this.logicModel = new DiagramModel();
 
-    let activeModelCopy = new SRD.DiagramModel();
+    let activeModelCopy = new DiagramModel();
 
     let nodes = this.activeModel.getNodes();
 
@@ -219,15 +212,14 @@ export class Application {
     this.diagramEngine.setModel(this.activeModel);
   }
 
-  public loadConceptualModel(model: SRD.DiagramModel) {
+  public loadConceptualModel(model: DiagramModel) {
     this.activeModel = model;
 
     this.diagramEngine.setModel(this.activeModel);
   }
 
-  public loadLogicModel(model: SRD.DiagramModel) {
+  public loadLogicModel(model: DiagramModel) {
     this.logicModel = model;
       this.diagramEngine.setModel(this.logicModel);
     }
 }
-

@@ -95,6 +95,10 @@ export const PropertyTable = (props: Props) => {
 	) => {
 		event.persist();
 		(updatedItem.getPortFromID(row.getOptions().id) as DefaultPortModel).isPartialKey = !row.isPartialKey;
+
+		(updatedItem.getPortFromID(
+			row.getOptions().id
+		) as DefaultPortModel).isNotNull = row.isPartialKey ? true : false;
 		forceUpdate();
 	};
 
@@ -138,7 +142,7 @@ export const PropertyTable = (props: Props) => {
 	const addNewPort = (newPortNumber: number) => {
 		(updatedItem as DefaultNodeModel).addPort(new AdvancedPortModel(
 			// props.isLogic,
-			`new atribute ${newPortNumber}`, false, false, false, false, false, false, 'INT'));
+			`new atribute ${newPortNumber}`, false, false, false,false, false, false, false, 'INT'));
 
 		forceUpdate();
 	};

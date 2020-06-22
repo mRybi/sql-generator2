@@ -8,7 +8,7 @@ export class ArrowPortFactory extends AbstractModelFactory<AdvancedPortModel, Di
 		super('arrow');
 	}
 
-	generateModel(): DefaultPortModel {
+	generateModel(): AdvancedPortModel {
 		return new AdvancedPortModel('port', true, false);
 	}
 }

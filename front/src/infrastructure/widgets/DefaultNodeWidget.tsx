@@ -16,13 +16,14 @@ export const Node = styled.div<{ background: string; selected: boolean }>`
 		overflow: visible;
 		font-size: 11px;
 		border: solid 2px ${(p) => (p.selected ? 'rgb(0,192,255)' : 'black')};
-		word-break: break-word;
-		max-width: 200px;
+
 	`;
 
 export const Title = styled.div`
 		background: rgba(0, 0, 0, 0.3);
 		display: flex;
+		white-space: nowrap;
+
 		justify-items: center;
 	`;
 

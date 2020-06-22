@@ -120,7 +120,7 @@ export class DefaultLinkModel extends LinkModel<DefaultLinkModelGenerics> {
 		let propertiesNode = new DefaultNodeModel(false, 'relNode', 'rgb(0,192,255)');
 		event.data.properties.map((a: RelationProperties) => {
 			propertiesNode.addPort(new DefaultPortModel(false, a.label, false, a.isPrimaryKey, 
-				false, a.isNotNull, a.isAutoincremented, a.isUnique, a.propertyType));
+				false, false, a.isNotNull, a.isAutoincremented, a.isUnique, a.propertyType));
 		  })
 
 		super.deserialize(event);

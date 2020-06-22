@@ -70,15 +70,26 @@ export class ArrowLinkWidget extends DefaultLinkWidget {
 		}
 
 		//render the circles
-		for (let i = 1; i < points.length - 1; i++) {
-			paths.push(this.generatePoint(points[i]));
+		for (let i = 0; i < points.length - 1; i++) {
+			paths.push(this.generateArrow(points[i], points[i+1]));
 		}
 
 		if (this.props.link.getTargetPort() !== null) {
-			paths.push(this.generateArrow(points[points.length - 1], points[points.length - 2]));
+			paths.push(this.generatePoint(points[points.length - 1]));
 		} else {
 			paths.push(this.generatePoint(points[points.length - 1]));
 		}
+
+				// //render the circles
+				// for (let i = 0; i < points.length - 1; i++) {
+				//  paths.push(this.generatePoint(points[i]));
+				// }
+		
+				// if (this.props.link.getTargetPort() !== null) {
+				// 	paths.push(this.generateArrow(points[points.length - 1], points[points.length - 2]));
+				// } else {
+				// 	paths.push(this.generatePoint(points[points.length - 1]));
+				// }
 
 		return <g data-default-link-test={this.props.link.getOptions().testName}>{paths}</g>;
 	}

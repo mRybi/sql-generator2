@@ -8,7 +8,6 @@ import styled from '@emotion/styled';
 import { DemoCanvasWidget } from '../helpers/DemoCanvasWidget';
 import { Application } from './Application';
 import { AdvancedPortModel } from '../infrastructure/models/ArrowPortModel';
-import { getuid } from 'process';
 import { TrayItemDiv } from './TrayItemDiv';
 import { NodeProperties, useForceUpdate } from './NodeProperties/NodeProperties';
 import { DefaultLinkModel } from '../infrastructure/models/DefaultLinkModel';
@@ -55,9 +54,6 @@ export const Layer = styled.div`
 	`;
 
 export const BodyWidget = (props: BodyWidgetProps) => {
-	const diagramDiv = React.useRef(null);
-
-
 	const jpegFileTarget: React.RefObject<any> = null;
 
 	const [showDialog, setShowDialog] = React.useState(false);
@@ -120,6 +116,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 
 
 	return (
+
 		<Body>
 			<Header>
 				<div className="title">DB Diagram Scripter</div>
@@ -213,6 +210,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 
 				</TrayWidget>
 				<Layer
+					id="diagram-layer"
 					onDrop={(event) => {
 						var data = JSON.parse(event.dataTransfer.getData('storm-diagram-node'));
 						console.log('data ', data);
@@ -237,13 +235,13 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 							);
 
 							if (isLogicModel) {
-								node.addPort(new AdvancedPortModel('Id', false, true, false, true, true, true, 'INT'));
-								node.addPort(new AdvancedPortModel('', true, false, false, false, false, false, 'INT'));
-								node.addPort(new AdvancedPortModel('1', true, false, false, false, false, false, 'INT'));
+								node.addPort(new AdvancedPortModel('Id', false, true,false,false, true, true, true, 'INT'));
+								node.addPort(new AdvancedPortModel('', true, false, false,false, false, false, false, 'INT'));
+								node.addPort(new AdvancedPortModel('1', true, false, false,false, false, false, false, 'INT'));
 							} else {
-								node.addPort(new DefaultPortModel(isLogicModel, 'Id', false, true, false, true, true, true, 'INT'));
-								node.addPort(new DefaultPortModel(isLogicModel, '', true, false, false, false, false, false, 'INT'));
-								node.addPort(new DefaultPortModel(isLogicModel, '1', true, false, false, false, false, false, 'INT'));
+								node.addPort(new DefaultPortModel(isLogicModel, 'Id', false, true,false, false, true, true, true, 'INT'));
+								node.addPort(new DefaultPortModel(isLogicModel, '', true, false,false, false, false, false, false, 'INT'));
+								node.addPort(new DefaultPortModel(isLogicModel, '1', true, false,false, false, false, false, false, 'INT'));
 							}
 						} else {
 							node = new DefaultNodeModel(
@@ -256,16 +254,12 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 						var point = props.app.getDiagramEngine().getRelativeMousePoint(event);
 						node.setPosition(point);
 						props.app.getDiagramEngine().getModel().addNode(node);
-						// props.app.getDiagramEngine().zoomToFit();
-						// props.app.getDiagramEngine().repaintCanvas();
-						// props.app.getDiagramEngine().repaintCanvas();
-
 
 						forceUpdate();
 					}}
 					onDragOver={(event) => {
 						event.preventDefault();
-						props.app.getDiagramEngine().zoomToFit()
+						console.log('drag drag')
 					}}
 					onClick={event => {
 						event.preventDefault();
@@ -282,7 +276,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 								.getModel()
 								.getSelectedEntities()[0].getParent() as DefaultLinkModel;
 
-							pointLink && props.app.getDiagramEngine().getModel().getLinks()[pointLink.getOptions().id].removePoint(pointToRemove);
+								pointToRemove.remove();
 						}
 						refreshPopups();
 					}}
@@ -321,7 +315,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 					}}
 				>
 					<DemoCanvasWidget>
-							<CanvasWidget engine={props.app.getDiagramEngine()} />
+							<CanvasWidget className="srd-demo-canvas" engine={props.app.getDiagramEngine()} />
 					</DemoCanvasWidget>
 				</Layer>
 				{selectedNode != null ? (
@@ -372,3 +366,6 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 	);
 
 }
+
+
+
