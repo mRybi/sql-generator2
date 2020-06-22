@@ -124,7 +124,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 					<TrayItemWidget model={{ type: 'default' }} name={isLogicModel ? "Relation" : "Entity"} color="rgb(0,192,255)" />
 					<TrayItemWidget model={{ type: 'label' }} name="Label" color="rgb(192,255,0)" />
 
-					<TrayItemDiv name="Load Diagram" color="rgb(255,123,0)" marginTop="100px" onClick={() => {
+					<TrayItemDiv name="Load Diagram" color="rgb(255,123,0)" marginTop="85px" onClick={() => {
 						setShowLoadFileDialog(true);
 						setSelectedNode(null);
 					}} />
@@ -172,7 +172,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 						</div>
 					)}
 
-					<TrayItemDiv isSelected={!isLogicModel} name="Conceptual View" color="rgb(0,50,100)" marginTop="100px" onClick={() => {
+					<TrayItemDiv isSelected={!isLogicModel} name="Conceptual View" color="rgb(0,50,100)" marginTop="85px" onClick={() => {
 						if (isLogicModel) {
 							props.app.setConceptualModel();
 							setIsLogicModel(false);
@@ -186,7 +186,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 						}
 					}} />
 
-					<TrayItemDiv isDisabled={isLogicModel} isSelected={isUml} name="UML" color="rgb(152,50,100)" marginTop="100px" onClick={() => {
+					<TrayItemDiv isDisabled={isLogicModel} isSelected={isUml} name="UML" color="rgb(152,50,100)" marginTop="85px" onClick={() => {
 						if (!isLogicModel && !isUml) {
 							changeRelation();
 							setIsUml(true);
@@ -201,7 +201,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
 					}} />
 
 
-					<TrayItemDiv name="Create DB Code" color="rgb(255,0,0)" marginTop="90px" onClick={() => {
+					<TrayItemDiv name="Create DB Code" color="rgb(255,0,0)" marginTop="60px" onClick={() => {
 						setShowDialog(true);
 						setSelectedNode(null);
 					}} />
