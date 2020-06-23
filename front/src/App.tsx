@@ -1,13 +1,12 @@
-
-import * as React from 'react';
-import { BodyWidget } from './components/BodyWidget';
-import { Application } from './components/Application';
+import * as React from "react";
+import { BodyWidget } from "./components/BodyWidget";
+import { Application } from "./components/Application";
 
 export default () => {
   var app = new Application();
-	return (
+  return (
     <div className="content">
       <BodyWidget app={app} />
     </div>
-	);
+  );
 };

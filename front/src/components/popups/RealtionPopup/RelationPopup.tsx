@@ -1,4 +1,3 @@
-import "./RelationPopup.scss";
 import React, { useState } from "react";
 import Popup from "reactjs-popup";
 import { DefaultLinkModel } from "../../../infrastructure/models/DefaultLinkModel";
@@ -10,7 +9,20 @@ import { PropertyTable } from "../../PropertyTable/PropertyTable";
 import { DefaultPortModel } from "../../../infrastructure/models/DefaultPortModel";
 import { ArrowLinkModel } from "../../../infrastructure/models/ArrowLinkModel";
 import { Toolkit } from "../../../infrastructure/Toolkit";
+import styled from "@emotion/styled";
 
+namespace S {
+  export const GridContainer = styled.div`
+    display: grid;
+    grid-template-columns: auto auto auto;
+  `;
+
+  export const GridItem = styled.div`
+    background-color: rgba(255, 255, 255, 0.274);
+    padding: 10px;
+    text-align: center;
+  `;
+}
 class Props {
   isOpen: boolean;
   link: DefaultLinkModel;
@@ -74,18 +86,27 @@ export const RelationPopup = (props: Props) => {
 
     props.diagramEngine.getModel().removeLink(props.link);
 
-
-    if(props.isLogic) {
-      let thisParent = props.link.getTargetPort().getParent() as DefaultNodeModel;
+    if (props.isLogic) {
+      let thisParent = props.link
+        .getTargetPort()
+        .getParent() as DefaultNodeModel;
       let portNode = props.link.getSourcePort().getParent() as DefaultNodeModel;
-  
-      let portNodePorts = portNode.getPorts() as {[s: string]: AdvancedPortModel};
-      let thisParentPorts = thisParent.getPorts() as {[s: string]: AdvancedPortModel};
-  
-      let czyMaPortZPKjakoFk = Object.keys(thisParentPorts).filter(id => thisParentPorts[id].fkPortId === portNode.getOptions().id)[0];
-      let czyMaPortZPKjakoFk2 = Object.keys(portNodePorts).filter(id => portNodePorts[id].fkPortId === thisParent.getOptions().id)[0];
-      
-      if(czyMaPortZPKjakoFk) {
+
+      let portNodePorts = portNode.getPorts() as {
+        [s: string]: AdvancedPortModel;
+      };
+      let thisParentPorts = thisParent.getPorts() as {
+        [s: string]: AdvancedPortModel;
+      };
+
+      let czyMaPortZPKjakoFk = Object.keys(thisParentPorts).filter(
+        (id) => thisParentPorts[id].fkPortId === portNode.getOptions().id
+      )[0];
+      let czyMaPortZPKjakoFk2 = Object.keys(portNodePorts).filter(
+        (id) => portNodePorts[id].fkPortId === thisParent.getOptions().id
+      )[0];
+
+      if (czyMaPortZPKjakoFk) {
         thisParent.removePort(thisParentPorts[czyMaPortZPKjakoFk]);
       } else {
         portNode.removePort(portNodePorts[czyMaPortZPKjakoFk2]);
@@ -107,7 +128,9 @@ export const RelationPopup = (props: Props) => {
 
   const renderOptionPicker = (side: string) => {
     return (
-      <div className="grid-item">
+      // <div className="grid-item">
+      <S.GridItem>
+
         <select
           className="darkSelect"
           onChange={(event) =>
@@ -119,7 +142,8 @@ export const RelationPopup = (props: Props) => {
         >
           {options}
         </select>
-      </div>
+      </S.GridItem>
+      // </div>
     );
   };
 
@@ -127,95 +151,130 @@ export const RelationPopup = (props: Props) => {
     let thisParent = props.link.getTargetPort().getParent() as DefaultNodeModel;
     let portNode = props.link.getSourcePort().getParent() as DefaultNodeModel;
 
-    let portNodePorts = portNode.getPorts() as {[s: string]: DefaultPortModel};
-    let thisParentPorts = thisParent.getPorts() as {[s: string]: DefaultPortModel};
+    let portNodePorts = portNode.getPorts() as {
+      [s: string]: DefaultPortModel;
+    };
+    let thisParentPorts = thisParent.getPorts() as {
+      [s: string]: DefaultPortModel;
+    };
 
     // let portNodePorts = portNode.getPorts() as {[s: string]: LogicPort};
     // let thisParentPorts = thisParent.getPorts() as {[s: string]: LogicPort};
 
-    let czyMaPortZPKjakoFk = Object.keys(thisParentPorts).filter(id => thisParentPorts[id].fkPortId === portNode.getOptions().id)[0];
-    let czyMaPortZPKjakoFk2 = Object.keys(portNodePorts).filter(id => portNodePorts[id].fkPortId === thisParent.getOptions().id)[0];
-    
+    let czyMaPortZPKjakoFk = Object.keys(thisParentPorts).filter(
+      (id) => thisParentPorts[id].fkPortId === portNode.getOptions().id
+    )[0];
+    let czyMaPortZPKjakoFk2 = Object.keys(portNodePorts).filter(
+      (id) => portNodePorts[id].fkPortId === thisParent.getOptions().id
+    )[0];
 
-    if(czyMaPortZPKjakoFk) {
+    if (czyMaPortZPKjakoFk) {
       thisParent.removePort(thisParentPorts[czyMaPortZPKjakoFk]);
-      let pk = Object.keys(thisParentPorts).filter(id => thisParentPorts[id].isPrimaryKey)[0];
-      portNode.addPort(new AdvancedPortModel(
-        // true,
-        thisParent.getOptions().name + thisParentPorts[pk].getOptions().name,false,false,false, true, false, true, true, 'INT', Toolkit.UID(), thisParent.getOptions().id));
-    
-    
-      } else {
+      let pk = Object.keys(thisParentPorts).filter(
+        (id) => thisParentPorts[id].isPrimaryKey
+      )[0];
+      portNode.addPort(
+        new AdvancedPortModel(
+          // true,
+          thisParent.getOptions().name + thisParentPorts[pk].getOptions().name,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          true,
+          "INT",
+          Toolkit.UID(),
+          thisParent.getOptions().id
+        )
+      );
+    } else {
       portNode.removePort(portNodePorts[czyMaPortZPKjakoFk2]);
 
-      let pk = Object.keys(portNodePorts).filter(id => portNodePorts[id].isPrimaryKey)[0];
-      portNode.addPort(new AdvancedPortModel(
-        // true,
+      let pk = Object.keys(portNodePorts).filter(
+        (id) => portNodePorts[id].isPrimaryKey
+      )[0];
+      portNode.addPort(
+        new AdvancedPortModel(
+          // true,
 
-        portNode.getOptions().name + portNodePorts[pk].getOptions().name,false,false,false, true, false, true, true, 'INT', Toolkit.UID(), portNode.getOptions().id));
-    
+          portNode.getOptions().name + portNodePorts[pk].getOptions().name,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          true,
+          "INT",
+          Toolkit.UID(),
+          portNode.getOptions().id
+        )
+      );
+    }
 
-      }
+    let newSourceP = props.link.getTargetPort();
+    let newTargetP = props.link.getSourcePort();
+    let model = props.diagramEngine.getModel();
 
-        let newSourceP = props.link.getTargetPort();
-        let newTargetP = props.link.getSourcePort();
-        let model = props.diagramEngine.getModel();
+    model.removeLink(props.link);
 
-        model.removeLink(props.link);
+    let link = new ArrowLinkModel({ type: "arrow" });
 
-        let link = new ArrowLinkModel({ type: 'arrow' });
-
-        link.setSourcePort(newSourceP);
-        link.setTargetPort(newTargetP);
-        model.addLink(link);
+    link.setSourcePort(newSourceP);
+    link.setTargetPort(newTargetP);
+    model.addLink(link);
 
     props.update();
-  }
+  };
 
   if (props.isLogic) {
     return (
       <Popup modal closeOnDocumentClick open={props.isOpen} closeOnEscape>
-        <div className="SQLResultDialog">
-          <div className="grid-item">
+        <>
+          <S.GridItem>
             <button onClick={remove}>Remove</button>
-          </div>
-          <div className="grid-item">
+          </S.GridItem>
+          <S.GridItem>
             <button onClick={reverseLink}>Reverse</button>
-          </div>
-        </div>
+          </S.GridItem>
+        </>
       </Popup>
     );
   } else
     return (
       <Popup modal closeOnDocumentClick open={props.isOpen} closeOnEscape>
-        <div className="SQLResultDialog">
-          <div className="grid-container">
-            <div className="grid-item">
+        <>
+          <S.GridContainer>
+            <S.GridItem>
+
               <p>{sourcePort && sourcePort.getOptions().name}</p>
-            </div>
-            <div className="grid-item">
+            </S.GridItem>
+
+            <S.GridItem>
               <input
-                className="darkInput"
                 type="text"
                 defaultValue={relationName}
                 onChange={(event) => setRelationName(event.target.value)}
               ></input>
-            </div>
-            <div className="grid-item">
+            </S.GridItem>
+            <S.GridItem>
+
               <p>{targetPort && targetPort.getOptions().name}</p>
-            </div>
+            </S.GridItem>
             {renderOptionPicker("left")}
-            <div className="grid-item">
+            <S.GridItem>
+
               <button onClick={update}>SAVE</button>
-            </div>
+            </S.GridItem>
             {renderOptionPicker("right")}
-            {/* <div className="grid-item" /> */}
-            <div className="grid-item"></div>
-            <div className="grid-item">
+            <S.GridItem></S.GridItem>
+            <S.GridItem>
+
               <button onClick={remove}>Remove</button>
-            </div>
-            {/* <div className="grid-item" /> */}
-          </div>
+            </S.GridItem>
+            </S.GridContainer>
           {props.link && (
             <div>
               <h3 style={{ margin: 0 }}>Atributes:</h3>
@@ -227,7 +286,7 @@ export const RelationPopup = (props: Props) => {
               />
             </div>
           )}
-        </div>
+        </>
       </Popup>
     );
 };

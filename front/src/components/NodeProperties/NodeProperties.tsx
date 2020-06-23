@@ -5,6 +5,7 @@ import { Col, Row, Grid } from "../grid";
 import { DiagramEngine } from "@projectstorm/react-diagrams";
 import { DefaultNodeModel } from "../../infrastructure/models/DefaultNodeModel";
 import { PropertyTable } from "../PropertyTable/PropertyTable";
+import { DarkInput } from "../DarkInput";
 
 class Props {
   selectedItem: DefaultNodeModel;
@@ -13,8 +14,8 @@ class Props {
 }
 
 export function useForceUpdate() {
-  const [value, setValue] = React.useState(0);
-  return () => setValue(value => ++value);
+  const [, setValue] = React.useState(0);
+  return () => setValue((value) => ++value);
 }
 
 export const NodeProperties = (props: Props) => {
@@ -40,43 +41,47 @@ export const NodeProperties = (props: Props) => {
     };
   });
 
-
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement >) => {
+  const handleNameChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     event.persist();
-    let allNodes = props.diagramEngine.getModel().getNodes() as DefaultNodeModel[];
+    let allNodes = props.diagramEngine
+      .getModel()
+      .getNodes() as DefaultNodeModel[];
 
-    let names = allNodes.map(node => node.getOptions().name.toLowerCase().trim());
-    
+    let names = allNodes.map((node) =>
+      node.getOptions().name.toLowerCase().trim()
+    );
+
     names.includes(event.target.value.toLowerCase().trim())
-      ? updatedItem.getOptions().name = defaultName
-      : updatedItem.getOptions().name = event.target.value.trim();
+      ? (updatedItem.getOptions().name = defaultName)
+      : (updatedItem.getOptions().name = event.target.value.trim());
     forceUpdate();
   };
 
-      const iconStyles: React.CSSProperties = {
-        display: "flex",
-        flexDirection: 'row',
-        flexFlow: 'row-reverse',
-        position: 'absolute',
-        right: '0',
-        top: '10px',
-        zIndex: 9999
-      };
+  // const iconStyles: React.CSSProperties = {
+  //   display: "flex",
+  //   flexDirection: "row",
+  //   flexFlow: "row-reverse",
+  //   position: "absolute",
+  //   right: "0",
+  //   top: "10px",
+  //   zIndex: 9999,
+  // };
 
+  // const acceptStyle: React.CSSProperties = {
+  //   marginRight: 5,
+  //   backgroundColor: "green",
+  //   borderRadius: "90px",
+  //   padding: "10px",
+  // };
 
-      const acceptStyle: React.CSSProperties = {
-        marginRight: 5,
-        backgroundColor: 'green',
-        borderRadius: '90px',
-        padding: '10px',
-      };
-
-      const declineStyle: React.CSSProperties = {
-        marginRight: '20px',
-        backgroundColor: 'red',
-        borderRadius: '90px',
-        padding: '10px',
-      };
+  // const declineStyle: React.CSSProperties = {
+  //   marginRight: "20px",
+  //   backgroundColor: "red",
+  //   borderRadius: "90px",
+  //   padding: "10px",
+  // };
 
   if (!updatedItem) return null;
   else
@@ -98,32 +103,38 @@ export const NodeProperties = (props: Props) => {
             </div> */}
         <Grid>
           <Row>
-          
-            <Col >
+            <Col>
               {!showInput ? (
-                
-                <h1 style={{wordBreak: 'break-all'}} onDoubleClick={() => setShowInput(true)}>{name}</h1>
-              ) : (
-                props.selectedItem.isLabel ? 
-                <textarea
-                style={{height: '200px'}}
-                className="darkInput fs-24"
-                defaultValue={name}
-                onChange={event => handleNameChange(event)}
+                <h1
+                  style={{ wordBreak: "break-all" }}
+                  onDoubleClick={() => setShowInput(true)}
                 >
-
-                </textarea> :
-                <input
-                  className="darkInput fs-24"
+                  {name}
+                </h1>
+              ) : props.selectedItem.isLabel ? (
+                <textarea
+                  style={{ height: "200px" }}
+                  className="darkInput fs-28"
                   defaultValue={name}
-                  onChange={event => handleNameChange(event)}
-                />
+                  onChange={(event) => handleNameChange(event)}
+                ></textarea>
+              ) : (
+
+                 <DarkInput
+                  fontSize={28}
+                  type="text"
+                  defaultValue={name}
+                  onChange={(event) => handleNameChange(event)}
+                  ></DarkInput> 
               )}
-              
             </Col>
-            
+
             {!updatedItem.isLabel ? (
-        <PropertyTable selectedItem={props.selectedItem} diagramEngine={props.diagramEngine} isLogic={props.isLogic}/> 
+              <PropertyTable
+                selectedItem={props.selectedItem}
+                diagramEngine={props.diagramEngine}
+                isLogic={props.isLogic}
+              />
             ) : null}
           </Row>
         </Grid>

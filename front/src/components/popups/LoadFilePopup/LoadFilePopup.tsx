@@ -35,7 +35,7 @@ export const LoadFilePopup = (props: Props) => {
       <div className="sql-result-dialog">
         <input
           type="file"
-          onChange={event => handleFileChosen(event.target.files[0])}
+          onChange={(event) => handleFileChosen(event.target.files[0])}
           accept=".dbjson"
         />
         <button onClick={() => props.loadDiagram(fileContent)}>Load</button>

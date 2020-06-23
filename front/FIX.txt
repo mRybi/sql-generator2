@@ -2,7 +2,7 @@
     w inline styles
 2. DefaultPortLabelWidget.tsx --//--
 3. Wszytsko na styled compoenents
-
+4. Wszytsko na funkcyjne
 
 MOZE DODAC WSZYSTKEI DODATKOWE INFO JAKO OPTIONS A NIE JAKO POLA JAK DEBIL? NP ISpk ISnotnull
 

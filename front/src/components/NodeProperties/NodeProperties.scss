@@ -46,7 +46,7 @@
       color: red;
     }
   
-    .fs-24 {
+    .fs-28 {
       font-size: 28px;
       margin-top: 15px;
       width: 90%;
@@ -56,16 +56,11 @@
       cursor: cell;
     }
   
-    .fixed-header {
-      position: sticky;
-      top: 0;
-      background: rgb(20, 20, 20);
-    }
-  
     th {
-      background: rgb(20, 20, 20);
+      background:  rgb(20, 20, 20);
       position: sticky;
       top: 0;
       z-index: 9999;
+      border: none;
     }
   }

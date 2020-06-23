@@ -16,27 +16,24 @@ export const ResultPopup = (props: Props) => {
   const [dbName, setDbName] = useState("DatabaseName");
   const [mySQLView, setmySQLView] = useState(false);
 
-
   let formatedMSSQL =
     props.mssqlString &&
     sqlFormatter.format(props.mssqlString, {
       language: "sql", // Defaults to "sql"
-      indent: "  " // Defaults to two spaces
+      indent: "  ", // Defaults to two spaces
     });
 
   let formatedMySQL =
     props.mysqlString &&
     sqlFormatter.format(props.mysqlString, {
       language: "db2", // Defaults to "sql"
-      indent: "  " // Defaults to two spaces
+      indent: "  ", // Defaults to two spaces
     });
 
   // useEffect(() => {
   //   formatedMSSQL = '';
   //   formatedMySQL = '';
   // }, [props.mssqlString, props.mysqlString])
-
-
 
   const downloadMSSQL = () => {
     var blob = new Blob([formatedMSSQL], { type: "text/plain;charset=utf-8" });
@@ -56,36 +53,36 @@ export const ResultPopup = (props: Props) => {
         <input
           style={{ marginRight: "10px" }}
           type="text"
-          onChange={event => setDbName(event.target.value)}
+          onChange={(event) => setDbName(event.target.value)}
           value={dbName}
         />
 
         <button
-         style={{ marginRight: "10px" }}
+          style={{ marginRight: "10px" }}
           onClick={() => {
-            props.generateScript(dbName)
-          }}>
+            props.generateScript(dbName);
+          }}
+        >
           Generate
-            </button>
+        </button>
 
-            <button
-            className={`${mySQLView ? '' : 'selected-sql'}`}
+        <button
+          className={`${mySQLView ? "" : "selected-sql"}`}
           onClick={() => {
-            setmySQLView(false)
-          }}>
+            setmySQLView(false);
+          }}
+        >
           MSSQL
-            </button>
+        </button>
 
-            <button
-            className={`${mySQLView ? 'selected-sql' : ''}`}
-
+        <button
+          className={`${mySQLView ? "selected-sql" : ""}`}
           onClick={() => {
-            setmySQLView(true)
-
-          }}>
+            setmySQLView(true);
+          }}
+        >
           MySQL
-            </button>
-
+        </button>
 
         <textarea
           style={{ marginTop: "5px" }}

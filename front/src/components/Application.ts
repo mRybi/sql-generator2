@@ -1,19 +1,22 @@
-import createEngine, { DiagramModel, DiagramEngine } from '@projectstorm/react-diagrams';
-import { ArrowLinkFactory } from '../infrastructure/factories/ArrowLinkFactory';
-import { DefaultNodeFactory } from '../infrastructure/factories/DefaultNodeFactory';
-import { DefaultLabelFactory } from '../infrastructure/factories/DefaultLabelFactory';
-import { DefaultPortFactory } from '../infrastructure/factories/DefaultPortFactory';
-import { DefaultLinkFactory } from '../infrastructure/factories/DefaultLinkFactory';
-import { CustomLabelFactory } from '../infrastructure/factories/CustomLabelFactory';
-import { DefaultPortModel } from '../infrastructure/models/DefaultPortModel';
-import { ArrowLinkModel } from '../infrastructure/models/ArrowLinkModel';
-import { AdvancedPortModel } from '../infrastructure/models/ArrowPortModel';
-import { DefaultNodeModel } from '../infrastructure/models/DefaultNodeModel';
-import { DefaultLabelModel } from '../infrastructure/models/DefaultLabelModel';
-import { DefaultLinkModel } from '../infrastructure/models/DefaultLinkModel';
-import { Toolkit } from '../infrastructure/Toolkit';
-import { DefaultDiagramState } from '@projectstorm/react-diagrams';
-import { ArrowPortFactory } from '../infrastructure/factories/ArrowPortFactory';
+import createEngine, {
+  DiagramModel,
+  DiagramEngine,
+} from "@projectstorm/react-diagrams";
+import { ArrowLinkFactory } from "../infrastructure/factories/ArrowLinkFactory";
+import { DefaultNodeFactory } from "../infrastructure/factories/DefaultNodeFactory";
+import { DefaultLabelFactory } from "../infrastructure/factories/DefaultLabelFactory";
+import { DefaultPortFactory } from "../infrastructure/factories/DefaultPortFactory";
+import { DefaultLinkFactory } from "../infrastructure/factories/DefaultLinkFactory";
+import { CustomLabelFactory } from "../infrastructure/factories/CustomLabelFactory";
+import { DefaultPortModel } from "../infrastructure/models/DefaultPortModel";
+import { ArrowLinkModel } from "../infrastructure/models/ArrowLinkModel";
+import { AdvancedPortModel } from "../infrastructure/models/ArrowPortModel";
+import { DefaultNodeModel } from "../infrastructure/models/DefaultNodeModel";
+import { DefaultLabelModel } from "../infrastructure/models/DefaultLabelModel";
+import { DefaultLinkModel } from "../infrastructure/models/DefaultLinkModel";
+import { DefaultDiagramState } from "@projectstorm/react-diagrams";
+import { ArrowPortFactory } from "../infrastructure/factories/ArrowPortFactory";
+import { Toolkit } from "../infrastructure/Toolkit";
 
 export class Application {
   protected activeModel!: DiagramModel;
@@ -22,31 +25,45 @@ export class Application {
   protected diagramEngine: DiagramEngine;
 
   constructor() {
-	this.diagramEngine = createEngine({});
-    this.diagramEngine.getNodeFactories().registerFactory(new CustomLabelFactory());
+    this.diagramEngine = createEngine();
 
-    this.diagramEngine.getNodeFactories().registerFactory(new DefaultNodeFactory());
-    this.diagramEngine.getLabelFactories().registerFactory(new DefaultLabelFactory());
-    this.diagramEngine.getPortFactories().registerFactory(new DefaultPortFactory());
-    this.diagramEngine.getPortFactories().registerFactory(new ArrowPortFactory());
+    this.diagramEngine
+      .getNodeFactories()
+      .registerFactory(new CustomLabelFactory());
+    this.diagramEngine
+      .getNodeFactories()
+      .registerFactory(new DefaultNodeFactory());
 
+    this.diagramEngine
+      .getLabelFactories()
+      .registerFactory(new DefaultLabelFactory());
 
-    this.diagramEngine.getLinkFactories().registerFactory(new ArrowLinkFactory());
+    this.diagramEngine
+      .getPortFactories()
+      .registerFactory(new DefaultPortFactory());
+    this.diagramEngine
+      .getPortFactories()
+      .registerFactory(new ArrowPortFactory());
 
-    this.diagramEngine.getLinkFactories().registerFactory(new DefaultLinkFactory());
+    this.diagramEngine
+      .getLinkFactories()
+      .registerFactory(new ArrowLinkFactory());
+    this.diagramEngine
+      .getLinkFactories()
+      .registerFactory(new DefaultLinkFactory());
 
     const state = this.diagramEngine.getStateMachine().getCurrentState();
 
     if (state instanceof DefaultDiagramState) {
-        state.dragNewLink.config.allowLooseLinks = false;
-      }
+      state.dragNewLink.config.allowLooseLinks = false;
+    }
 
     this.newModel();
   }
 
   public newModel() {
     this.activeModel = new DiagramModel();
-	  this.logicModel = new DiagramModel();
+    this.logicModel = new DiagramModel();
 
     this.diagramEngine.setModel(this.activeModel);
   }
@@ -60,125 +77,261 @@ export class Application {
   }
 
   public setLogicModel() {
-
     let concNodes = this.activeModel.getNodes();
 
-    Object.keys(concNodes).map((k) => {
+    Object.keys(concNodes).forEach((k) => {
       let node = concNodes[k].clone() as DefaultNodeModel;
 
       let nodePorts = concNodes[k].getPorts();
 
-      Object.keys(nodePorts).map(k => {
+      Object.keys(nodePorts).forEach((k) => {
         let port = nodePorts[k] as DefaultPortModel;
-        let logicPort = new AdvancedPortModel(port.getOptions().name, port.isNamePort, port.isPrimaryKey, port.isForeignKey, port.isPartialKey, port.isNotNull, port.isAutoincremented, port.isUnique, port.propertyType);
+        let logicPort = new AdvancedPortModel(
+          port.getOptions().name,
+          port.isNamePort,
+          port.isPrimaryKey,
+          port.isForeignKey,
+          port.isPartialKey,
+          port.isNotNull,
+          port.isAutoincremented,
+          port.isUnique,
+          port.propertyType
+        );
         node.addPort(logicPort);
-      })
-
+      });
 
       this.logicModel.addNode(node);
     });
 
     let concLinks = this.activeModel.getLinks();
 
-    Object.keys(concLinks).map((k) => {
+    Object.keys(concLinks).forEach((k) => {
       let logicNodes = this.logicModel.getNodes() as DefaultNodeModel[];
 
       let sourceNode = concLinks[k].sourcePort.getParent() as DefaultNodeModel;
-      let sourceNodeId = logicNodes.filter(
-        node => (node as DefaultNodeModel).getOptions().name === sourceNode.getOptions().name
-      )[0].getOptions().id;
+      let sourceNodeId = logicNodes
+        .filter(
+          (node) =>
+            (node as DefaultNodeModel).getOptions().name ===
+            sourceNode.getOptions().name
+        )[0]
+        .getOptions().id;
 
       let targetNode = concLinks[k].targetPort.getParent() as DefaultNodeModel;
-      let targetNodeId = logicNodes.filter(
-        node => (node as DefaultNodeModel).getOptions().name === targetNode.getOptions().name
-      )[0].getOptions().id;
+      let targetNodeId = logicNodes
+        .filter(
+          (node) =>
+            (node as DefaultNodeModel).getOptions().name ===
+            targetNode.getOptions().name
+        )[0]
+        .getOptions().id;
 
-      let sourceLabel = (concLinks[k].labels[0] as DefaultLabelModel).getOptions().label;
-      let targetLabel = (concLinks[k].labels[2] as DefaultLabelModel).getOptions().label;
+      let sourceLabel = (concLinks[k]
+        .labels[0] as DefaultLabelModel).getOptions().label;
+      let targetLabel = (concLinks[k]
+        .labels[2] as DefaultLabelModel).getOptions().label;
 
       if (sourceLabel.includes("N") && targetLabel.includes("N")) {
-        let relNode = ((concLinks[k] as DefaultLinkModel).properties as DefaultNodeModel).clone() as DefaultNodeModel;
-        relNode.getOptions().name = (concLinks[k].labels[1] as DefaultLabelModel).getOptions().label;
-        relNode.setPosition(sourceNode.getPosition().x + 150, sourceNode.getPosition().y - 100);
+        let relNode = ((concLinks[k] as DefaultLinkModel)
+          .properties as DefaultNodeModel).clone() as DefaultNodeModel;
+        relNode.getOptions().name = (concLinks[k]
+          .labels[1] as DefaultLabelModel).getOptions().label;
+        relNode.setPosition(
+          sourceNode.getPosition().x + 150,
+          sourceNode.getPosition().y - 100
+        );
 
-        relNode.addPort(new AdvancedPortModel('Id', false, true, false,false, true, true, true, 'INT'));
-        relNode.addPort(new AdvancedPortModel('', true, false, false,false, false, false, false, 'INT'));
-        relNode.addPort(new AdvancedPortModel('1', true, false, false,false, false, false, false, 'INT'));
+        relNode.addPort(
+          new AdvancedPortModel(
+            "Id",
+            false,
+            true,
+            false,
+            false,
+            true,
+            true,
+            true,
+            "INT"
+          )
+        );
+        relNode.addPort(
+          new AdvancedPortModel(
+            "",
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            "INT"
+          )
+        );
+        relNode.addPort(
+          new AdvancedPortModel(
+            "1",
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            "INT"
+          )
+        );
 
-
-        relNode.addPort(new AdvancedPortModel(sourceNode.getOptions().name + "Id", false, false,false, true, true, false, false, 'INT', Toolkit.UID(), sourceNodeId));
-        relNode.addPort(new AdvancedPortModel(targetNode.getOptions().name + "Id", false, false,false, true, true, false, false, 'INT', Toolkit.UID(), targetNodeId));
+        relNode.addPort(
+          new AdvancedPortModel(
+            sourceNode.getOptions().name + "Id",
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            "INT",
+            Toolkit.UID(),
+            sourceNodeId
+          )
+        );
+        relNode.addPort(
+          new AdvancedPortModel(
+            targetNode.getOptions().name + "Id",
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            "INT",
+            Toolkit.UID(),
+            targetNodeId
+          )
+        );
 
         this.logicModel.addNode(relNode);
 
-        //dodaj link
-        let node = logicNodes.filter(n => n.getOptions().id === sourceNodeId)[0];
+        let node = logicNodes.filter(
+          (n) => n.getOptions().id === sourceNodeId
+        )[0];
         let sourceP = node.getPorts()["1"];
         let targetP = relNode.getPorts()[""];
 
-        let link = new ArrowLinkModel({ type: 'arrow' });
+        let link = new ArrowLinkModel({ type: "arrow" });
 
         link.setSourcePort(sourceP);
         link.setTargetPort(targetP);
 
-        //dodaj link
-        let node2 = logicNodes.filter(n => n.getOptions().id === targetNodeId)[0];
+        let node2 = logicNodes.filter(
+          (n) => n.getOptions().id === targetNodeId
+        )[0];
         let targetP2 = relNode.getPorts()["1"];
         let sourceP2 = node2.getPorts()[""];
 
-        let link2 = new ArrowLinkModel({ type: 'arrow' });
+        let link2 = new ArrowLinkModel({ type: "arrow" });
 
         link2.setSourcePort(sourceP2);
         link2.setTargetPort(targetP2);
 
         this.logicModel.addAll(link, link2);
       } else if (sourceLabel.includes("N")) {
-        //dodaj FK
-        let node = logicNodes.filter(n => n.getOptions().id === sourceNodeId)[0];
+        let node = logicNodes.filter(
+          (n) => n.getOptions().id === sourceNodeId
+        )[0];
 
-        node.addPort(new AdvancedPortModel(targetNode.getOptions().name + "Id", false, false,false, true, true, false, false, 'INT', Toolkit.UID(), targetNodeId));
+        node.addPort(
+          new AdvancedPortModel(
+            targetNode.getOptions().name + "Id",
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            "INT",
+            Toolkit.UID(),
+            targetNodeId
+          )
+        );
 
-        //dodaj link
-        let tNode = logicNodes.filter(n => n.getOptions().id === targetNodeId)[0];
+        let tNode = logicNodes.filter(
+          (n) => n.getOptions().id === targetNodeId
+        )[0];
 
         let targetP = node.getPorts()["1"];
         let sourceP = tNode.getPorts()[""];
 
-        let link = new ArrowLinkModel({ type: 'arrow' });
+        let link = new ArrowLinkModel({ type: "arrow" });
 
         link.setSourcePort(sourceP);
         link.setTargetPort(targetP);
         this.logicModel.addLink(link);
       } else if (targetLabel.includes("N")) {
-        //dodaj FK
-        let node = logicNodes.filter(n => n.getOptions().id === targetNodeId)[0];
+        let node = logicNodes.filter(
+          (n) => n.getOptions().id === targetNodeId
+        )[0];
 
-        node.addPort(new AdvancedPortModel(sourceNode.getOptions().name + "Id", false, false,false, true, true, false, false, 'INT', Toolkit.UID(), sourceNodeId));
+        node.addPort(
+          new AdvancedPortModel(
+            sourceNode.getOptions().name + "Id",
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            "INT",
+            Toolkit.UID(),
+            sourceNodeId
+          )
+        );
 
-        //dodaj link
-        let tNode = logicNodes.filter(n => n.getOptions().id === sourceNodeId)[0];
+        let tNode = logicNodes.filter(
+          (n) => n.getOptions().id === sourceNodeId
+        )[0];
 
         let targetP = node.getPorts()[""];
         let sourceP = tNode.getPorts()["1"];
 
-        let link = new ArrowLinkModel({ type: 'arrow' });
+        let link = new ArrowLinkModel({ type: "arrow" });
 
         link.setSourcePort(sourceP);
         link.setTargetPort(targetP);
         this.logicModel.addLink(link);
       } else {
-        //dodaj FK
-        let node = logicNodes.filter(n => n.getOptions().id === targetNodeId)[0];
+        let node = logicNodes.filter(
+          (n) => n.getOptions().id === targetNodeId
+        )[0];
 
-        node.addPort(new AdvancedPortModel( sourceNode.getOptions().name + "Id", false, false,false, true, true, false, false, 'INT', Toolkit.UID(), sourceNodeId));
+        node.addPort(
+          new AdvancedPortModel(
+            sourceNode.getOptions().name + "Id",
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            "INT",
+            Toolkit.UID(),
+            sourceNodeId
+          )
+        );
 
-        //dodaj link
-        let tNode = logicNodes.filter(n => n.getOptions().id === sourceNodeId)[0];
+        let tNode = logicNodes.filter(
+          (n) => n.getOptions().id === sourceNodeId
+        )[0];
 
         let targetP = node.getPorts()[""];
         let sourceP = tNode.getPorts()["1"];
 
-        let link = new ArrowLinkModel({ type: 'arrow' });
+        let link = new ArrowLinkModel({ type: "arrow" });
 
         link.setSourcePort(sourceP);
         link.setTargetPort(targetP);
@@ -197,15 +350,15 @@ export class Application {
 
     let nodes = this.activeModel.getNodes();
 
-    Object.keys(nodes).map(k => {
+    Object.keys(nodes).forEach((k) => {
       activeModelCopy.addNode(nodes[k]);
-    })
+    });
 
     let links = this.activeModel.getLinks();
 
-    Object.keys(links).map(k => {
+    Object.keys(links).forEach((k) => {
       activeModelCopy.addLink(links[k]);
-    })
+    });
 
     this.activeModel = activeModelCopy;
 
@@ -220,6 +373,6 @@ export class Application {
 
   public loadLogicModel(model: DiagramModel) {
     this.logicModel = model;
-      this.diagramEngine.setModel(this.logicModel);
-    }
+    this.diagramEngine.setModel(this.logicModel);
+  }
 }
