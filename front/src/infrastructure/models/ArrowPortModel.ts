@@ -44,6 +44,7 @@ export class AdvancedPortModel extends DefaultPortModel {
 
   link<T extends LinkModel>(
     port: PortModel,
+    
     factory?: AbstractModelFactory<T>
   ): T {
     let link = this.createLinkModel();

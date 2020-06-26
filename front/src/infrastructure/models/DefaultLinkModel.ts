@@ -5,6 +5,7 @@ import {
   LinkModelListener,
   PortModel,
   PortModelAlignment,
+  PointModel,
 } from "@projectstorm/react-diagrams-core";
 import { DefaultLabelModel } from "../models/DefaultLabelModel";
 import { BezierCurve } from "@projectstorm/geometry";
@@ -26,6 +27,11 @@ export interface DefaultLinkModelListener extends LinkModelListener {
     event: BaseEntityEvent<DefaultLinkModel> & { width: 0 | number }
   ): void;
 }
+
+export interface LinkWithPointOptions extends BaseModelOptions {
+  position: {x: number, y: number};
+}
+
 
 export interface DefaultLinkModelOptions extends BaseModelOptions {
   width?: number;
@@ -52,8 +58,9 @@ class RelationProperties {
 
 export class DefaultLinkModel extends LinkModel<DefaultLinkModelGenerics> {
   properties: DefaultNodeModel;
+  relName: string;
 
-  constructor(options: DefaultLinkModelOptions = {}) {
+  constructor(options: DefaultLinkModelOptions = {}, withPoint?: LinkWithPointOptions) {
     super({
       type: "default",
       width: options.width || 3,
@@ -64,8 +71,18 @@ export class DefaultLinkModel extends LinkModel<DefaultLinkModelGenerics> {
     });
 
     this.addLabel("0,N");
-    this.addLabel("relation name");
+    this.addLabel("relation name\n");
     this.addLabel("0,N");
+
+
+    if(withPoint) {
+      let point = new PointModel({link: this});
+      point.setPosition(withPoint.position.x ,withPoint.position.y)
+      this.addPoint(point);
+    }
+
+
+    this.relName = "relation name";
 
     this.properties = new DefaultNodeModel(false, "relNode", "rgb(0,192,255)");
   }
@@ -82,6 +99,7 @@ export class DefaultLinkModel extends LinkModel<DefaultLinkModelGenerics> {
   }
 
   getSVGPath(): string {
+
     if (this.points.length === 2) {
       const curve = new BezierCurve();
       curve.setSource(this.getFirstPoint().getPosition());
@@ -128,6 +146,7 @@ export class DefaultLinkModel extends LinkModel<DefaultLinkModelGenerics> {
       color: this.options.color,
       curvyness: this.options.curvyness,
       selectedColor: this.options.selectedColor,
+      relName: this.relName,
       properties,
     };
   }
@@ -161,6 +180,7 @@ export class DefaultLinkModel extends LinkModel<DefaultLinkModelGenerics> {
     this.options.curvyness = event.data.curvyness;
     this.options.selectedColor = event.data.selectedColor;
     this.properties = propertiesNode;
+    this.relName = event.data.relName;
   }
 
   addLabel(label: LabelModel | string) {

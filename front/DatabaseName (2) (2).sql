@@ -1,0 +1,64 @@
+SET
+  @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS,
+  UNIQUE_CHECKS = 0;
+SET
+  @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS,
+  FOREIGN_KEY_CHECKS = 0;
+SET
+  @OLD_SQL_MODE = @@SQL_MODE,
+  SQL_MODE = 'TRADITIONAL,ALLOW_INVALID_DATES';
+CREATE SCHEMA IF NOT EXISTS `DatabaseName` DEFAULT CHARACTER
+SET
+  utf8;
+USE `DatabaseName`;
+CREATE TABLE IF NOT EXISTS `DatabaseName`.`Encja1` (
+    `Id` INT NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`Id`),
+    UNIQUE INDEX `Id_UNIQUE` (`Id` ASC)
+  ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `DatabaseName`.`Encja2` (
+    `Id` INT NOT NULL,
+    `Encja1Id` INT NOT NULL,
+  ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `DatabaseName`.`Entity3` (
+    `Id` INT NOT NULL,
+    `Encja2Id` INT NOT NULL,
+  ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `DatabaseName`.`Encja4` (
+    `Id` INT NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`Id`),
+    UNIQUE INDEX `Id_UNIQUE` (`Id` ASC)
+  ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `DatabaseName`.`Encja5` (
+    `Id` INT NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`Id`),
+    UNIQUE INDEX `Id_UNIQUE` (`Id` ASC)
+  ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `DatabaseName`.`Encja6` (
+    `Id` VARCHAR(50) NOT NULL AUTO_INCREMENT,
+    `new atribute 1` varchar(50) NOT NULL AUTO_INCREMENT,
+    `new atribute 2` INT NULL,
+    PRIMARY KEY (`Id`, `new atribute 1`),
+    UNIQUE INDEX `Id_UNIQUE` (`Id` ASC),
+    PRIMARY KEY (`Id`, `new atribute 1`),
+    UNIQUE INDEX `new atribute 1_UNIQUE` (`new atribute 1` ASC)
+  ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `DatabaseName`.`Entity7` (
+    `Id` INT NOT NULL AUTO_INCREMENT,
+    `Encja6Id` INT NOT NULL,
+    PRIMARY KEY (`Id`, `Encja6Id`),
+    UNIQUE INDEX `Id_UNIQUE` (`Id` ASC)
+  ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `DatabaseName`.`zakupy` (
+    `Id` INT NOT NULL AUTO_INCREMENT,
+    `Encja4Id` INT NOT NULL,
+    `Encja5Id` INT NOT NULL,
+    PRIMARY KEY (`Id`, `Encja4Id`, `Encja5Id`),
+    UNIQUE INDEX `Id_UNIQUE` (`Id` ASC)
+  ) ENGINE = InnoDB;
+SET
+  SQL_MODE = @OLD_SQL_MODE;
+SET
+  FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
+SET
+  UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS;

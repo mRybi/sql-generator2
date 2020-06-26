@@ -11,5 +11,7 @@ export class ArrowLinkModel extends DefaultLinkModel {
       curvyness: 0,
       ...options,
     });
+    
+    
   }
 }

@@ -35,7 +35,9 @@ export const RelationPopup = (props: Props) => {
 
   const [right, setRight] = useState("1, N");
 
-  const [relationName, setRelationName] = useState("relation name");
+  const [relationAtributes, setRelationAtributes] = useState("");
+  const [relationNameOnly, setRelationNameOnly] = useState("relation name");
+
 
   React.useEffect(() => {
     let leftLabel =
@@ -52,22 +54,49 @@ export const RelationPopup = (props: Props) => {
       (props.link.getLabels()[2] as DefaultLabelModel).getOptions().label;
 
     setLeft(leftLabel ? leftLabel : "1, N");
-    setRelationName(relLabel ? relLabel : "relation name");
+
     setRight(rightLabel ? rightLabel : "1, N");
   }, [props.link]);
 
   let update = () => {
+    let x = handleRelationNameChenge();
     let labels = props.link.getLabels() as DefaultLabelModel[];
     labels[0].getOptions().label = left;
     labels[2].getOptions().label = right;
-    labels[1].getOptions().label = relationName;
+    labels[1].getOptions().label = relationNameOnly + `${false ? x : ''}`;
+    // dodawanie portow z relProperties nie dzialsa dla generowanego z conceptual
+
+    props.link.relName = relationNameOnly;
+
+
     let points = props.link.getPoints();
     for (let index = 1; index < points.length - 1; index++) {
       const element = points[index];
       element.remove();
     }
+
+    setRelationAtributes(x);
     props.update();
   };
+
+  const handleRelationNameChenge = () => {
+    console.log(props.link.relName);
+
+    let relationAtributes = props.link.properties !== null && props.link.properties.getPorts() as {[s: string]: DefaultPortModel};
+    let attString = '';
+
+    if(Object.keys(relationAtributes).length > 0) {
+      Object.keys(relationAtributes).map(id => attString += `${relationAtributes[id].label} ${relationAtributes[id].propertyType} \n`);
+      
+      const newRelName = '\n' + attString;
+      return newRelName;
+    }
+      else {
+        return '';
+      }
+
+
+  }
 
   const sourcePort =
     props.link &&
@@ -244,7 +273,7 @@ export const RelationPopup = (props: Props) => {
     );
   } else
     return (
-      <Popup modal closeOnDocumentClick open={props.isOpen} closeOnEscape>
+      <Popup modal closeOnDocumentClick open={props.isOpen} closeOnEscape onClose={props.update}>
         <>
           <S.GridContainer>
             <S.GridItem>
@@ -255,8 +284,8 @@ export const RelationPopup = (props: Props) => {
             <S.GridItem>
               <input
                 type="text"
-                defaultValue={relationName}
-                onChange={(event) => setRelationName(event.target.value)}
+                defaultValue={relationNameOnly}
+                onChange={(event) => setRelationNameOnly(event.target.value)}
               ></input>
             </S.GridItem>
             <S.GridItem>
@@ -279,7 +308,10 @@ export const RelationPopup = (props: Props) => {
             <div>
               <h3 style={{ margin: 0 }}>Atributes:</h3>
               <PropertyTable
+              relationName={relationNameOnly}
+                update={update}
                 relView={true}
+                link={props.link}
                 diagramEngine={props.diagramEngine}
                 selectedItem={props.link.properties}
                 isLogic={props.isLogic}

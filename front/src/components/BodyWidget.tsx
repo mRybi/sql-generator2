@@ -119,6 +119,18 @@ export const BodyWidget = (props: BodyWidgetProps) => {
     setShowRelationDialog(false);
   };
 
+  const getDiagramLogicModel = () => {
+    if(isLogicModel) {
+      return props.app.getDiagramEngine().getModel().serialize();
+    }
+    else {
+      props.app.setLogicModel();
+
+      setIsLogicModel(true);
+      return props.app.getDiagramEngine().getModel().serialize();
+    }
+  }
+
   return (
     <S.Body>
       <S.Header>DB Diagram Scripter</S.Header>
@@ -389,6 +401,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
                 .getSelectedEntities()[0] as PointModel;
 
               pointToRemove.remove();
+              forceUpdate();
             }
             refreshPopups();
           }}
@@ -434,6 +447,8 @@ export const BodyWidget = (props: BodyWidgetProps) => {
         </S.Layer>
         {selectedNode != null ? (
           <NodeProperties
+            update={refreshPopups}
+
             isLogic={isLogicModel}
             selectedItem={selectedNode}
             diagramEngine={props.app.getDiagramEngine()}
@@ -444,7 +459,8 @@ export const BodyWidget = (props: BodyWidgetProps) => {
           isLogic={isLogicModel}
           update={refreshPopups}
           isOpen={showDialog}
-          serializeDiagram={props.app.getDiagramEngine().getModel().serialize()}
+          serializeDiagram={() =>  getDiagramLogicModel()}
+          
         />
         <LoadFileHandler
           update={refreshPopups}

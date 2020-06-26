@@ -8,6 +8,8 @@ import { PropertyTable } from "../PropertyTable/PropertyTable";
 import { DarkInput } from "../DarkInput";
 
 class Props {
+  update: () => void;
+
   selectedItem: DefaultNodeModel;
   isLogic: boolean;
   diagramEngine: DiagramEngine;
@@ -131,6 +133,7 @@ export const NodeProperties = (props: Props) => {
 
             {!updatedItem.isLabel ? (
               <PropertyTable
+              update={props.update}
                 selectedItem={props.selectedItem}
                 diagramEngine={props.diagramEngine}
                 isLogic={props.isLogic}

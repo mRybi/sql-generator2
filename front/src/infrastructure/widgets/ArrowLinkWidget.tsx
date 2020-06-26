@@ -81,21 +81,15 @@ export class ArrowLinkWidget extends DefaultLinkWidget {
       );
     }
 
-    //render the circles
-    for (let i = 0; i < points.length - 1; i++) {
-      paths.push(this.generateArrow(points[i], points[i + 1]));
-    }
+    paths.push(this.generateArrow(points[0], points[1]));
 
-    if (this.props.link.getTargetPort() !== null) {
-      paths.push(this.generatePoint(points[points.length - 1]));
-    } else {
-      paths.push(this.generatePoint(points[points.length - 1]));
-    }
+    	//render the circles
+		for (let i = 1; i < points.length - 1; i++) {
+			paths.push(this.generatePoint(points[i]));
+		}
 
-    return (
-      <g data-default-link-test={this.props.link.getOptions().testName}>
-        {paths}
-      </g>
-    );
+			paths.push(this.generatePoint(points[points.length - 1]));
+
+		return <g data-default-link-test={this.props.link.getOptions().testName}>{paths}</g>;
   }
 }

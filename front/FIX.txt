@@ -3,44 +3,74 @@
 2. DefaultPortLabelWidget.tsx --//--
 3. Wszytsko na styled compoenents
 4. Wszytsko na funkcyjne
-
-MOZE DODAC WSZYSTKEI DODATKOWE INFO JAKO OPTIONS A NIE JAKO POLA JAK DEBIL? NP ISpk ISnotnull
-
-DODAC MOZLIWOSCI KTORE DAJE NOWY TYP DIAGRAMOW:
-- RIGHT ANGLE LINKS?
-- SMART ROUTING
-- TO AUTOMATYCZNE UKLADANIE / ROZGOSPODAROWANIE NODEOW ZEBY SIE NIE PRZEVCINALY LINKI
-
-- wszytswko w @emotion + naprawic te namespace S.
-
---POPRAWKI--
-
-Uwagi merytoryczne:
-1. --DONE-- strzałki powinny  (a przynajmniej tak jest najczęściej) biec od tabeli podrzędnej do nadrzędnej
-2. --JAK??-- każdy związek może mieć atrybuty, a w tej chwili atrybuty mogę zdefiniować tylko dla związków N:N
-3. --DONE-- program nie radzi sobie z encjami słabymi (rys_3). Po przekształceniu do modelu logicznego wstawia 
-    wprawdzie z tabeli nadrzędnej klucz główny i zaznacza go jako obcy, ale już nie zaznacza w utworzonej 
-    tabeli żadnego klucza - a kluczem głównym powinny być klucze główne z encji identyfikujących oraz klucz 
-    częściowy encji, jeżeli istniał. 
-3a. Nie generuje się w takim przypadku kod.
-
-ZROBIONE:
- jesli podczas laczenia klucz główny był to nie dodaje partial key
- jesli encja nie miala pk to wtedy tworzony jest partial key dla danego FK i można/nalezy wybrac sobie 
-        jakis partial do tego aby stworzyl klucz
-
-
-Uwagi dot. działania programu:
-1. --DONE-- Rys_1. Pomniejszyłem sobie trochę diagram, bo było na nim dużo encji. W efekcie encje są widoczne, 
-    ale (na dole rysunku) od któregoś momentu związki są jakby przykryte tłem. JEST PROBLEM Z WIELKOSCIA 
-    PLANSZY COS SIE ZWALILO I JAK WYCHODZIMY ZA OBSZAR TO DYMY SA. USTAWIC JAKOS RANGE PLANSZY
-2. --DONE-- Rys_2. Chciałem nagrać tę sytuacje jako obrazek, ale Save nie działało
-3. --DONE-- dwukrotne kliknięcie w róg encji/relacji powoduje utworzenie związku z lewym górnym rogiem pola 
-    roboczego (Rys_4).
-
-To na razie na szybko pierwsze spostrzeżenia.
+5. wszytswko w @emotion + naprawic te namespace S.
+6. MOZE DODAC WSZYSTKEI DODATKOWE INFO JAKO OPTIONS A NIE JAKO POLA JAK DEBIL? NP ISpk ISnotnull
 
 Aha, a czy istniałaby możliwość utworzenia i zapamiętania razem z diagramem "metki", w której byłyby zapisane 
 takie dane, jak data i czas utworzenia diagramu, autor diagramu, daty kolejnych modyfikacji i ich autorzy. 
 Ona nie byłaby dostępna przez przycisk, tylko np przez naciśnięcie jakiejś kombinacji klawiszy.
 I tak zapamiętana, żeby nie można było wprowadzać w niej zmian.
+
+Dzień dobry, Panie Mikołaju.
+
+Aplikacja wygląda już dobrze, tylko są jeszcze ciągle jakieś mankamenty. Merytorycznie jest już prawie OK. 
+Jeszcze są pewne niuanse związane ze słabymi encjami (niżej). Jak już aplikacja będzie dobrze działała, to 
+jeszcze raz sprawdzę sposoby przekształcania encji w schematy relacji. Nie sprawdzałem jeszcze, jak się realizuje 
+związki rekurencyjne (encji z samą sobą). Oczywiście, można by coś jeszcze dodać, np. możliwość 
+generalizacji/specjalizacji, ale nie jest to konieczne (choć miło by było, gdyby to też było zaimplementowane).
+
+
+uwagi merytoryczne:
+1. klucze częściowe mamy tylko  w modelu konceptualnym, w modelu logicznym (relacyjnym) w schemacie relacji 
+    powstałym ze słabej encji klucz częściowy encji (jeśli był) oraz klucze główne encji identyfikujących 
+    (nadrzędnych) tworzą klucz główny (nie częściowy)
+2. --DONE?? do testów-- encja nadrzędną dla encji słabej może też być encja słaba. Ale ona powinna być identyfikowana przez encję 
+    silną (a jeżeli nie, to powstanie taki łańcuch encji słabych, ale na jego początku musi się w końcu pojawić 
+    encja silna). Przekształcanie w schematy relacji trzeba wtedy zacząć od encji silnej. potem encje, która jest 
+    związana z tą encją silną - kluczem głównym będzie klucz główny encji silnej i klucz częściowy. I ten klucz 
+    główny trafia do kolejnego schematu relacji, by łącznie z kluczem częściowym utworzyc klucz główny itd. 
+    Podsyłam diagram1, W nim są trzy encje: silna encja Encja1 (z atrybutem id1 jako PK), która identyfikuje słabą 
+    encję Encja2 (z atrybutem Id2 jako kluczem częściowym), która z kolei identyfikuje słabą encję Encja3 (z atrybutem
+    Id3, który jest kluczem częściowym ). Po transformacji powinniśmy zatem otrzymać relację Encja1 (z Id1 jako PK), 
+    relację Encja2 (z Id2 i Id1 tworzącymi łącznie klucz główny) oraz relację Encja3 (z Id3, Id1 i Id2 tworzącymi 
+    łącznie klucz główny).
+3. tak naprawdę, to nie każdy związek z encja słabą jest identyfikujący. Encja słaba może być w związku 1:N z 
+    encją, która jej nie identyfikuje - i wtedy klucz główny tej encji trafia do schematu relacji powstałego z encji 
+    słabej jako klucz obcy, ale nie wchodzi w skład klucza głównego.
+    Często związki identyfikujące od pozostałych odróżnia na diagramie styl linii łączącej (np. przerywana dla związku
+    nieidentyfikującego i ciągła dla związku identyfikującego w Oracle Data Modeler). W związku z tym mam 
+    pytanie: czy może Pan tak zrobić (tzn. zrobilibyśmy odwrotnie: linia ciągła dla związków nieidentyfikujących, 
+    a przerywana dla identyfikujących, bo tych jest zdecydowanie mniej)? Wtedy też we właściwościach związku 
+    musiałoby się pojawić pole wyboru typu związku (np. zaznaczone to związek identyfikujący). Optymalnie by było, 
+    gdyby program był "domyślny" i sam proponował  ten typ (tzn. dla związków 1:N ze słabą encją po stronie N byłby 
+    to związek identyfikujący, w pozostałych przypadkach nieidentyfikujący).
+3. --DONE--  atrybuty związku 1:N idą do schematu po stronie N (są tam gdzie klucz obcy). Dla związków 1:1 mamy kilka 
+    możliwości przekształcania. Pan w każdym przypadku stosuje ten sam sposób (cos na kształt związku 1:N - wstawia 
+    Pan do jednej z relacji klucz główny drugiej jako klucz obcy; i tam tez wtedy powinny pójść atrybuty związku).
+4. --DONE-- jak w encji klucz główny jest złożony z kilku atrybutów, to później w relacji podrzędnej jako klucz obcy muszą 
+    występować wszystkie atrybuty z klucza obcego (patrz: Diagram_3_23.06, Entity7 w diagramie logicznym)
+5. --ZWALNONE BYLO PARIALE SIE ROBILY ZAMIAST FK-- dla schematu bazy z diagramu_3 wygenerowałem kod dla MySQL - nie ma w nim kluczy obcych!
+6. --DONE-- czy nie można by uaktualnić w generowanym kodzie sposobu kodowania - np. dla MySQL pojawia się w czasie 
+    wykonywania skryptu ostrzeżenie o nieaktualnym sposobie kodowania. - JAKIS STARY KOD JEST GENEROWANY I JEST 
+    OSTRZEZENIE GDY URUCHAMIANY - SPRAWDZIC
+
+
+uwagi dot. aplikacji:
+1. --WYWALIC PARTIALE Z LOGIC VIEW??? NIE WIEM CZY TO DOBRY POMYSŁ--
+     w modelu logicznym nie używamy już kluczy częściowych, więc z właściwości schematu relacji dobrze by było je 
+    usunąć
+2. --DONE: SPRAWDZIC/DOSTOSOWAC GENERATOR - chyba zrobione--  dobrze by było, gdyby była możliwość wyświetlania na diagramie również atrybutów związku. Tzn. domyślnie 
+    mogłoby być tak jak jest, ale żeby użytkownik mógł sobie wybrać czy chce widzieć te atrybuty
+3. --DONE-- coś się popsuło w diagramie logicznym. O ile w diagramie konceptualnym mogę usuwać te niepotrzebne punkty na 
+    linii, to tutaj CTRL z myszką nie działa i tych strzałek (skierowanych w różne strony) jest coraz więcej. Mogę 
+    je usunąć, gdy zmienię zwrot głównej, ale to raczej nie powinno tak wyglądać.
+4. --WYDAJE SIĘ ZE NAPRAWIŁEM 23.06 PRZED ZGŁOSZENIEM-- kolejna usterka w diagramie logicznym:  Nie ma w ogóle zgodności nazw atrybutów w schematach relacji z 
+    atrybutami w encjach (nazwy są takie jakie proponuje program po wstawieniu encji bądź atrybutu do encji)
+
+
+
+6. --DONE-- Conceptual na logic cos sie zwalilo i nie prznoszą sie takie same porty. diagram1 - przykład
+7. redistibute moze dodac bo jak zmiana na logic to czasami sie zaslaniaja
+
+8. dodac context bo wszedzie wysylap propsy te same mozna wjebac do contextu i beda poprostu / moze 
+    lepiej wywylac state jako propsy gdy wysylamy nie daleko?

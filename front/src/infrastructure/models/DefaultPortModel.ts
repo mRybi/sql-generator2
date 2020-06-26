@@ -4,6 +4,7 @@ import {
   PortModelAlignment,
   PortModelGenerics,
   PortModelOptions,
+  PointModel,
 } from "@projectstorm/react-diagrams-core";
 import { DefaultLinkModel } from "../models/DefaultLinkModel";
 import { AbstractModelFactory } from "@projectstorm/react-canvas-core";
@@ -115,6 +116,7 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
     let link = this.createLinkModel(factory);
     link.setSourcePort(this);
     link.setTargetPort(port);
+    link.removeMiddlePoints()
     return link as T;
   }
 
@@ -122,6 +124,10 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
     if (port === this) {
       return false;
     }
+    if( port.getParent() === this.getParent()) {
+      this.recursiveRelation(port);
+    }
+
     return true;
   }
 
@@ -130,6 +136,16 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
     if (!link && factory) {
       return factory.generateModel({});
     }
-    return link || new DefaultLinkModel();
+    return link || new DefaultLinkModel({}, {position: {x: this.getPosition().x + 40, y: this.getPosition().y - 100}});
+  }
+
+  recursiveRelation(port: PortModel) {
+    console.log('recursive')
+let link =    this.link(port);
+
+// let link = new DefaultLinkModel({}, {position: {x: this.getPosition().x + 40, y: this.getPosition().y - 100}});
+// link.setSourcePort(this);
+// link.setTargetPort(port);
+    return false;
   }
 }

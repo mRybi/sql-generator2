@@ -9,6 +9,9 @@ import { DiagramEngine } from "@projectstorm/react-diagrams";
 import { AdvancedPortModel } from "../../infrastructure/models/ArrowPortModel";
 import styled from "@emotion/styled";
 import { DarkInput } from "../DarkInput";
+import { Toolkit } from "../../infrastructure/Toolkit";
+import { DefaultLinkModel } from "../../infrastructure/models/DefaultLinkModel";
+import { DefaultLabelModel } from "../../infrastructure/models/DefaultLabelModel";
 
 namespace S {
   export const AddNewAtributeButton = styled.p`
@@ -17,9 +20,12 @@ namespace S {
 }
 
 class Props {
+  relationName?: string;
+  update: () => void;
   selectedItem: DefaultNodeModel;
   diagramEngine: DiagramEngine;
   relView?: boolean;
+  link?: DefaultLinkModel;
   isLogic: boolean;
 }
 
@@ -140,6 +146,7 @@ export const PropertyTable = (props: Props) => {
     row: DefaultPortModel
   ) => {
     event.persist();
+
     (updatedItem.getPortFromID(
       row.getOptions().id
     ) as DefaultPortModel).propertyType = event.target.value;
@@ -152,6 +159,20 @@ export const PropertyTable = (props: Props) => {
     event.persist();
     (updatedItem.getPortFromID(row.getOptions().id) as DefaultPortModel).label =
       event.target.value;
+
+    if(props.relView) {
+      let relationAtributes = props.link.properties !== null && props.link.properties.getPorts() as {[s: string]: DefaultPortModel};
+      let attString = '';
+  
+      if(Object.keys(relationAtributes).length > 0) {
+        Object.keys(relationAtributes).map(id => attString += `${relationAtributes[id].label} ${relationAtributes[id].propertyType} \n`);
+        
+  
+        let labels = props.link.getLabels() as DefaultLabelModel[];
+        labels[1].getOptions().label = `${props.relationName}\n${attString}`;
+    
+      }
+    }
   };
 
   const addNewPort = (newPortNumber: number) => {
@@ -165,15 +186,35 @@ export const PropertyTable = (props: Props) => {
         false,
         false,
         false,
-        "INT"
+        "INT",
+        Toolkit.UID()
       )
     );
+
+    if(props.relView) {
+      let {link} = props;
+      let labels = link.getLabels() as DefaultLabelModel[];
+      
+      labels[1].getOptions().label += `${`new atribute ${newPortNumber}`} INT \n`;
+    }
 
     forceUpdate();
   };
 
   const removePort = (port: DefaultPortModel) => {
     updatedItem.removePort(port);
+    let relationAtributes = props.link.properties !== null && props.link.properties.getPorts() as {[s: string]: DefaultPortModel};
+    let attString = '';
+
+    if(Object.keys(relationAtributes).length > 0) {
+      Object.keys(relationAtributes).filter(id => id !== port.getID()).map(id => attString += `${relationAtributes[id].label} ${relationAtributes[id].propertyType} \n`);
+      
+      let labels = props.link.getLabels() as DefaultLabelModel[];
+      let oldLabel = labels[1].getOptions().label;
+      labels[1].getOptions().label = oldLabel.slice(0, oldLabel.indexOf('\n'));
+      labels[1].getOptions().label += `\n${attString}`;
+    }
+
     forceUpdate();
   };
 

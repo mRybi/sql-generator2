@@ -15,6 +15,9 @@ namespace S {
   padding: 4px 8px;
   font-family: sans-serif;
   user-select: none;
+
+  max-width: 200px;
+  white-space: pre-wrap;
 `;
 }
 

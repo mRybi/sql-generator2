@@ -6,7 +6,7 @@ class Props {
   isUml: boolean;
   isLogic: boolean;
   isOpen: boolean;
-  serializeDiagram: any;
+  serializeDiagram: () => any;
   update: () => void;
 }
 
@@ -17,7 +17,7 @@ export const GenerationHandler = (props: Props) => {
   useEffect(() => setSqlString(""), [props.isOpen]);
 
   const generateScript = async (name: string) => {
-    const serDiagram = props.serializeDiagram;
+    const serDiagram = props.serializeDiagram();
     const dNodes = serDiagram["layers"][1]["models"];
 
     const nodes = Object.keys(dNodes).map((id) => {
@@ -29,33 +29,40 @@ export const GenerationHandler = (props: Props) => {
       return dLinks[id];
     });
 
+    // if(!props.isLogic) {
+    //   links.map((l: any) => {
+    //     l.labels[1].label = l.relName;
+    //   });
+    // }
+
+
     const diagramJson = {
       nodes,
       links,
     };
     const diagram = JSON.stringify(diagramJson, null, 2);
 
-    const response = await axios.post(
-      "https://sql-generator.pl/api/setjob/mssql",
-      {
+    console.log('daioghram', diagram,  props.isLogic)
+
+    // const response = await axios.post(
+      // "https://sql-generator.pl/api/setjob/mssql",
+      // {
         // let response = await axios.post("https://51.83.185.113/api/setjob/mssql", {
-        // let response = await axios.post("http://localhost:5000/api/setjob/mssql", {
+        let response = await axios.post("http://localhost:5000/api/setjob/mssql", {
 
         SerializedModel: diagram,
         DatabaseName: name,
-        RelationType: props.isUml ? "UML" : "CHEN",
-        DiagramType: props.isLogic ? "Logic" : "Conceptual",
+        RelationType: props.isUml ? "UML" : "CHEN"
       }
     );
 
-    const responseMy = await axios.post(
-      "https://sql-generator.pl/api/setjob/mysql",
-      {
-        // let responseMy = await axios.post("http://localhost:5000/api/setjob/mysql", {
+    // const responseMy = await axios.post(
+    //   "https://sql-generator.pl/api/setjob/mysql",
+    //   {
+        let responseMy = await axios.post("http://localhost:5000/api/setjob/mysql", {
         SerializedModel: diagram,
         DatabaseName: name,
-        RelationType: props.isUml ? "UML" : "CHEN",
-        DiagramType: props.isLogic ? "Logic" : "Conceptual",
+        RelationType: props.isUml ? "UML" : "CHEN"
       }
     );
 

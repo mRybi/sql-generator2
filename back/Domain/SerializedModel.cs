@@ -58,6 +58,9 @@ namespace Domain {
         [JsonProperty ("properties")]
         public RelationProperties[] Properties { get; set; }
 
+        [JsonProperty ("relName")]
+        public string RelName { get; set; }
+
         public Link (Guid source, Guid sourcePort, Guid target, Guid targetPort, RelationProperties[] properties) {
             this.Id = new Guid ();
             this.Source = source;
