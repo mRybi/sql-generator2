@@ -44,11 +44,11 @@ export const GenerationHandler = (props: Props) => {
 
     console.log('daioghram', diagram,  props.isLogic)
 
-    // const response = await axios.post(
-      // "https://sql-generator.pl/api/setjob/mssql",
-      // {
+    const response = await axios.post(
+      "https://sql-generator.pl/api/setjob/mssql",
+      {
         // let response = await axios.post("https://51.83.185.113/api/setjob/mssql", {
-        let response = await axios.post("http://localhost:5000/api/setjob/mssql", {
+        // let response = await axios.post("http://localhost:5000/api/setjob/mssql", {
 
         SerializedModel: diagram,
         DatabaseName: name,
@@ -56,10 +56,10 @@ export const GenerationHandler = (props: Props) => {
       }
     );
 
-    // const responseMy = await axios.post(
-    //   "https://sql-generator.pl/api/setjob/mysql",
-    //   {
-        let responseMy = await axios.post("http://localhost:5000/api/setjob/mysql", {
+    const responseMy = await axios.post(
+      "https://sql-generator.pl/api/setjob/mysql",
+      {
+        // let responseMy = await axios.post("http://localhost:5000/api/setjob/mysql", {
         SerializedModel: diagram,
         DatabaseName: name,
         RelationType: props.isUml ? "UML" : "CHEN"

@@ -136,16 +136,12 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
     if (!link && factory) {
       return factory.generateModel({});
     }
-    return link || new DefaultLinkModel({}, {position: {x: this.getPosition().x + 40, y: this.getPosition().y - 100}});
+    return link || new DefaultLinkModel({}, {position: {x: this.getPosition().x + 40, y: this.getPosition().y - 100 }});
   }
 
   recursiveRelation(port: PortModel) {
-    console.log('recursive')
-let link =    this.link(port);
+    this.link(port);
 
-// let link = new DefaultLinkModel({}, {position: {x: this.getPosition().x + 40, y: this.getPosition().y - 100}});
-// link.setSourcePort(this);
-// link.setTargetPort(port);
     return false;
   }
 }
