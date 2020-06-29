@@ -63,8 +63,7 @@ export const RelationPopup = (props: Props) => {
     let labels = props.link.getLabels() as DefaultLabelModel[];
     labels[0].getOptions().label = left;
     labels[2].getOptions().label = right;
-    labels[1].getOptions().label = relationNameOnly + `${false ? x : ''}`;
-    // dodawanie portow z relProperties nie dzialsa dla generowanego z conceptual
+    labels[1].getOptions().label = relationNameOnly + x;
 
     props.link.relName = relationNameOnly;
 
