@@ -232,6 +232,7 @@ export const PropertyTable = (props: Props) => {
       text: "Property Name",
       formatter: (cellContent: any, row: DefaultPortModel) => (
         <div className="input">
+          {/* Emotion test - plan is to replace all .scss styles with emotion styled components */}
           {/* <DarkInput 
             type="text" 
             defaultValue={row.label} 

@@ -183,8 +183,6 @@ export class Application {
 
     this.convertSourceLinks(priooneToOneLinks);
 
-
-
     let concLinks = this.activeModel.getLinks().filter(link => !priorityLinks.includes(link));
 
 
@@ -495,12 +493,10 @@ export class Application {
           )
         );
       })
-      // wez partialKeys z node i zmien je na PK
       let nodePorts = node.getPorts() as { [s: string]: DefaultPortModel; }
       let newPKPorts = _.keys(nodePorts).filter(key => nodePorts[key].isPartialKey).map(key => nodePorts[key]);
 
       newPKPorts.map(port => port.isPrimaryKey = true);
-      // wez partialKeys z node i zmien je na PK
 
       let relNode = ((sourceLinks[k] as DefaultLinkModel)
       .properties as DefaultNodeModel).clone() as DefaultNodeModel;
@@ -569,7 +565,6 @@ export class Application {
         [s: string]: DefaultPortModel;
       }
       let sourceNodePKPort = _.keys(sourceNodePorts).filter(key => sourceNodePorts[key].isPrimaryKey || sourceNodePorts[key].isPartialKey).map(key => sourceNodePorts[key]);
-      ///
 
       /// target
       let node = logicNodes.filter(
@@ -599,12 +594,11 @@ export class Application {
           )
         );
       })
-      // wez partialKeys z node i zmien je na PK
+
       let nodePorts = node.getPorts() as { [s: string]: DefaultPortModel; }
       let newPKPorts = _.keys(nodePorts).filter(key => nodePorts[key].isPartialKey).map(key => nodePorts[key]);
 
       newPKPorts.map(port => port.isPrimaryKey = true);
-      // wez partialKeys z node i zmien je na PK
 
       let relNode = ((targetLinks[k] as DefaultLinkModel)
       .properties as DefaultNodeModel).clone() as DefaultNodeModel;

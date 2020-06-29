@@ -29,27 +29,15 @@ export const GenerationHandler = (props: Props) => {
       return dLinks[id];
     });
 
-    // if(!props.isLogic) {
-    //   links.map((l: any) => {
-    //     l.labels[1].label = l.relName;
-    //   });
-    // }
-
-
     const diagramJson = {
       nodes,
       links,
     };
     const diagram = JSON.stringify(diagramJson, null, 2);
 
-    console.log('daioghram', diagram,  props.isLogic)
-
     const response = await axios.post(
       "https://sql-generator.pl/api/setjob/mssql",
       {
-        // let response = await axios.post("https://51.83.185.113/api/setjob/mssql", {
-        // let response = await axios.post("http://localhost:5000/api/setjob/mssql", {
-
         SerializedModel: diagram,
         DatabaseName: name,
         RelationType: props.isUml ? "UML" : "CHEN"
@@ -59,7 +47,6 @@ export const GenerationHandler = (props: Props) => {
     const responseMy = await axios.post(
       "https://sql-generator.pl/api/setjob/mysql",
       {
-        // let responseMy = await axios.post("http://localhost:5000/api/setjob/mysql", {
         SerializedModel: diagram,
         DatabaseName: name,
         RelationType: props.isUml ? "UML" : "CHEN"
@@ -70,10 +57,11 @@ export const GenerationHandler = (props: Props) => {
       setSqlString(response.data);
       setMySqlString(responseMy.data);
     } else {
-      setSqlString("There was an error while processing your request");
-      setMySqlString("There was an error while processing your request");
+      const errorMessage = 'There was an error while processing your request';
+      setSqlString(errorMessage);
+      setMySqlString(errorMessage);
 
-      console.log("there was an error while processing your request");
+      console.log(errorMessage);
     }
   };
 

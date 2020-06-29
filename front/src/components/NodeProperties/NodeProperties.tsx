@@ -121,7 +121,7 @@ export const NodeProperties = (props: Props) => {
                   onChange={(event) => handleNameChange(event)}
                 ></textarea>
               ) : (
-
+                // Emotion test - plan is to replace all .scss styles with emotion styled components
                  <DarkInput
                   fontSize={28}
                   type="text"
