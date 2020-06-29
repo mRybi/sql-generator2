@@ -80,11 +80,11 @@ namespace Services {
 				// STRUCTURE AND PRIMARY KEY CLUSTERS
 				string mySQLCode =
 					$@"SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-                    SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-                    SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-              
-              CREATE SCHEMA IF NOT EXISTS `{diagram.DatabaseName}` DEFAULT CHARACTER SET utf8mb4 ; 
-              USE `{diagram.DatabaseName}`;";
+					SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+					SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+					
+					CREATE SCHEMA IF NOT EXISTS `{diagram.DatabaseName}` DEFAULT CHARACTER SET utf8mb4 ; 
+					USE `{diagram.DatabaseName}`;";
 
 				var nodes = serializedDiagram.Nodes.Where (node => !node.IsLabel).ToArray ();
 
@@ -97,9 +97,8 @@ namespace Services {
 
 					var ports = node.Ports.Where (x => x.IsNamePort == false);
 
-					// bool clusteredPK = true;
 					nodeConstaraints += $@"
-                    PRIMARY KEY ({names}),";
+                    					PRIMARY KEY ({names}),";
 
 					foreach (var port in ports) {
 						if (port.IsPrimaryKey || port.IsAutoincremented) {
@@ -130,10 +129,10 @@ namespace Services {
 					}
 					var constraints = nodeConstaraints.Length > 1 ? nodeConstaraints.Substring (0, nodeConstaraints.Length - 1) : nodeConstaraints;
 					mySQLCode += $@"CREATE TABLE IF NOT EXISTS `{diagram.DatabaseName}`.`{node.Name}` (
-                {nodePorts}
-                {constraints})
-                ENGINE = InnoDB;
-            ";
+											{nodePorts}
+											{constraints})
+											ENGINE = InnoDB;
+									";
 				}
 
 				// FOREIGN KEYS 
@@ -145,19 +144,19 @@ namespace Services {
 						var linkedPKport = fkNode.Ports.Where (p => p.IsPrimaryKey || p.IsPartialKey).ToArray ();
 
 						mySQLCode += $@"ALTER TABLE `{diagram.DatabaseName}`.`{node.Name}`
-													ADD CONSTRAINT `fk_{node.Name}_{fk.Label}` 
-													FOREIGN KEY(`{fk.Label}`) 
-													REFERENCES `{diagram.DatabaseName}`.`{fkNode.Name}`(`{linkedPKport[0].Label}`)
-													ON DELETE NO ACTION ON UPDATE NO ACTION;
-													CREATE INDEX `fk_{node.Name}_{fk.Label}_idx` ON `{diagram.DatabaseName}`.`{node.Name}` (`{linkedPKport[0].Label}` ASC);                  
-                          ";
+									ADD CONSTRAINT `fk_{node.Name}_{fk.Label}` 
+									FOREIGN KEY(`{fk.Label}`) 
+									REFERENCES `{diagram.DatabaseName}`.`{fkNode.Name}`(`{linkedPKport[0].Label}`)
+									ON DELETE NO ACTION ON UPDATE NO ACTION;
+									CREATE INDEX `fk_{node.Name}_{fk.Label}_idx` ON `{diagram.DatabaseName}`.`{node.Name}` (`{linkedPKport[0].Label}` ASC);                  
+                          			";
 					}
 
 				}
 
 				mySQLCode += $@"SET SQL_MODE=@OLD_SQL_MODE;
-									SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-									SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;";
+								SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+								SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;";
 				return mySQLCode;
 			}
 
@@ -176,12 +175,12 @@ namespace Services {
 				// STRUCTURE AND PRIMARY KEY CLUSTERS
 				string MSSQLCode =
 					$@"USE master 
-              GO
-              CREATE DATABASE {diagram.DatabaseName} COLLATE SQL_Latin1_General_CP1_CI_AS 
-              GO
-              USE {diagram.DatabaseName}
-              GO 
-              ";
+						GO
+						CREATE DATABASE {diagram.DatabaseName} COLLATE SQL_Latin1_General_CP1_CI_AS 
+						GO
+						USE {diagram.DatabaseName}
+						GO 
+						";
 
 				var nodes = serializedDiagram.Nodes.Where (node => !node.IsLabel).ToArray ();
 
@@ -207,19 +206,19 @@ namespace Services {
 
 							if (pkCounter > 1 && clusteredPK) {
 								nodeConstaraints += $@"CONSTRAINT [PK_{node.Name}] PRIMARY KEY CLUSTERED
-                        (
-                          {names} ASC
-                        ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                        ) ON [PRIMARY]
-                        ";
+								(
+								{names} ASC
+								) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+								) ON [PRIMARY]
+								";
 								clusteredPK = false;
 							} else if (pkCounter == 1) {
 								nodeConstaraints += $@"CONSTRAINT [PK_{node.Name}] PRIMARY KEY CLUSTERED
-                        (
-                          [{port.Label}] ASC
-                        ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-                        ) ON [PRIMARY]
-                        ";
+								(
+								[{port.Label}] ASC
+								) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+								) ON [PRIMARY]
+								";
 								clusteredPK = false;
 							}
 						} else {
@@ -249,7 +248,7 @@ namespace Services {
 					string fkPortsCode = "";
 					foreach (var fk in fkPorts) {
 						fkPortsCode += $@"GO
-                CREATE NONCLUSTERED INDEX [fk_dm_{node.Name}_{fk.Label}_idx] ON [{node.Name}] ([{fk.Label}] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY];
+                					CREATE NONCLUSTERED INDEX [fk_dm_{node.Name}_{fk.Label}_idx] ON [{node.Name}] ([{fk.Label}] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY];
             ";
 					}
 					if (pkPort != null) {
@@ -268,8 +267,8 @@ namespace Services {
 						var linkedPKport = fkNode.Ports.Where (p => p.IsPrimaryKey || p.IsPartialKey).ToArray ();
 
 						MSSQLCode += $@"ALTER TABLE [{node.Name}] WITH CHECK ADD CONSTRAINT [fk_{node.Name}_{fk.Label}] FOREIGN KEY([{fk.Label}]) REFERENCES [dbo].[{fkNode.Name}]([{linkedPKport[0].Label}]);
-													GO
-													ALTER TABLE [{node.Name}] CHECK CONSTRAINT [fk_{node.Name}_{fk.Label}];";
+									GO
+									ALTER TABLE [{node.Name}] CHECK CONSTRAINT [fk_{node.Name}_{fk.Label}];";
 					}
 				}
 
