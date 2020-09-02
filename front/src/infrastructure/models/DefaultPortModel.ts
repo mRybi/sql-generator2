@@ -47,10 +47,10 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
     isAutoincremented?: boolean,
     isUnique?: boolean,
     propertyType?: string,
+    engine?: DiagramEngine,
     id?: string,
     fkPortId?: string,
     alignemnt?: PortModelAlignment,
-    engine?: DiagramEngine
   ) {
     super({
       id: id || Toolkit.UID(),
@@ -150,6 +150,7 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
     console.log(linksCount);
 
     return link || new DefaultLinkModel({}, {position: {x: this.getPosition().x + 40, y: this.getPosition().y - 100 }}, linksCount + 1);
+
   }
 
   recursiveRelation(port: PortModel) {

@@ -340,8 +340,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
                     true,
                     true,
                     "INT",
-                  null,null,null,props.app
-                  .getDiagramEngine()
+                    props.app.getDiagramEngine()
                   )
                 );
                 node.addPort(
@@ -356,8 +355,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
                     false,
                     false,
                     "INT",
-                    null,null,null,props.app
-                    .getDiagramEngine()
+                    props.app.getDiagramEngine()
                   )
                 );
                 node.addPort(
@@ -372,8 +370,7 @@ export const BodyWidget = (props: BodyWidgetProps) => {
                     false,
                     false,
                     "INT",
-                    null,null,null,props.app
-                    .getDiagramEngine()
+                    props.app.getDiagramEngine()
                   )
                 );
               }

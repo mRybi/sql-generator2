@@ -3,6 +3,7 @@ import {
   LinkModelGenerics,
   PortModel,
   PortModelAlignment,
+  DiagramEngine,
 } from "@projectstorm/react-diagrams";
 import { ArrowLinkModel } from "./ArrowLinkModel";
 import { DefaultPortModel } from "./DefaultPortModel";
@@ -36,6 +37,7 @@ export class AdvancedPortModel extends DefaultPortModel {
       isAutoincremented,
       isUnique,
       propertyType,
+      null,
       id,
       fkPortId,
       alignemnt
@@ -94,6 +96,7 @@ export class AdvancedPortModel extends DefaultPortModel {
             false,
             false,
             "INT",
+            
             Toolkit.UID(),
             thisParent.getOptions().id
           )
