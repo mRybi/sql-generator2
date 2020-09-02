@@ -4,10 +4,11 @@ import Popup from "reactjs-popup";
 import FileSaver from "file-saver";
 import { DiagramModel } from "@projectstorm/react-diagrams";
 
+import * as _ from 'lodash';
+
 class Props {
   isUml: boolean;
-  isLogic: boolean;
-
+  secondModel: DiagramModel;
   isOpen: boolean;
   diagramModel: DiagramModel;
   update: () => void;
@@ -18,10 +19,13 @@ export const SaveToFilePopup = (props: Props) => {
 
   const download = () => {
     const diagramJson = JSON.stringify({
-      diagram: props.diagramModel.serialize(),
+      conceptualDiagram: props.diagramModel.serialize(),
+      logicalDiagram: _.isEmpty(props.secondModel.getActiveNodeLayer().getNodes()) ? null : props.secondModel.serialize(),
+
       isUml: props.isUml,
-      isLogic: props.isLogic,
     });
+
+    console.log('do zapisu', props.secondModel, props.secondModel.getActiveNodeLayer().getNodes() );
 
     let blob = new Blob([diagramJson], { type: "text/plain;charset=utf-8" });
     FileSaver.saveAs(blob, `${fileName}.dbjson`);

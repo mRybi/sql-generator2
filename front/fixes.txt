@@ -1,0 +1,8 @@
+-- DONE -- 1. ta nazwa trybutu musi być numerowana, bo w tej chwili sytuacja wygląda tak, że jeżeli w encji juz jest 
+    atrybuy "already exists" i podam nazwe nowego atrybutu/ zmienie nazwe istniejącego na juz istniejącą, to 
+    będa w encji dwa atrybuty o tej samej nazwie:"already exists"!
+2. A może zrobić tak: zamiast przycisku Generate dać przycisk Show (lub Display), którego naciśnięcie spowoduje 
+    wyświetlenie odpowiedniego kodu w oknie. Ale nie będzie konieczne do pobrania kodu - mogę w końcu nie chcieć oglądać 
+    kodu tylko od razu go pobrać. Czyli generuję i pobieram kod klikając na wybrany przycisk Download.
+-- DONE -- 3. W aplikacji dobrze by było, żeby nazwy związków też były kolejno numerowane (tak jak nowe encje). 
+    Bo w tej chwili, jeżeli nic nie zmieniamy, to jest na diagramie kilka związków o tej samej nazwie "relation name".

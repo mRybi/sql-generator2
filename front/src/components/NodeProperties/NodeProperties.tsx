@@ -47,17 +47,19 @@ export const NodeProperties = (props: Props) => {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     event.persist();
-    let allNodes = props.diagramEngine
-      .getModel()
-      .getNodes() as DefaultNodeModel[];
-
-    let names = allNodes.map((node) =>
-      node.getOptions().name.toLowerCase().trim()
-    );
-
-    names.includes(event.target.value.toLowerCase().trim())
-      ? (updatedItem.getOptions().name = defaultName)
-      : (updatedItem.getOptions().name = event.target.value.trim());
+    if(event.target.value != "") {
+      let allNodes = props.diagramEngine
+        .getModel()
+        .getNodes() as DefaultNodeModel[];
+  
+      let names = allNodes.map((node) =>
+        node.getOptions().name.toLowerCase().trim()
+      );
+  
+      names.includes(event.target.value.toLowerCase().trim())
+        ? (updatedItem.getOptions().name = defaultName)
+        : (updatedItem.getOptions().name = event.target.value.trim());
+    }
     forceUpdate();
   };
 

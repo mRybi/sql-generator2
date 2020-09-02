@@ -12,6 +12,7 @@ import { DarkInput } from "../DarkInput";
 import { Toolkit } from "../../infrastructure/Toolkit";
 import { DefaultLinkModel } from "../../infrastructure/models/DefaultLinkModel";
 import { DefaultLabelModel } from "../../infrastructure/models/DefaultLabelModel";
+import _ from "lodash";
 
 namespace S {
   export const AddNewAtributeButton = styled.p`
@@ -36,6 +37,7 @@ export function useForceUpdate() {
 
 export const PropertyTable = (props: Props) => {
   const [updatedItem, setUpdatedItem] = React.useState(null);
+  const [defaultName, setDefaultName] = React.useState('already exists');
 
   const forceUpdate = useForceUpdate();
 
@@ -157,8 +159,24 @@ export const PropertyTable = (props: Props) => {
     row: DefaultPortModel
   ) => {
     event.persist();
-    (updatedItem.getPortFromID(row.getOptions().id) as DefaultPortModel).label =
-      event.target.value;
+
+    let allPorts = props.selectedItem.getPorts() as {[s: string]: DefaultPortModel};
+
+    let names = Object.values(allPorts).map((port) =>
+      port.label.toLowerCase().trim()
+    );
+
+    var propertiesCount = _.keys(
+      props.selectedItem.getPorts() 
+    ).length;
+
+
+    names.includes(event.target.value.toLowerCase().trim())
+    ? ((updatedItem.getPortFromID(row.getOptions().id) as DefaultPortModel).label = `${defaultName} ${propertiesCount - 4}`)
+    : (updatedItem.getPortFromID(row.getOptions().id) as DefaultPortModel).label = event.target.value.trim();
+
+    // (updatedItem.getPortFromID(row.getOptions().id) as DefaultPortModel).label =
+    //   event.target.value;
 
     if(props.relView) {
       let relationAtributes = props.link.properties !== null && props.link.properties.getPorts() as {[s: string]: DefaultPortModel};
@@ -202,17 +220,23 @@ export const PropertyTable = (props: Props) => {
   };
 
   const removePort = (port: DefaultPortModel) => {
+    console.log('port: ', port);
     updatedItem.removePort(port);
-    let relationAtributes = props.link.properties !== null && props.link.properties.getPorts() as {[s: string]: DefaultPortModel};
-    let attString = '';
 
-    if(Object.keys(relationAtributes).length > 0) {
-      Object.keys(relationAtributes).filter(id => id !== port.getID()).map(id => attString += `${relationAtributes[id].label} ${relationAtributes[id].propertyType} \n`);
-      
-      let labels = props.link.getLabels() as DefaultLabelModel[];
-      let oldLabel = labels[1].getOptions().label;
-      labels[1].getOptions().label = oldLabel.slice(0, oldLabel.indexOf('\n'));
-      labels[1].getOptions().label += `\n${attString}`;
+    if(props.link) {
+    console.log('linkports: ', props.link);
+
+      let relationAtributes = props.link.properties !== null && props.link.properties.getPorts() as {[s: string]: DefaultPortModel};
+      let attString = '';
+  
+      if(Object.keys(relationAtributes).length > 0) {
+        Object.keys(relationAtributes).filter(id => id !== port.getID()).map(id => attString += `${relationAtributes[id].label} ${relationAtributes[id].propertyType} \n`);
+        
+        let labels = props.link.getLabels() as DefaultLabelModel[];
+        let oldLabel = labels[1].getOptions().label;
+        labels[1].getOptions().label = oldLabel.slice(0, oldLabel.indexOf('\n'));
+        labels[1].getOptions().label += `\n${attString}`;
+      }
     }
 
     forceUpdate();
@@ -228,6 +252,7 @@ export const PropertyTable = (props: Props) => {
 
   const columns: any[] = [
     {
+      key: "Property Name",
       dataField: "label",
       text: "Property Name",
       formatter: (cellContent: any, row: DefaultPortModel) => (
@@ -253,6 +278,7 @@ export const PropertyTable = (props: Props) => {
       style: { paddingLeft: 0 },
       dataField: "propertyType",
       text: "Property Type",
+      key: "Property Type",
       formatter: (cellContent: any, row: DefaultPortModel) => (
         <div className="input">
           <input
@@ -270,6 +296,7 @@ export const PropertyTable = (props: Props) => {
     {
       dataField: "isPrimaryKey",
       text: "Is Primary Key",
+      key: "Is Primary Key",
       formatter: (cellContent: any, row: DefaultPortModel) => (
         <div className="checkbox">
           <label>
@@ -285,6 +312,7 @@ export const PropertyTable = (props: Props) => {
     {
       dataField: "isForeignKey",
       text: "Is Foreign Key",
+      key: "Is Foreign Key",
       formatter: (cellContent: any, row: DefaultPortModel) => (
         <div className="checkbox">
           <label>
@@ -300,6 +328,7 @@ export const PropertyTable = (props: Props) => {
     {
       dataField: "isPartialKey",
       text: "Is Partial Key",
+      key: "Is Partial Key",
       formatter: (cellContent: any, row: DefaultPortModel) => (
         <div className="checkbox">
           <label>
@@ -315,6 +344,7 @@ export const PropertyTable = (props: Props) => {
     {
       dataField: "isNotNull",
       text: "Not Null",
+      key: "Not Null",
       formatter: (cellContent: any, row: DefaultPortModel) => (
         <div className="checkbox">
           <label>
@@ -331,6 +361,7 @@ export const PropertyTable = (props: Props) => {
     {
       dataField: "isAutoincremented",
       text: "Is Auto Incremented",
+      key: "Is Auto Incremented",
       formatter: (cellContent: any, row: DefaultPortModel) => (
         <div className="checkbox">
           <label>
@@ -347,6 +378,7 @@ export const PropertyTable = (props: Props) => {
     {
       dataField: "isUnique",
       text: "Is Unique",
+      key: "Is Unique",
       formatter: (cellContent: any, row: DefaultPortModel) => (
         <div className="checkbox">
           <label>
@@ -363,12 +395,13 @@ export const PropertyTable = (props: Props) => {
     {
       dataField: "remove",
       text: "Remove",
+      key: "Remove",
       formatter: (cellContent: any, row: DefaultPortModel) => (
         <div className="checkbox">
           <label>
             <span
               onClick={() => removePort(row)}
-              className="mi mi-Delete red"
+              className="mi mi-Delete red onhoverPointer"
             />
           </label>
         </div>

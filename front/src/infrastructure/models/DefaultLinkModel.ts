@@ -17,6 +17,7 @@ import {
 import { DefaultNodeModel } from "./DefaultNodeModel";
 import { PropertyType } from "./PropertyType";
 import { DefaultPortModel } from "./DefaultPortModel";
+import _ from "lodash";
 
 export interface DefaultLinkModelListener extends LinkModelListener {
   colorChanged?(
@@ -60,7 +61,7 @@ export class DefaultLinkModel extends LinkModel<DefaultLinkModelGenerics> {
   properties: DefaultNodeModel;
   relName: string;
 
-  constructor(options: DefaultLinkModelOptions = {}, withPoint?: LinkWithPointOptions) {
+  constructor(options: DefaultLinkModelOptions = {}, withPoint?: LinkWithPointOptions, number?: number) {
     super({
       type: "default",
       width: options.width || 3,
@@ -71,7 +72,7 @@ export class DefaultLinkModel extends LinkModel<DefaultLinkModelGenerics> {
     });
 
     this.addLabel("0,N");
-    this.addLabel("relation name\n");
+    this.addLabel(`relation name  ${number || 1} \n`);
     this.addLabel("0,N");
 
 

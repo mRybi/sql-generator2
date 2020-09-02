@@ -5,10 +5,12 @@ import {
   PortModelGenerics,
   PortModelOptions,
   PointModel,
+  DiagramEngine,
 } from "@projectstorm/react-diagrams-core";
 import { DefaultLinkModel } from "../models/DefaultLinkModel";
 import { AbstractModelFactory } from "@projectstorm/react-canvas-core";
 import { Toolkit } from "../Toolkit";
+import _ from "lodash";
 
 export interface DefaultPortModelOptions extends PortModelOptions {
   label?: string;
@@ -32,6 +34,8 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
   propertyType: string;
   fkPortId: string;
 
+  dEngine: DiagramEngine;
+
   constructor(
     logic: boolean,
     name: string,
@@ -45,7 +49,8 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
     propertyType?: string,
     id?: string,
     fkPortId?: string,
-    alignemnt?: PortModelAlignment
+    alignemnt?: PortModelAlignment,
+    engine?: DiagramEngine
   ) {
     super({
       id: id || Toolkit.UID(),
@@ -70,6 +75,8 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
 
     this.propertyType = propertyType;
     this.fkPortId = fkPortId;
+
+    this.dEngine = engine;
   }
 
   deserialize(event: any) {
@@ -136,7 +143,13 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
     if (!link && factory) {
       return factory.generateModel({});
     }
-    return link || new DefaultLinkModel({}, {position: {x: this.getPosition().x + 40, y: this.getPosition().y - 100 }});
+    var linksCount = _.keys(
+      this.dEngine.getModel().getLinks()
+    ).length;
+
+    console.log(linksCount);
+
+    return link || new DefaultLinkModel({}, {position: {x: this.getPosition().x + 40, y: this.getPosition().y - 100 }}, linksCount + 1);
   }
 
   recursiveRelation(port: PortModel) {

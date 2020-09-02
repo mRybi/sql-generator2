@@ -16,7 +16,7 @@ export const GenerationHandler = (props: Props) => {
 
   useEffect(() => setSqlString(""), [props.isOpen]);
 
-  const generateScript = async (name: string) => {
+  const generateScript = async (name: string, dbms: string) => {
     const serDiagram = props.serializeDiagram();
     const dNodes = serDiagram["layers"][1]["models"];
 
@@ -35,33 +35,45 @@ export const GenerationHandler = (props: Props) => {
     };
     const diagram = JSON.stringify(diagramJson, null, 2);
 
-    const response = await axios.post(
-      "https://sql-generator.pl/api/setjob/mssql",
-      {
-        SerializedModel: diagram,
-        DatabaseName: name,
-        RelationType: props.isUml ? "UML" : "CHEN"
-      }
-    );
+    if(dbms === 'mssql') {
+      console.log('mssql')
+      const response = await axios.post(
+        "https://sql-generator.pl/api/setjob/mssql",
+        {
+          SerializedModel: diagram,
+          DatabaseName: name,
+          RelationType: props.isUml ? "UML" : "CHEN"
+        }
+      );
 
-    const responseMy = await axios.post(
-      "https://sql-generator.pl/api/setjob/mysql",
-      {
-        SerializedModel: diagram,
-        DatabaseName: name,
-        RelationType: props.isUml ? "UML" : "CHEN"
+      if (response.status === 200) {
+        setSqlString(response.data);
+      } else {
+        const errorMessage = 'There was an error while processing your request';
+        setSqlString(errorMessage);
+  
+        console.log(errorMessage);
       }
-    );
-
-    if (response.status === 200 && responseMy.status === 200) {
-      setSqlString(response.data);
-      setMySqlString(responseMy.data);
     } else {
-      const errorMessage = 'There was an error while processing your request';
-      setSqlString(errorMessage);
-      setMySqlString(errorMessage);
+      console.log('mysql')
 
-      console.log(errorMessage);
+      const responseMy = await axios.post(
+        "https://sql-generator.pl/api/setjob/mysql",
+        {
+          SerializedModel: diagram,
+          DatabaseName: name,
+          RelationType: props.isUml ? "UML" : "CHEN"
+        }
+      );
+
+      if (responseMy.status === 200) {
+        setMySqlString(responseMy.data);
+      } else {
+        const errorMessage = 'There was an error while processing your request';
+        setMySqlString(errorMessage);
+  
+        console.log(errorMessage);
+      }
     }
   };
 
@@ -70,7 +82,7 @@ export const GenerationHandler = (props: Props) => {
       update={props.update}
       mssqlString={sqlString}
       mysqlString={mysqlString}
-      generateScript={(name) => generateScript(name)}
+      generateScript={(name: string, dbms: string) => generateScript(name, dbms)}
       isOpen={props.isOpen}
     />
   );

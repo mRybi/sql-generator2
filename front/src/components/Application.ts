@@ -75,6 +75,10 @@ export class Application {
     return this.activeModel;
   }
 
+  public getLogicDiagram(): DiagramModel {
+    return this.logicModel;
+  }
+
   public getDiagramEngine(): DiagramEngine {
     return this.diagramEngine;
   }

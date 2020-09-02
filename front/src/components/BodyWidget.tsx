@@ -339,7 +339,9 @@ export const BodyWidget = (props: BodyWidgetProps) => {
                     true,
                     true,
                     true,
-                    "INT"
+                    "INT",
+                  null,null,null,props.app
+                  .getDiagramEngine()
                   )
                 );
                 node.addPort(
@@ -353,7 +355,9 @@ export const BodyWidget = (props: BodyWidgetProps) => {
                     false,
                     false,
                     false,
-                    "INT"
+                    "INT",
+                    null,null,null,props.app
+                    .getDiagramEngine()
                   )
                 );
                 node.addPort(
@@ -367,7 +371,9 @@ export const BodyWidget = (props: BodyWidgetProps) => {
                     false,
                     false,
                     false,
-                    "INT"
+                    "INT",
+                    null,null,null,props.app
+                    .getDiagramEngine()
                   )
                 );
               }
@@ -470,9 +476,9 @@ export const BodyWidget = (props: BodyWidgetProps) => {
           setIsLogic={setIsLogicModel}
         />
         <SaveToFilePopup
-          isLogic={isLogicModel}
           update={refreshPopups}
-          diagramModel={props.app.getDiagramEngine().getModel()}
+          diagramModel={props.app.getActiveDiagram()}
+          secondModel={props.app.getLogicDiagram()}
           isOpen={showSaveFileDialog}
           isUml={isUml}
         />

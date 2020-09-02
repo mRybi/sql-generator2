@@ -6,7 +6,7 @@ import FileSaver from "file-saver";
 
 class Props {
   isOpen: boolean;
-  generateScript?: (name: string) => void;
+  generateScript?: (name: string, dbms: string) => void;
   mssqlString: string;
   mysqlString: string;
   update: () => void;
@@ -60,7 +60,8 @@ export const ResultPopup = (props: Props) => {
         <button
           style={{ marginRight: "10px" }}
           onClick={() => {
-            props.generateScript(dbName);
+            console.log(mySQLView);
+            props.generateScript(dbName, !mySQLView ? 'mssql' : 'mysql');
           }}
         >
           Generate
@@ -91,10 +92,10 @@ export const ResultPopup = (props: Props) => {
           contentEditable={false}
         ></textarea>
 
-        <button style={{ marginRight: "10px" }} onClick={downloadMSSQL}>
+        <button style={{ marginRight: "10px" }} disabled={!props.mssqlString} onClick={downloadMSSQL}>
           Download MSSQL
         </button>
-        <button style={{ marginRight: "10px" }} onClick={downloadMYSQL}>
+        <button style={{ marginRight: "10px" }} disabled={!props.mysqlString} onClick={downloadMYSQL}>
           Download mySQL
         </button>
       </div>

@@ -16,26 +16,39 @@ export const LoadFileHandler = (props: Props) => {
     const engine = props.app.getDiagramEngine();
     try {
       const obj: {
-        diagram: ReturnType<DiagramModel["serialize"]>;
+        conceptualDiagram: ReturnType<DiagramModel["serialize"]>;
+        logicalDiagram: ReturnType<DiagramModel["serialize"]>;
         isUml: boolean;
-        isLogic: boolean;
       } = JSON.parse(name);
+      console.log(obj);
 
       props.setIsUml(obj.isUml);
-      obj.isLogic ? props.setIsLogic(obj.isLogic) : props.setIsLogic(false);
 
-      let model2 = new DiagramModel();
+      let consceptual = new DiagramModel();
+      let logic = new DiagramModel();
 
-      model2.deserializeModel(obj.diagram, engine);
+      if(obj.conceptualDiagram) {
+        consceptual.deserializeModel(obj.conceptualDiagram, engine);
+        
+        consceptual.getLinks().forEach((link) => {
+          link.getLabels().splice(0, 3);
+        });
 
-      model2.getLinks().forEach((link) => {
-        link.getLabels().splice(0, 3);
-      });
+        props.app.loadConceptualModel(consceptual);
+        props.setIsLogic(false);
+      }
 
-      if (obj.isLogic) {
-        props.app.loadLogicModel(model2);
-      } else {
-        props.app.loadConceptualModel(model2);
+      // if(logic.getNodes().keys.length > 0) {
+        if(obj.logicalDiagram) {
+          logic.deserializeModel(obj.logicalDiagram, engine);
+          
+  
+        logic.getLinks().forEach((link) => {
+          link.getLabels().splice(0, 3);
+        });
+
+        props.app.loadLogicModel(logic);
+        props.setIsLogic(true);
       }
 
       engine.repaintCanvas();
