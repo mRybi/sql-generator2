@@ -37,7 +37,6 @@ export function useForceUpdate() {
 
 export const PropertyTable = (props: Props) => {
   const [updatedItem, setUpdatedItem] = React.useState(null);
-  const [defaultName, setDefaultName] = React.useState('already exists');
 
   const forceUpdate = useForceUpdate();
 
@@ -172,11 +171,8 @@ export const PropertyTable = (props: Props) => {
 
 
     names.includes(event.target.value.toLowerCase().trim())
-    ? ((updatedItem.getPortFromID(row.getOptions().id) as DefaultPortModel).label = `${defaultName} ${propertiesCount - 4}`)
+    ? ((updatedItem.getPortFromID(row.getOptions().id) as DefaultPortModel).label = ((updatedItem.getPortFromID(row.getOptions().id)) as DefaultPortModel).getOptions().name)// `${defaultName} ${propertiesCount - 4}`)
     : (updatedItem.getPortFromID(row.getOptions().id) as DefaultPortModel).label = event.target.value.trim();
-
-    // (updatedItem.getPortFromID(row.getOptions().id) as DefaultPortModel).label =
-    //   event.target.value;
 
     if(props.relView) {
       let relationAtributes = props.link.properties !== null && props.link.properties.getPorts() as {[s: string]: DefaultPortModel};
