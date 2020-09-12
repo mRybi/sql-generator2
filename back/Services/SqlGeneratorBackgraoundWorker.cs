@@ -89,6 +89,7 @@ namespace Services {
 				var nodes = serializedDiagram.Nodes.Where (node => !node.IsLabel).ToArray ();
 
 				foreach (var node in nodes) {
+					string[] primaryKeysTypes = {"INT", "BIGINT", "SMALLINT", "TINYINT"};
 					string nodePorts = $@"";
 					string nodeConstaraints = $@"";
 					int pkCounter = CountPk (node);
@@ -105,7 +106,12 @@ namespace Services {
 							if (ports.Where (p => p.IsPartialKey).ToArray ().Length > 0) {
 								nodePorts += $@"`{port.Label}` {port.PropertyType} NOT NULL,";
 							} else {
-								nodePorts += $@"`{port.Label}` {port.PropertyType} NOT NULL AUTO_INCREMENT,";
+								if (port.IsPrimaryKey && primaryKeysTypes.Contains(port.PropertyType)) {
+									nodePorts += $@"`{port.Label}` {port.PropertyType} NOT NULL AUTO_INCREMENT,";
+								}
+								else {
+									nodePorts += $@"`{port.Label}` {port.PropertyType} NOT NULL,";
+								}
 							}
 
 							if (port.IsPrimaryKey) {
@@ -185,6 +191,7 @@ namespace Services {
 				var nodes = serializedDiagram.Nodes.Where (node => !node.IsLabel).ToArray ();
 
 				foreach (var node in nodes) {
+					string[] primaryKeysTypes = {"INT", "BIGINT", "SMALLINT", "TINYINT"};
 
 					string nodePorts = $@"";
 					string nodeConstaraints = $@"";
@@ -201,7 +208,13 @@ namespace Services {
 							if (ports.Where (p => p.IsPartialKey).ToArray ().Length > 0) {
 								nodePorts += $@"[{port.Label}] {port.PropertyType} NOT NULL, ";
 							} else {
-								nodePorts += $@"[{port.Label}] {port.PropertyType} NOT NULL IDENTITY (1,1), ";
+								if (port.IsPrimaryKey && (primaryKeysTypes.Contains(port.PropertyType) || ((port.PropertyType.Contains("DECIMAL") && port.PropertyType.Contains(",0)")) || (port.PropertyType.Contains("NUMERIC") && port.PropertyType.Contains(",0)"))))) {
+									nodePorts += $@"[{port.Label}] {port.PropertyType} NOT NULL IDENTITY (1,1), ";
+
+								}
+								else {
+									nodePorts += $@"[{port.Label}] {port.PropertyType} NOT NULL, ";
+								}
 							}
 
 							if (pkCounter > 1 && clusteredPK) {
