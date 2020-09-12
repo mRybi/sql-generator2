@@ -116,6 +116,10 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
     };
   }
 
+  updateOptionsLabel(newLabel: string) {
+    this.options.label = newLabel;
+  }
+
   link<T extends LinkModel>(
     port: PortModel,
     factory?: AbstractModelFactory<T>

@@ -40,6 +40,10 @@ export const PropertyTable = (props: Props) => {
 
   const forceUpdate = useForceUpdate();
 
+  React.useEffect(() => {
+   return () => updateOptionsLabel();
+  })
+
   React.useMemo(() => {
     setUpdatedItem(props.selectedItem);
   }, [props.selectedItem]);
@@ -142,6 +146,37 @@ export const PropertyTable = (props: Props) => {
     forceUpdate();
   };
 
+  const updateOptionsLabel = () => {
+    let allPorts = props.selectedItem.getPorts() as {[s: string]: DefaultPortModel};
+
+    let names = Object.values(allPorts).map((port) =>
+      (
+        {
+        label: port.label,
+        id: port.getOptions().id
+      }
+
+    ));
+
+    let optionsNames = Object.values(allPorts).map((port) =>
+      (
+        {
+        label:  port.getOptions().label,
+        id: port.getOptions().id
+      }
+
+    )
+    );
+
+    optionsNames.forEach((element, index) => {
+      console.log(element, names[index]);
+      element = names[index];
+      (props.selectedItem.getPortFromID(element.id) as DefaultPortModel).updateOptionsLabel(names[index].label)
+      // props.selectedItem.getPortFromID(element.id).getOptions().name = names[index].label
+    });
+    console.log(names, optionsNames);
+  }
+
   const handleChangepPropType = (
     event: React.ChangeEvent<HTMLInputElement>,
     row: DefaultPortModel
@@ -171,7 +206,7 @@ export const PropertyTable = (props: Props) => {
 
 
     names.includes(event.target.value.toLowerCase().trim())
-    ? ((updatedItem.getPortFromID(row.getOptions().id) as DefaultPortModel).label = ((updatedItem.getPortFromID(row.getOptions().id)) as DefaultPortModel).getOptions().name)// `${defaultName} ${propertiesCount - 4}`)
+    ? ((updatedItem.getPortFromID(row.getOptions().id) as DefaultPortModel).label = ((updatedItem.getPortFromID(row.getOptions().id)) as DefaultPortModel).getOptions().label)// `${defaultName} ${propertiesCount - 4}`)
     : (updatedItem.getPortFromID(row.getOptions().id) as DefaultPortModel).label = event.target.value.trim();
 
     if(props.relView) {
