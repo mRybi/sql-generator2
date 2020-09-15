@@ -14,6 +14,7 @@ import _ from "lodash";
 
 export interface DefaultPortModelOptions extends PortModelOptions {
   label?: string;
+  propertyType?: string;
   in?: boolean;
 }
 
@@ -57,6 +58,7 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
       in: true,
       name,
       label: name,
+      propertyType: propertyType,
       alignment: alignemnt,
       type: logic ? "arrow" : "default",
     });
@@ -118,6 +120,10 @@ export class DefaultPortModel extends PortModel<DefaultPortModelGenerics> {
 
   updateOptionsLabel(newLabel: string) {
     this.options.label = newLabel;
+  }
+
+  updateOptionsPropertyType(newPropType: string) {
+    this.options.propertyType = newPropType;
   }
 
   link<T extends LinkModel>(

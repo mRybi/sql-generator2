@@ -41,7 +41,10 @@ export const PropertyTable = (props: Props) => {
   const forceUpdate = useForceUpdate();
 
   React.useEffect(() => {
-   return () => updateOptionsLabel();
+   return () => {
+     updateOptionsLabel();
+     updateAttributesTypes();
+    }
   })
 
   React.useMemo(() => {
@@ -169,11 +172,49 @@ export const PropertyTable = (props: Props) => {
     );
 
     optionsNames.forEach((element, index) => {
-      console.log(element, names[index]);
       element = names[index];
       (props.selectedItem.getPortFromID(element.id) as DefaultPortModel).updateOptionsLabel(names[index].label)
       // props.selectedItem.getPortFromID(element.id).getOptions().name = names[index].label
     });
+  }
+
+  const updateAttributesTypes = () => {
+    let allPorts = props.selectedItem.getPorts() as {[s: string]: DefaultPortModel};
+
+    let names = Object.values(allPorts).map((port) =>
+      (
+        {
+        label: port.propertyType,
+        id: port.getOptions().id
+      }
+
+    ));
+
+    let optionsNames = Object.values(allPorts).map((port) =>
+      (
+        {
+        label:  port.getOptions().propertyType,
+        id: port.getOptions().id
+      }
+
+    )
+    );
+    names.forEach((element, index) => {
+      console.log(element.label, element.label.endsWith(')'),element.label[element.label.length - 1], element.label[element.label.length - 1] === '(');
+
+      if(element.label.endsWith(')') && element.label[element.label.length - 2] === '(') {
+        (props.selectedItem.getPortFromID(element.id) as DefaultPortModel).propertyType = optionsNames[index].label;
+      }
+      // element = names[index];
+      // (props.selectedItem.getPortFromID(element.id) as DefaultPortModel).updateOptionsPropertyType(names[index].label)
+    });
+
+    optionsNames.forEach((element, index) => {
+      element = names[index];
+      (props.selectedItem.getPortFromID(element.id) as DefaultPortModel).updateOptionsPropertyType(names[index].label)
+    });
+
+    forceUpdate();
     console.log(names, optionsNames);
   }
 
