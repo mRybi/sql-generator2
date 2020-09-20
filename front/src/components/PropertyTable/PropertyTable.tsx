@@ -43,7 +43,7 @@ export const PropertyTable = (props: Props) => {
   React.useEffect(() => {
    return () => {
      updateOptionsLabel();
-     updateAttributesTypes();
+    //  updateAttributesTypes();
     }
   })
 
@@ -214,7 +214,8 @@ export const PropertyTable = (props: Props) => {
       (props.selectedItem.getPortFromID(element.id) as DefaultPortModel).updateOptionsPropertyType(names[index].label)
     });
 
-    forceUpdate();
+    props.update();
+    // forceUpdate();
     console.log(names, optionsNames);
   }
 
@@ -240,10 +241,6 @@ export const PropertyTable = (props: Props) => {
     let names = Object.values(allPorts).map((port) =>
       port.label.toLowerCase().trim()
     );
-
-    var propertiesCount = _.keys(
-      props.selectedItem.getPorts() 
-    ).length;
 
 
     names.includes(event.target.value.toLowerCase().trim())
