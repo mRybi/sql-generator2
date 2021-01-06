@@ -17,7 +17,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "closest": "0.0.1",
     "dagre": "^0.8.5",
     "dom-to-image": "^2.6.0",
